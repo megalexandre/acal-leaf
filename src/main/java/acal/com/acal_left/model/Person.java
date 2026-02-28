@@ -16,6 +16,9 @@ public class Person implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private Partner partner;
+
     @Basic(optional = false)
     @Column(name = "nome")
     private String name;

@@ -1,0 +1,187 @@
+JFDML JFormDesigner: "8.3" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"minimumSize": new java.awt.Dimension( 1024, 768 )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+					"gap": 10
+				} ) {
+					name: "contentPanel"
+					"border": new javax.swing.border.TitledBorder( "Filtros:" )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+						"vgap": 10
+						"hgap": 10
+					} ) {
+						name: "panel1"
+						"border": &EtchedBorder0 new javax.swing.border.EtchedBorder( 1, null, null )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Conta Número:"
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "West"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+							name: "panel6"
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "textFieldInvoiceID"
+								"minimumSize": new java.awt.Dimension( 300, 35 )
+								"preferredSize": new java.awt.Dimension( 200, 35 )
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "Filtar"
+							} )
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "East"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+						"vgap": 10
+						"hgap": 10
+					} ) {
+						name: "panel2"
+						"border": #EtchedBorder0
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label2"
+							"text": "Status:"
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "West"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+							name: "panel7"
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxStatus"
+								"minimumSize": new java.awt.Dimension( 300, 35 )
+								"preferredSize": &Dimension0 new java.awt.Dimension( 200, 35 )
+								auxiliary() {
+									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+								}
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBox1"
+							} )
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "East"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+						"vgap": 10
+						"hgap": 10
+					} ) {
+						name: "panel3"
+						"border": #EtchedBorder0
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label3"
+							"text": "Categoria:"
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "West"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+							name: "panel8"
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxCategory"
+								"minimumSize": new java.awt.Dimension( 300, 35 )
+								"preferredSize": #Dimension0
+								auxiliary() {
+									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+								}
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBoxCategory"
+								addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "checkBoxCategoryStateChanged", true ) )
+							} )
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "East"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+						"vgap": 10
+						"hgap": 10
+					} ) {
+						name: "panel4"
+						"border": #EtchedBorder0
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label4"
+							"text": "Sócio:"
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "West"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+							name: "panel9"
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPartner"
+								"minimumSize": new java.awt.Dimension( 300, 35 )
+								"preferredSize": #Dimension0
+								auxiliary() {
+									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+								}
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBoxPartner"
+								addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "checkBoxPartnerStateChanged", true ) )
+							} )
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "East"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+						"vgap": 10
+						"hgap": 10
+					} ) {
+						name: "panel5"
+						"border": #EtchedBorder0
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label5"
+							"text": "Logradouro:"
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "West"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+							name: "panel10"
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxAddress"
+								"minimumSize": new java.awt.Dimension( 300, 35 )
+								"preferredSize": #Dimension0
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "checkBox4"
+							} )
+						}, new FormLayoutConstraints( class java.lang.String ) {
+							"value": "East"
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 2
+				} ) {
+					name: "buttonBar"
+					"border": new javax.swing.border.EmptyBorder( 12, 0, 0, 0 )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "searchButton"
+						"text": "Buscar"
+						"preferredSize": new java.awt.Dimension( 100, 35 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "cancelButton"
+						"text": "Cancel"
+						"preferredSize": new java.awt.Dimension( 100, 35 )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 385 )
+		} )
+	}
+}

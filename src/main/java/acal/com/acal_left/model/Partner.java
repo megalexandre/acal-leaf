@@ -16,5 +16,12 @@ public class Partner implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
+    @OneToOne(optional = false)
+    private Person person;
+
+    public String getName() {
+        return person.getName();
+    }
 
 }

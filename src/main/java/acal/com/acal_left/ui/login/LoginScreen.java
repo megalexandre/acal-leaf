@@ -1,19 +1,18 @@
-/*
- * Created by JFormDesigner on Fri Feb 27 17:21:56 BRT 2026
- */
-
 package acal.com.acal_left.ui.login;
 
-import java.awt.*;
 import acal.com.acal_left.core.LoginUseCase;
+import acal.com.acal_left.core.event.LoginSuccessEvent;
 import acal.com.acal_left.core.model.LoginAttempt;
-import net.miginfocom.swing.MigLayout;
+import acal.com.acal_left.model.User;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -22,9 +21,12 @@ import java.awt.event.KeyEvent;
 public class LoginScreen extends JPanel {
 
     private final LoginUseCase loginUseCase;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public LoginScreen(LoginUseCase loginUseCase) {
+    public LoginScreen(LoginUseCase loginUseCase, ApplicationEventPublisher eventPublisher) {
         this.loginUseCase = loginUseCase;
+        this.eventPublisher = eventPublisher;
+
         initComponents();
     }
 
@@ -41,38 +43,42 @@ public class LoginScreen extends JPanel {
         });
     }
 
-
-
     private void login(){
         LoginAttempt attempt = new LoginAttempt(getUsername(), getPassword());
 
         if (attempt.isNotValid()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Por favor, preencha todos os campos corretamente.",
-                    "Validação",
-                    JOptionPane.WARNING_MESSAGE
-            );
+            invalidLogin();
             return;
         }
 
-        var user = loginUseCase.login(attempt);
+        loginUseCase
+            .login(attempt)
+            .ifPresentOrElse(this::successLogin, this::errorLogin);
 
-        if (user.isPresent()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login realizado com sucesso!",
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        } else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Username ou senha inválidos.",
-                    "Erro de Login",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+    }
+
+    private void successLogin(User user) {
+        eventPublisher.publishEvent(new LoginSuccessEvent(this, user));
+        close();
+    }
+
+
+    private void invalidLogin(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Por favor, preencha todos os campos corretamente.",
+                "Validação",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    private void errorLogin(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Username ou senha inválidos.",
+                "Erro de Login",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 
     /* listeners */
@@ -100,7 +106,16 @@ public class LoginScreen extends JPanel {
         return new String(passwordFieldPassword.getPassword());
     }
 
-   
+    private void close(){
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (frame != null) {
+                frame.dispose();
+            }
+        });
+    }
+
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
@@ -112,17 +127,20 @@ public class LoginScreen extends JPanel {
         label2 = new JLabel();
         passwordFieldPassword = new JPasswordField();
         panel5 = new JPanel();
-        label3 = new JLabel();
+        panel1 = new JPanel();
         button1 = new JButton();
+        label3 = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-        (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-        .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
-        .Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
-        propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
-        ;}});
-        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(5, 5, 5, 5));
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing
+        . border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder
+        . CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .
+        awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder( )) )
+        ;  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} )
+        ;
+        setLayout(new BorderLayout(20, 20));
 
         //======== panel4 ========
         {
@@ -170,16 +188,22 @@ public class LoginScreen extends JPanel {
 
         //======== panel5 ========
         {
-            panel5.setLayout(new VerticalLayout());
+            panel5.setLayout(new VerticalLayout(20));
 
-            //---- label3 ----
-            label3.setText("Entrar:");
-            panel5.add(label3);
+            //======== panel1 ========
+            {
+                panel1.setLayout(new BorderLayout());
 
-            //---- button1 ----
-            button1.setText("Login");
-            button1.addActionListener(e -> buttonLogin(e));
-            panel5.add(button1);
+                //---- button1 ----
+                button1.setText("Login");
+                button1.addActionListener(e -> buttonLogin(e));
+                panel1.add(button1, BorderLayout.SOUTH);
+
+                //---- label3 ----
+                label3.setText("Entrar:");
+                panel1.add(label3, BorderLayout.NORTH);
+            }
+            panel5.add(panel1);
         }
         add(panel5, BorderLayout.SOUTH);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -195,7 +219,8 @@ public class LoginScreen extends JPanel {
     private JLabel label2;
     private JPasswordField passwordFieldPassword;
     private JPanel panel5;
-    private JLabel label3;
+    private JPanel panel1;
     private JButton button1;
+    private JLabel label3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
