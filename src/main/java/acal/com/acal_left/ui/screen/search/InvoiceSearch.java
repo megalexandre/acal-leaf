@@ -3,14 +3,17 @@ package acal.com.acal_left.ui.screen.search;
 
 import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.Screen;
-import acal.com.acal_left.core.usecase.CreateReportInvoiceUseCase;
-import acal.com.acal_left.core.usecase.FindAllAddressUseCase;
-import acal.com.acal_left.core.usecase.FindAllCategoryUseCase;
-import acal.com.acal_left.core.usecase.FindAllPartnerUseCase;
+import acal.com.acal_left.core.model.InvoiceQuery;
+import acal.com.acal_left.core.usecase.AddressFindAllUseCase;
+import acal.com.acal_left.core.usecase.CategoryFindAllUseCase;
+import acal.com.acal_left.core.usecase.InvoiceCreateReportUseCase;
+import acal.com.acal_left.core.usecase.PartnerFindAllUseCase;
+import acal.com.acal_left.model.Invoice;
+import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
-import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 import acal.com.acal_left.ui.report.ReportService;
+import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 import acal.com.acal_left.ui.screen.InvoicePdfViewerDialog;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
@@ -26,19 +29,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.List;
 
+import static acal.com.acal_left.ui.model.ComboBoxOption.getSelectedId;
+
 @Component
 public class InvoiceSearch extends JFrame {
 
-    private final FindAllCategoryUseCase findAllCategory;
-    private final FindAllPartnerUseCase findAllPartner;
-    private final FindAllAddressUseCase findAllAddress;
-    private final CreateReportInvoiceUseCase createReportInvoice;
+    private final CategoryFindAllUseCase findAllCategory;
+    private final PartnerFindAllUseCase findAllPartner;
+    private final AddressFindAllUseCase findAllAddress;
+    private final InvoiceCreateReportUseCase createReportInvoice;
 
     public InvoiceSearch(
-            FindAllCategoryUseCase findAllCategory,
-            FindAllPartnerUseCase findAllPartner,
-            FindAllAddressUseCase findAllAddress,
-            CreateReportInvoiceUseCase createReportInvoice
+            CategoryFindAllUseCase findAllCategory,
+            PartnerFindAllUseCase findAllPartner,
+            AddressFindAllUseCase findAllAddress,
+            InvoiceCreateReportUseCase createReportInvoice
     ) {
         this.findAllCategory = findAllCategory;
         this.findAllPartner = findAllPartner;
@@ -201,17 +206,16 @@ public class InvoiceSearch extends JFrame {
     }
 
     private List<InvoiceReportOutput> getData(){
-        return List.of(new InvoiceReportOutput());
-        /*
         InvoiceQuery filter = new InvoiceQuery(
                 StringUtil.toInteger(textFieldInvoiceId.getText()),
                 getSelectedId(comboBoxCategory),
                 getSelectedId(comboBoxAddress),
                 getSelectedId(comboBoxPartner)
         );
-        List<Invoice> invoices = createReportInvoice.execute(filter);
-        */
 
+        List<Invoice> invoiceEntities = createReportInvoice.execute(filter);
+
+        return invoiceEntities.stream().map(InvoiceReportOutput::new).toList();
     }
 
     private void initComponents() {

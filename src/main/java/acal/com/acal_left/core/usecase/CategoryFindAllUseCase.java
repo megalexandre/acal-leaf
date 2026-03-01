@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class FindAllCategoryUseCase {
+public class CategoryFindAllUseCase {
 
     private final CategoryRepository categoryRepository;
 
-    public FindAllCategoryUseCase( CategoryRepository categoryRepository) {
+    public CategoryFindAllUseCase(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 

@@ -6,12 +6,16 @@ import lombok.Data;
 @Entity
 @Table(name = "conta")
 @Data
-public class Invoice  {
+public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @JoinColumn(name = "id_endereco_pessoa", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private PersonAddresses personAddresses;
 
     /*
     @Column(name = "dataGerada")

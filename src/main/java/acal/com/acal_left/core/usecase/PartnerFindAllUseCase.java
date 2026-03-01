@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class FindAllPartnerUseCase {
+public class PartnerFindAllUseCase {
 
     private final PartnerRepository repository;
 
-    public FindAllPartnerUseCase(PartnerRepository repository) {
+    public PartnerFindAllUseCase(PartnerRepository repository) {
         this.repository = repository;
     }
 
