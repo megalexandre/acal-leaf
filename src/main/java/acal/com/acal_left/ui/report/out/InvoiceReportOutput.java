@@ -17,9 +17,15 @@ public class InvoiceReportOutput {
     private String date = "01/03/2026";
     private String payment = "";
 
+    private Boolean isPartnerExclusive;
+    private Boolean isNormalPartner;
+
     public InvoiceReportOutput(Invoice invoice) {
         this.partner = invoice.getPersonAddresses().getPerson().getName();
         this.number = invoice.getId().toString();
+        this.partnerNumber = invoice.getPersonAddresses().getNumber();
+        this.isPartnerExclusive = invoice.isPartnerExclusive();
+        this.isNormalPartner = invoice.isNormalPartner();
     }
 
     public String getPartner() {
@@ -68,6 +74,22 @@ public class InvoiceReportOutput {
 
     public String getPayment() {
         return payment;
+    }
+
+    public Boolean getPartnerExclusive() {
+        return isPartnerExclusive;
+    }
+
+    public void setPartnerExclusive(Boolean partnerExclusive) {
+        isPartnerExclusive = partnerExclusive;
+    }
+
+    public Boolean getNormalPartner() {
+        return isNormalPartner;
+    }
+
+    public void setNormalPartner(Boolean normalPartner) {
+        isNormalPartner = normalPartner;
     }
 }
 

@@ -12,9 +12,9 @@ import acal.com.acal_left.model.Invoice;
 import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
+import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.ReportService;
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
-import acal.com.acal_left.ui.screen.InvoicePdfViewerDialog;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.event.EventListener;
@@ -164,27 +164,67 @@ public class InvoiceSearch extends JFrame {
     }
 
     private void searchActionListener(ActionEvent e) {
+
+        if(!isFilterSelected()){
+            noOneFilterSelected();
+            return;
+        }
+
         try {
 
             List<InvoiceReportOutput> invoices = getData();
+
+            List<InvoiceReportOutput> partnersOnly = getData().stream().filter(InvoiceReportOutput::getPartnerExclusive).toList();
+            List<InvoiceReportOutput> partners = getData().stream().filter(InvoiceReportOutput::getNormalPartner).toList();
 
             if (invoices.isEmpty()) {
                 showEmptyData();
                 return;
             }
 
-            var pdfBytes = new ReportService().createReport(invoices);
+            if(!partnersOnly.isEmpty()) {
+                var pdfPartnersOnly = new ReportService().createReport(partnersOnly);
+                new PdfViewerService().openPdf(pdfPartnersOnly);
+            }
 
-            InvoicePdfViewerDialog dialog = new InvoicePdfViewerDialog(
-                    null,
-                    pdfBytes,
-                    "Relatório de Contas"
-                );
-            dialog.setVisible(true);
+            if(!partners.isEmpty()){
+                var pdfPartners = new ReportService().createReport(partners);
+                new PdfViewerService().openPdf(pdfPartners);
+            }
+
+            if(partnersOnly.isEmpty() && partners.isEmpty()){
+                noDateFound();
+            }
 
         } catch (Exception ex) {
             errorOnPrint(ex);
         }
+    }
+
+    private boolean isFilterSelected(){
+        return checkBoxInvoiceId.isSelected() ||
+                checkBoxStatus.isSelected() ||
+                checkBoxCategory.isSelected() ||
+                checkBoxPartner.isSelected() ||
+                checkBoxAddress.isSelected();
+    }
+
+    private void noDateFound(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Nenhum dado encontrado.",
+                "Aviso",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    private void noOneFilterSelected(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Selecione ao menos um filtro para realizar a busca.",
+                "Aviso",
+                JOptionPane.WARNING_MESSAGE
+        );
     }
 
     private void errorOnPrint(Exception ex){
@@ -213,9 +253,8 @@ public class InvoiceSearch extends JFrame {
                 getSelectedId(comboBoxPartner)
         );
 
-        List<Invoice> invoiceEntities = createReportInvoice.execute(filter);
-
-        return invoiceEntities.stream().map(InvoiceReportOutput::new).toList();
+        List<Invoice> invoices = createReportInvoice.execute(filter);
+        return invoices.stream().map(InvoiceReportOutput::new).toList();
     }
 
     private void initComponents() {

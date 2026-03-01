@@ -17,6 +17,14 @@ public class Invoice {
     @ManyToOne(optional = false)
     private PersonAddresses personAddresses;
 
+    public boolean isPartnerExclusive() {
+        return personAddresses.isPartnerExclusive();
+    }
+
+    public boolean isNormalPartner() {
+        return !personAddresses.isPartnerExclusive();
+    }
+
     /*
     @Column(name = "dataGerada")
     private Timestamp data;
