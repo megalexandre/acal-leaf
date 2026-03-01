@@ -1,10 +1,12 @@
 
-package acal.com.acal_left.ui.search;
+package acal.com.acal_left.ui.screen.search;
 
 import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.Screen;
+import acal.com.acal_left.core.usecase.FindAllAddressUseCase;
 import acal.com.acal_left.core.usecase.FindAllCategoryUseCase;
 import acal.com.acal_left.core.usecase.FindAllPartnerUseCase;
+import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
@@ -15,26 +17,30 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Component
 public class InvoiceSearch extends JFrame {
 
     private final FindAllCategoryUseCase findAllCategory;
     private final FindAllPartnerUseCase findAllPartner;
+    private final FindAllAddressUseCase findAllAddress;
+
 
     public InvoiceSearch(
         FindAllCategoryUseCase findAllCategory,
-        FindAllPartnerUseCase findAllPartner
+        FindAllPartnerUseCase findAllPartner,
+        FindAllAddressUseCase findAllAddress
     ) {
         this.findAllCategory = findAllCategory;
         this.findAllPartner = findAllPartner;
+        this.findAllAddress = findAllAddress;
 
         initComponents();
+        SwingUtils.applyNumericFilter(textFieldInvoiceId);
     }
 
 
@@ -58,13 +64,7 @@ public class InvoiceSearch extends JFrame {
         startComboBox(comboBoxCategory);
         startComboBox(comboBoxPartner);
         startComboBox(comboBoxAddress);
-
-        ComboBoxOption[] opcoes = {
-            new ComboBoxOption(null, ""),
-            new ComboBoxOption(1, "Aberta"),
-            new ComboBoxOption(2, "Fechada"),
-        };
-        comboBoxStatus.setModel(new DefaultComboBoxModel<>(opcoes));
+        textFieldInvoiceId.setEnabled(false);
     }
 
     private void startComboBox(JComboBox<?> comboBox){
@@ -74,36 +74,74 @@ public class InvoiceSearch extends JFrame {
     }
 
     private void clear(){
-
+        checkBoxStatus.setSelected(false);
+        checkBoxCategory.setSelected(false);
+        checkBoxPartner.setSelected(false);
+        checkBoxAddress.setSelected(false);
+        checkBoxInvoiceId.setSelected(false);
+        textFieldInvoiceId.setText("");
     }
 
-    private void checkBoxCategoryStateChanged(ChangeEvent e) {
-        if(e.getSource() instanceof JCheckBox checkBox) {
-            updateComboBoxState(comboBoxCategory, checkBox.isSelected(), findAllCategory::execute);
+    private void checkBoxInvoiceIdItemStateChanged(ItemEvent e) {
+        boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+        textFieldInvoiceId.setEnabled(isSelected);
+        if(!isSelected){
+            textFieldInvoiceId.setText("");
         }
     }
 
-    private void checkBoxPartnerStateChanged(ChangeEvent e) {
-        if(e.getSource() instanceof JCheckBox checkBox) {
-            updateComboBoxState(comboBoxPartner, checkBox.isSelected(), findAllPartner::execute);
-        }
+    private void checkBoxStatusItemStateChanged(ItemEvent e) {
+        boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+        List<ComboBoxOption> itens = isSelected ? getStatus() : List.of();
+        updateComboBoxState(comboBoxStatus, isSelected, itens);
     }
 
-    private void updateComboBoxState(JComboBox<ComboBoxOption> comboBox, boolean enabled, Supplier<List<?>> dataFetcher) {
+    private void checkBoxCategoryItemStateChanged(ItemEvent e) {
+        boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+        List<ComboBoxOption> itens = isSelected ? getCategories() : List.of();
+        updateComboBoxState(comboBoxCategory, isSelected, itens);
+    }
+
+    private void checkBoxPartnerItemStateChanged(ItemEvent e) {
+        boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+        List<ComboBoxOption> itens = isSelected ? getPartners() : List.of();
+        updateComboBoxState(comboBoxPartner, isSelected, itens);
+    }
+
+    private void checkBoxAddressItemStateChanged(ItemEvent e) {
+        boolean isSelected = (e.getStateChange() == ItemEvent.SELECTED);
+        List<ComboBoxOption> itens = isSelected ? getAddress() : List.of();
+        updateComboBoxState(comboBoxAddress, isSelected, itens);
+    }
+    
+    private List<ComboBoxOption> getStatus(){
+        return List.of(
+            new ComboBoxOption(1, "Aberta"),
+            new ComboBoxOption(2, "Fechada")
+        );
+    }
+
+    private List<ComboBoxOption> getPartners(){
+        return findAllPartner.execute().stream().map(
+            it -> new ComboBoxOption(it.getId(), it.getName())
+        ).toList();
+    }
+
+    private List<ComboBoxOption> getCategories(){
+        return findAllCategory.execute().stream().map(
+            it -> new ComboBoxOption(it.getId(), it.getName())
+        ).toList();
+    }
+
+    private List<ComboBoxOption> getAddress(){
+        return findAllAddress.execute().stream().map(
+                it -> new ComboBoxOption(it.getId(), it.getName())
+        ).toList();
+    }
+
+    private void updateComboBoxState(JComboBox<ComboBoxOption> comboBox, boolean enabled, List<ComboBoxOption> options) {
         comboBox.setEnabled(enabled);
-
         if (enabled) {
-            List<ComboBoxOption> options = dataFetcher.get().stream()
-                    .map(it -> {
-                        try {
-                            var id = (Integer) it.getClass().getMethod("getId").invoke(it);
-                            var name = (String) it.getClass().getMethod("getName").invoke(it);
-                            return new ComboBoxOption(id, name);
-                        } catch (Exception ex) {
-                            return new ComboBoxOption(null, "Erro");
-                        }
-                    }).toList();
-
             comboBox.setModel(new DefaultComboBoxModel<>(options.toArray(new ComboBoxOption[0])));
         } else {
             comboBox.setModel(new DefaultComboBoxModel<>());
@@ -111,20 +149,11 @@ public class InvoiceSearch extends JFrame {
         }
     }
 
-    private void checkBoxPartnerStateChanged(ActionEvent e) {
+    private void cancelAction(ActionEvent e) {
+        clear();
+        dispose();
     }
 
-    private void checkBoxCategoryListner(ActionEvent e) {
-        // TODO add your code here
-    }
-
-    private void checkBoxCategoryListener(ActionEvent e) {
-        // TODO add your code here
-    }
-
- 
-
- 
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -134,13 +163,13 @@ public class InvoiceSearch extends JFrame {
         panel1 = new JPanel();
         label1 = new JLabel();
         panel6 = new JPanel();
-        textFieldInvoiceID = new JTextField();
-        Filtar = new JCheckBox();
+        textFieldInvoiceId = new JTextField();
+        checkBoxInvoiceId = new JCheckBox();
         panel2 = new JPanel();
         label2 = new JLabel();
         panel7 = new JPanel();
         comboBoxStatus = new JComboBox<>();
-        checkBox1 = new JCheckBox();
+        checkBoxStatus = new JCheckBox();
         panel3 = new JPanel();
         label3 = new JLabel();
         panel8 = new JPanel();
@@ -154,8 +183,8 @@ public class InvoiceSearch extends JFrame {
         panel5 = new JPanel();
         label5 = new JLabel();
         panel10 = new JPanel();
-        comboBoxAddress = new JComboBox();
-        checkBox4 = new JCheckBox();
+        comboBoxAddress = new JComboBox<>();
+        checkBoxAddress = new JCheckBox();
         buttonBar = new JPanel();
         searchButton = new JButton();
         cancelButton = new JButton();
@@ -168,12 +197,12 @@ public class InvoiceSearch extends JFrame {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
-            ( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-            . TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt
-            . Color. red) ,dialogPane. getBorder( )) ); dialogPane. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-            propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( )
-            ; }} );
+            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
+            (0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
+            .TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt
+            .Color.red),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
+            propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
+            ;}});
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
@@ -194,11 +223,14 @@ public class InvoiceSearch extends JFrame {
                     {
                         panel6.setLayout(new HorizontalLayout());
 
-                        //---- textFieldInvoiceID ----
-                        textFieldInvoiceID.setMinimumSize(new Dimension(300, 35));
-                        textFieldInvoiceID.setPreferredSize(new Dimension(200, 35));
-                        panel6.add(textFieldInvoiceID);
-                        panel6.add(Filtar);
+                        //---- textFieldInvoiceId ----
+                        textFieldInvoiceId.setMinimumSize(new Dimension(300, 35));
+                        textFieldInvoiceId.setPreferredSize(new Dimension(300, 35));
+                        panel6.add(textFieldInvoiceId);
+
+                        //---- checkBoxInvoiceId ----
+                        checkBoxInvoiceId.addItemListener(e -> checkBoxInvoiceIdItemStateChanged(e));
+                        panel6.add(checkBoxInvoiceId);
                     }
                     panel1.add(panel6, BorderLayout.EAST);
                 }
@@ -219,9 +251,12 @@ public class InvoiceSearch extends JFrame {
 
                         //---- comboBoxStatus ----
                         comboBoxStatus.setMinimumSize(new Dimension(300, 35));
-                        comboBoxStatus.setPreferredSize(new Dimension(200, 35));
+                        comboBoxStatus.setPreferredSize(new Dimension(300, 35));
                         panel7.add(comboBoxStatus);
-                        panel7.add(checkBox1);
+
+                        //---- checkBoxStatus ----
+                        checkBoxStatus.addItemListener(e -> checkBoxStatusItemStateChanged(e));
+                        panel7.add(checkBoxStatus);
                     }
                     panel2.add(panel7, BorderLayout.EAST);
                 }
@@ -242,11 +277,11 @@ public class InvoiceSearch extends JFrame {
 
                         //---- comboBoxCategory ----
                         comboBoxCategory.setMinimumSize(new Dimension(300, 35));
-                        comboBoxCategory.setPreferredSize(new Dimension(200, 35));
+                        comboBoxCategory.setPreferredSize(new Dimension(300, 35));
                         panel8.add(comboBoxCategory);
 
                         //---- checkBoxCategory ----
-                        checkBoxCategory.addChangeListener(e -> checkBoxCategoryStateChanged(e));
+                        checkBoxCategory.addItemListener(e -> checkBoxCategoryItemStateChanged(e));
                         panel8.add(checkBoxCategory);
                     }
                     panel3.add(panel8, BorderLayout.EAST);
@@ -268,11 +303,11 @@ public class InvoiceSearch extends JFrame {
 
                         //---- comboBoxPartner ----
                         comboBoxPartner.setMinimumSize(new Dimension(300, 35));
-                        comboBoxPartner.setPreferredSize(new Dimension(200, 35));
+                        comboBoxPartner.setPreferredSize(new Dimension(300, 35));
                         panel9.add(comboBoxPartner);
 
                         //---- checkBoxPartner ----
-                        checkBoxPartner.addChangeListener(e -> checkBoxPartnerStateChanged(e));
+                        checkBoxPartner.addItemListener(e -> checkBoxPartnerItemStateChanged(e));
                         panel9.add(checkBoxPartner);
                     }
                     panel4.add(panel9, BorderLayout.EAST);
@@ -294,9 +329,12 @@ public class InvoiceSearch extends JFrame {
 
                         //---- comboBoxAddress ----
                         comboBoxAddress.setMinimumSize(new Dimension(300, 35));
-                        comboBoxAddress.setPreferredSize(new Dimension(200, 35));
+                        comboBoxAddress.setPreferredSize(new Dimension(300, 35));
                         panel10.add(comboBoxAddress);
-                        panel10.add(checkBox4);
+
+                        //---- checkBoxAddress ----
+                        checkBoxAddress.addItemListener(e -> checkBoxAddressItemStateChanged(e));
+                        panel10.add(checkBoxAddress);
                     }
                     panel5.add(panel10, BorderLayout.EAST);
                 }
@@ -317,6 +355,7 @@ public class InvoiceSearch extends JFrame {
                 //---- cancelButton ----
                 cancelButton.setText("Cancel");
                 cancelButton.setPreferredSize(new Dimension(100, 35));
+                cancelButton.addActionListener(e -> cancelAction(e));
                 buttonBar.add(cancelButton);
             }
             dialogPane.add(buttonBar, BorderLayout.SOUTH);
@@ -334,13 +373,13 @@ public class InvoiceSearch extends JFrame {
     private JPanel panel1;
     private JLabel label1;
     private JPanel panel6;
-    private JTextField textFieldInvoiceID;
-    private JCheckBox Filtar;
+    private JTextField textFieldInvoiceId;
+    private JCheckBox checkBoxInvoiceId;
     private JPanel panel2;
     private JLabel label2;
     private JPanel panel7;
     private JComboBox<ComboBoxOption> comboBoxStatus;
-    private JCheckBox checkBox1;
+    private JCheckBox checkBoxStatus;
     private JPanel panel3;
     private JLabel label3;
     private JPanel panel8;
@@ -354,8 +393,8 @@ public class InvoiceSearch extends JFrame {
     private JPanel panel5;
     private JLabel label5;
     private JPanel panel10;
-    private JComboBox comboBoxAddress;
-    private JCheckBox checkBox4;
+    private JComboBox<ComboBoxOption> comboBoxAddress;
+    private JCheckBox checkBoxAddress;
     private JPanel buttonBar;
     private JButton searchButton;
     private JButton cancelButton;

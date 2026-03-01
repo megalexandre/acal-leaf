@@ -29,12 +29,13 @@ new FormModel {
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
 							name: "panel6"
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "textFieldInvoiceID"
+								name: "textFieldInvoiceId"
 								"minimumSize": new java.awt.Dimension( 300, 35 )
-								"preferredSize": new java.awt.Dimension( 200, 35 )
+								"preferredSize": new java.awt.Dimension( 300, 35 )
 							} )
 							add( new FormComponent( "javax.swing.JCheckBox" ) {
-								name: "Filtar"
+								name: "checkBoxInvoiceId"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkBoxInvoiceIdItemStateChanged", true ) )
 							} )
 						}, new FormLayoutConstraints( class java.lang.String ) {
 							"value": "East"
@@ -57,13 +58,14 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JComboBox" ) {
 								name: "comboBoxStatus"
 								"minimumSize": new java.awt.Dimension( 300, 35 )
-								"preferredSize": &Dimension0 new java.awt.Dimension( 200, 35 )
+								"preferredSize": new java.awt.Dimension( 300, 35 )
 								auxiliary() {
 									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
 								}
 							} )
 							add( new FormComponent( "javax.swing.JCheckBox" ) {
-								name: "checkBox1"
+								name: "checkBoxStatus"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkBoxStatusItemStateChanged", true ) )
 							} )
 						}, new FormLayoutConstraints( class java.lang.String ) {
 							"value": "East"
@@ -86,14 +88,14 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JComboBox" ) {
 								name: "comboBoxCategory"
 								"minimumSize": new java.awt.Dimension( 300, 35 )
-								"preferredSize": #Dimension0
+								"preferredSize": new java.awt.Dimension( 300, 35 )
 								auxiliary() {
 									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
 								}
 							} )
 							add( new FormComponent( "javax.swing.JCheckBox" ) {
 								name: "checkBoxCategory"
-								addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "checkBoxCategoryStateChanged", true ) )
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkBoxCategoryItemStateChanged", true ) )
 							} )
 						}, new FormLayoutConstraints( class java.lang.String ) {
 							"value": "East"
@@ -116,14 +118,14 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JComboBox" ) {
 								name: "comboBoxPartner"
 								"minimumSize": new java.awt.Dimension( 300, 35 )
-								"preferredSize": #Dimension0
+								"preferredSize": new java.awt.Dimension( 300, 35 )
 								auxiliary() {
 									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
 								}
 							} )
 							add( new FormComponent( "javax.swing.JCheckBox" ) {
 								name: "checkBoxPartner"
-								addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "checkBoxPartnerStateChanged", true ) )
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkBoxPartnerItemStateChanged", true ) )
 							} )
 						}, new FormLayoutConstraints( class java.lang.String ) {
 							"value": "East"
@@ -146,10 +148,14 @@ new FormModel {
 							add( new FormComponent( "javax.swing.JComboBox" ) {
 								name: "comboBoxAddress"
 								"minimumSize": new java.awt.Dimension( 300, 35 )
-								"preferredSize": #Dimension0
+								"preferredSize": new java.awt.Dimension( 300, 35 )
+								auxiliary() {
+									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+								}
 							} )
 							add( new FormComponent( "javax.swing.JCheckBox" ) {
-								name: "checkBox4"
+								name: "checkBoxAddress"
+								addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "checkBoxAddressItemStateChanged", true ) )
 							} )
 						}, new FormLayoutConstraints( class java.lang.String ) {
 							"value": "East"
@@ -172,6 +178,7 @@ new FormModel {
 						name: "cancelButton"
 						"text": "Cancel"
 						"preferredSize": new java.awt.Dimension( 100, 35 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelAction", true ) )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "South"
@@ -181,7 +188,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 385 )
+			"size": new java.awt.Dimension( 575, 385 )
 		} )
 	}
 }
