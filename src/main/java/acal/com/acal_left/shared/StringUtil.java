@@ -9,4 +9,13 @@ public class StringUtil {
                 .map(it -> it.trim().toLowerCase())
                 .orElse("");
     }
+
+    public static Integer toInteger(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        return Integer.valueOf(value);
+    }
+
+
 }

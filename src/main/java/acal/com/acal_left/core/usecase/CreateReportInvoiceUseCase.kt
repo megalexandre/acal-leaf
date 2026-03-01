@@ -10,7 +10,7 @@ class CreateReportInvoiceUseCase(
     private val invoiceRepository: InvoiceRepository
 ) {
 
-    fun execute(invoiceQuery: InvoiceQuery): List<Invoice> {
-        return invoiceRepository.findInvoices(invoiceQuery.id)
-    }
+    fun execute(invoiceQuery: InvoiceQuery): List<Invoice> =
+        invoiceRepository.findInvoices(invoiceQuery.id)
+
 }

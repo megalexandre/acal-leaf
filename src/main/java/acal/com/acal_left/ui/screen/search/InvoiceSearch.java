@@ -8,9 +8,14 @@ import acal.com.acal_left.core.usecase.FindAllAddressUseCase;
 import acal.com.acal_left.core.usecase.FindAllCategoryUseCase;
 import acal.com.acal_left.core.usecase.FindAllPartnerUseCase;
 import acal.com.acal_left.core.usecase.CreateReportInvoiceUseCase;
+import acal.com.acal_left.infrastructure.ReportManager;
+import acal.com.acal_left.model.Invoice;
+import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
-import lombok.val;
+import acal.com.acal_left.ui.port.out.InvoiceReportOutput;
+import acal.com.acal_left.ui.port.out.InvoiceReportOutputKt;
+import acal.com.acal_left.ui.screen.InvoicePdfViewerDialog;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.event.EventListener;
@@ -24,7 +29,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.List;
-import java.util.Optional;
 
 import static acal.com.acal_left.ui.model.ComboBoxOption.getSelectedId;
 
@@ -162,15 +166,64 @@ public class InvoiceSearch extends JFrame {
     }
 
     private void searchActionListener(ActionEvent e) {
+        try {
+            InvoiceQuery filter = new InvoiceQuery(
+                StringUtil.toInteger(textFieldInvoiceId.getText()),
+                getSelectedId(comboBoxCategory),
+                getSelectedId(comboBoxAddress),
+                getSelectedId(comboBoxPartner)
+            );
 
-        InvoiceQuery filter = new InvoiceQuery(
-            Integer.valueOf(textFieldInvoiceId.getText()),
-            getSelectedId(comboBoxCategory),
-            getSelectedId(comboBoxAddress),
-            getSelectedId(comboBoxPartner)
-        );
+            List<Invoice> invoices = createReportInvoice.execute(filter);
+            List<InvoiceReportOutput> invoicesData = InvoiceReportOutputKt.toReportOutput(invoices);
 
-        createReportInvoice.execute(filter);
+            if (invoices.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Nenhuma conta encontrada com os filtros selecionados.",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            var templateStream = getClass().getClassLoader()
+                .getResourceAsStream("reports/invoice_report.jrxml");
+
+            if (templateStream == null) {
+                throw new IllegalStateException("Template de relatório não encontrado!");
+            }
+
+            java.time.format.DateTimeFormatter formatter =
+                java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            java.util.Map<String, Object> parameters = new java.util.HashMap<>();
+            parameters.put("title", "Pesquisa de Contas");
+            parameters.put("reportDate", java.time.LocalDateTime.now().format(formatter));
+            parameters.put("totalRecords", invoices.size());
+
+            ReportManager reportManager = new ReportManager();
+            byte[] pdfBytes = reportManager.generatePdfReport(
+                templateStream,
+                invoicesData,
+                parameters
+            );
+
+            InvoicePdfViewerDialog dialog =
+                new InvoicePdfViewerDialog(
+                    null,
+                    pdfBytes,
+                    "Relatório de Contas"
+                );
+            dialog.setVisible(true);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Erro ao gerar relatório: " + ex.getMessage(),
+                "Erro",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
 
@@ -216,13 +269,11 @@ public class InvoiceSearch extends JFrame {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new
-            javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax
-            . swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java
-            .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt
-            . Color. red) ,dialogPane. getBorder( )) ); dialogPane. addPropertyChangeListener (new java. beans.
-            PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .
-            equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+            dialogPane.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+            0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+            . BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+            red) ,dialogPane. getBorder( )) ); dialogPane. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+            beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
