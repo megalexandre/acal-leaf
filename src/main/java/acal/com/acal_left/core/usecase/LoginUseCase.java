@@ -1,4 +1,4 @@
-package acal.com.acal_left.core;
+package acal.com.acal_left.core.usecase;
 
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.model.User;
@@ -11,7 +11,6 @@ import java.util.Optional;
 public class LoginUseCase {
 
     private final UserRepository userRepository;
-
 
     public LoginUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;

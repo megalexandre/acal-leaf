@@ -12,6 +12,10 @@ public class ComboBoxOption {
     private Integer id;
     private String name;
 
+    public static Integer getSelectedId(Object selectedItem) {
+        return (selectedItem instanceof ComboBoxOption option) ? option.getId() : null;
+    }
+
     @Override
     public String toString() {
         return name;

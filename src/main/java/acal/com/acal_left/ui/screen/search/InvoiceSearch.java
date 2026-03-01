@@ -3,11 +3,14 @@ package acal.com.acal_left.ui.screen.search;
 
 import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.Screen;
+import acal.com.acal_left.core.model.InvoiceQuery;
 import acal.com.acal_left.core.usecase.FindAllAddressUseCase;
 import acal.com.acal_left.core.usecase.FindAllCategoryUseCase;
 import acal.com.acal_left.core.usecase.FindAllPartnerUseCase;
+import acal.com.acal_left.core.usecase.CreateReportInvoiceUseCase;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
+import lombok.val;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.event.EventListener;
@@ -21,6 +24,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.List;
+import java.util.Optional;
+
+import static acal.com.acal_left.ui.model.ComboBoxOption.getSelectedId;
 
 @Component
 public class InvoiceSearch extends JFrame {
@@ -28,15 +34,18 @@ public class InvoiceSearch extends JFrame {
     private final FindAllCategoryUseCase findAllCategory;
     private final FindAllPartnerUseCase findAllPartner;
     private final FindAllAddressUseCase findAllAddress;
+    private final CreateReportInvoiceUseCase createReportInvoice;
 
     public InvoiceSearch(
-        FindAllCategoryUseCase findAllCategory,
-        FindAllPartnerUseCase findAllPartner,
-        FindAllAddressUseCase findAllAddress
+            FindAllCategoryUseCase findAllCategory,
+            FindAllPartnerUseCase findAllPartner,
+            FindAllAddressUseCase findAllAddress,
+            CreateReportInvoiceUseCase createReportInvoice
     ) {
         this.findAllCategory = findAllCategory;
         this.findAllPartner = findAllPartner;
         this.findAllAddress = findAllAddress;
+        this.createReportInvoice = createReportInvoice;
 
         initComponents();
         SwingUtils.applyNumericFilter(textFieldInvoiceId);
@@ -154,7 +163,14 @@ public class InvoiceSearch extends JFrame {
 
     private void searchActionListener(ActionEvent e) {
 
+        InvoiceQuery filter = new InvoiceQuery(
+            Integer.valueOf(textFieldInvoiceId.getText()),
+            getSelectedId(comboBoxCategory),
+            getSelectedId(comboBoxAddress),
+            getSelectedId(comboBoxPartner)
+        );
 
+        createReportInvoice.execute(filter);
     }
 
 
@@ -200,11 +216,13 @@ public class InvoiceSearch extends JFrame {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
-            0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
-            .BOTTOM,new java.awt.Font("D\u0069al\u006fg",java.awt.Font.BOLD,12),java.awt.Color.
-            red),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
-            beans.PropertyChangeEvent e){if("\u0062or\u0064er".equals(e.getPropertyName()))throw new RuntimeException();}});
+            dialogPane.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new
+            javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax
+            . swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java
+            .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt
+            . Color. red) ,dialogPane. getBorder( )) ); dialogPane. addPropertyChangeListener (new java. beans.
+            PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .
+            equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========

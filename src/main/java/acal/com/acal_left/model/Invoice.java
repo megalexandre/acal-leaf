@@ -15,4 +15,5 @@ public class Invoice  {
     @Column(name = "id")
     private Integer id;
 
+
 }

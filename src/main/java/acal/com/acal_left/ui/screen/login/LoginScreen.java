@@ -1,6 +1,6 @@
 package acal.com.acal_left.ui.screen.login;
 
-import acal.com.acal_left.core.LoginUseCase;
+import acal.com.acal_left.core.usecase.LoginUseCase;
 import acal.com.acal_left.core.event.LoginSuccessEvent;
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.model.User;
