@@ -170,15 +170,16 @@ new FormModel {
 					name: "buttonBar"
 					"border": new javax.swing.border.EmptyBorder( 12, 0, 0, 0 )
 					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "searchButton"
-						"text": "Buscar"
-						"preferredSize": new java.awt.Dimension( 100, 35 )
-					} )
-					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "cancelButton"
 						"text": "Cancel"
 						"preferredSize": new java.awt.Dimension( 100, 35 )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelAction", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "searchButton"
+						"text": "Buscar"
+						"preferredSize": new java.awt.Dimension( 100, 35 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "South"

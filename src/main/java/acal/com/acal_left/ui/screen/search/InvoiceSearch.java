@@ -29,7 +29,6 @@ public class InvoiceSearch extends JFrame {
     private final FindAllPartnerUseCase findAllPartner;
     private final FindAllAddressUseCase findAllAddress;
 
-
     public InvoiceSearch(
         FindAllCategoryUseCase findAllCategory,
         FindAllPartnerUseCase findAllPartner,
@@ -42,7 +41,6 @@ public class InvoiceSearch extends JFrame {
         initComponents();
         SwingUtils.applyNumericFilter(textFieldInvoiceId);
     }
-
 
     @EventListener
     public void onScreenChange(ChangeScreenEvent event) {
@@ -154,6 +152,11 @@ public class InvoiceSearch extends JFrame {
         dispose();
     }
 
+    private void searchActionListener(ActionEvent e) {
+
+
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -186,8 +189,8 @@ public class InvoiceSearch extends JFrame {
         comboBoxAddress = new JComboBox<>();
         checkBoxAddress = new JCheckBox();
         buttonBar = new JPanel();
-        searchButton = new JButton();
         cancelButton = new JButton();
+        searchButton = new JButton();
 
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
@@ -197,12 +200,11 @@ public class InvoiceSearch extends JFrame {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
-            (0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
-            .TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt
-            .Color.red),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
-            propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
-            ;}});
+            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
+            0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
+            .BOTTOM,new java.awt.Font("D\u0069al\u006fg",java.awt.Font.BOLD,12),java.awt.Color.
+            red),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
+            beans.PropertyChangeEvent e){if("\u0062or\u0064er".equals(e.getPropertyName()))throw new RuntimeException();}});
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
@@ -347,16 +349,17 @@ public class InvoiceSearch extends JFrame {
                 buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
                 buttonBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-                //---- searchButton ----
-                searchButton.setText("Buscar");
-                searchButton.setPreferredSize(new Dimension(100, 35));
-                buttonBar.add(searchButton);
-
                 //---- cancelButton ----
                 cancelButton.setText("Cancel");
                 cancelButton.setPreferredSize(new Dimension(100, 35));
                 cancelButton.addActionListener(e -> cancelAction(e));
                 buttonBar.add(cancelButton);
+
+                //---- searchButton ----
+                searchButton.setText("Buscar");
+                searchButton.setPreferredSize(new Dimension(100, 35));
+                searchButton.addActionListener(e -> searchActionListener(e));
+                buttonBar.add(searchButton);
             }
             dialogPane.add(buttonBar, BorderLayout.SOUTH);
         }
@@ -396,7 +399,7 @@ public class InvoiceSearch extends JFrame {
     private JComboBox<ComboBoxOption> comboBoxAddress;
     private JCheckBox checkBoxAddress;
     private JPanel buttonBar;
-    private JButton searchButton;
     private JButton cancelButton;
+    private JButton searchButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
