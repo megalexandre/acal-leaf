@@ -3,18 +3,14 @@ package acal.com.acal_left.ui.screen.search;
 
 import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.Screen;
-import acal.com.acal_left.core.model.InvoiceQuery;
+import acal.com.acal_left.core.usecase.CreateReportInvoiceUseCase;
 import acal.com.acal_left.core.usecase.FindAllAddressUseCase;
 import acal.com.acal_left.core.usecase.FindAllCategoryUseCase;
 import acal.com.acal_left.core.usecase.FindAllPartnerUseCase;
-import acal.com.acal_left.core.usecase.CreateReportInvoiceUseCase;
-import acal.com.acal_left.infrastructure.ReportManager;
-import acal.com.acal_left.model.Invoice;
-import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;
-import acal.com.acal_left.ui.port.out.InvoiceReportOutput;
-import acal.com.acal_left.ui.port.out.InvoiceReportOutputKt;
+import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
+import acal.com.acal_left.ui.report.ReportService;
 import acal.com.acal_left.ui.screen.InvoicePdfViewerDialog;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
@@ -29,8 +25,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.List;
-
-import static acal.com.acal_left.ui.model.ComboBoxOption.getSelectedId;
 
 @Component
 public class InvoiceSearch extends JFrame {
@@ -64,7 +58,6 @@ public class InvoiceSearch extends JFrame {
         startScreen();
         this.setVisible(true);
     }
-
 
     private void startScreen(){
         startComboBox();
@@ -167,49 +160,17 @@ public class InvoiceSearch extends JFrame {
 
     private void searchActionListener(ActionEvent e) {
         try {
-            InvoiceQuery filter = new InvoiceQuery(
-                StringUtil.toInteger(textFieldInvoiceId.getText()),
-                getSelectedId(comboBoxCategory),
-                getSelectedId(comboBoxAddress),
-                getSelectedId(comboBoxPartner)
-            );
 
-            List<Invoice> invoices = createReportInvoice.execute(filter);
-            List<InvoiceReportOutput> invoicesData = InvoiceReportOutputKt.toReportOutput(invoices);
+            List<InvoiceReportOutput> invoices = getData();
 
             if (invoices.isEmpty()) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "Nenhuma conta encontrada com os filtros selecionados.",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-                );
+                showEmptyData();
                 return;
             }
 
-            var templateStream = getClass().getClassLoader()
-                .getResourceAsStream("reports/invoice_report.jrxml");
+            var pdfBytes = new ReportService().createReport(invoices);
 
-            if (templateStream == null) {
-                throw new IllegalStateException("Template de relatório não encontrado!");
-            }
-
-            java.time.format.DateTimeFormatter formatter =
-                java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            java.util.Map<String, Object> parameters = new java.util.HashMap<>();
-            parameters.put("title", "Pesquisa de Contas");
-            parameters.put("reportDate", java.time.LocalDateTime.now().format(formatter));
-            parameters.put("totalRecords", invoices.size());
-
-            ReportManager reportManager = new ReportManager();
-            byte[] pdfBytes = reportManager.generatePdfReport(
-                templateStream,
-                invoicesData,
-                parameters
-            );
-
-            InvoicePdfViewerDialog dialog =
-                new InvoicePdfViewerDialog(
+            InvoicePdfViewerDialog dialog = new InvoicePdfViewerDialog(
                     null,
                     pdfBytes,
                     "Relatório de Contas"
@@ -217,15 +178,41 @@ public class InvoiceSearch extends JFrame {
             dialog.setVisible(true);
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
+            errorOnPrint(ex);
+        }
+    }
+
+    private void errorOnPrint(Exception ex){
+        JOptionPane.showMessageDialog(
                 this,
                 "Erro ao gerar relatório: " + ex.getMessage(),
                 "Erro",
                 JOptionPane.ERROR_MESSAGE
-            );
-        }
+        );
     }
 
+    private void showEmptyData(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Nenhuma conta encontrada com os filtros selecionados.",
+                "Aviso",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    private List<InvoiceReportOutput> getData(){
+        return List.of(new InvoiceReportOutput());
+        /*
+        InvoiceQuery filter = new InvoiceQuery(
+                StringUtil.toInteger(textFieldInvoiceId.getText()),
+                getSelectedId(comboBoxCategory),
+                getSelectedId(comboBoxAddress),
+                getSelectedId(comboBoxPartner)
+        );
+        List<Invoice> invoices = createReportInvoice.execute(filter);
+        */
+
+    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

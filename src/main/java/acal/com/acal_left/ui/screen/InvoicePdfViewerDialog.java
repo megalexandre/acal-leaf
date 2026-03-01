@@ -54,22 +54,6 @@ public class InvoicePdfViewerDialog extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        // Message panel
-        JPanel messagePanel = new JPanel(new BorderLayout());
-        messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        JLabel messageLabel = new JLabel(
-            "<html><div style='text-align: center;'>" +
-            "<h2>✅ Relatório gerado com sucesso!</h2>" +
-            "<p>Tamanho: " + (pdfBytes.length / 1024) + " KB</p>" +
-            "<p>Clique em 'Salvar PDF' para escolher onde salvar o arquivo.</p>" +
-            "</div></html>"
-        );
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        messagePanel.add(messageLabel, BorderLayout.CENTER);
-
-        add(messagePanel, BorderLayout.CENTER);
-
         // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
@@ -77,16 +61,11 @@ public class InvoicePdfViewerDialog extends JDialog {
         saveButton.setPreferredSize(new Dimension(150, 40));
         saveButton.addActionListener(this::savePdfAction);
 
-        JButton openButton = new JButton("Abrir com Leitor PDF");
-        openButton.setPreferredSize(new Dimension(180, 40));
-        openButton.addActionListener(this::openPdfAction);
-
         JButton closeButton = new JButton("Fechar");
         closeButton.setPreferredSize(new Dimension(150, 40));
         closeButton.addActionListener(e -> dispose());
 
         buttonPanel.add(saveButton);
-        buttonPanel.add(openButton);
         buttonPanel.add(closeButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
@@ -124,10 +103,6 @@ public class InvoicePdfViewerDialog extends JDialog {
                 );
             }
         }
-    }
-
-    private void openPdfAction(ActionEvent e) {
-        openPdfAutomatically();
     }
 
     @Override
