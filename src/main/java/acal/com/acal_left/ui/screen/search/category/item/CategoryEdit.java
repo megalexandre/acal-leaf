@@ -4,7 +4,7 @@
 
 package acal.com.acal_left.ui.screen.search.category.item;
 
-import acal.com.acal_left.resouces.model.Category;
+import acal.com.acal_left.resouces.model.CategoryModel;
 import acal.com.acal_left.resouces.model.Group;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
@@ -21,13 +21,13 @@ public class CategoryEdit extends JDialog {
 
     @Setter
     private ActionListener onOkListener;
-    public Category category;
+    public CategoryModel categoryModel;
 
-    public CategoryEdit(Window owner, Category category) {
+    public CategoryEdit(Window owner, CategoryModel categoryModel) {
         super(owner);
         initComponents();
 
-        this.category = category;
+        this.categoryModel = categoryModel;
 
         okButton.addActionListener(e -> onOkButtonClicked());
         cancelButton.addActionListener(e -> onCancelButtonClicked());
@@ -35,15 +35,15 @@ public class CategoryEdit extends JDialog {
         this.loadData();
     }
 
-    public Category getUpdatedCategory() {
-        category.setGroup((Group) comboBoxGroup.getSelectedItem());
-        category.setName(textFieldName.getText());
-        return category;
+    public CategoryModel getUpdatedCategory() {
+        categoryModel.setGroup((Group) comboBoxGroup.getSelectedItem());
+        categoryModel.setName(textFieldName.getText());
+        return categoryModel;
     }
 
     private void onOkButtonClicked() {
-        category.setGroup((Group) comboBoxGroup.getSelectedItem());
-        category.setName(textFieldName.getText());
+        categoryModel.setGroup((Group) comboBoxGroup.getSelectedItem());
+        categoryModel.setName(textFieldName.getText());
 
         if (onOkListener != null) {
             onOkListener.actionPerformed(new java.awt.event.ActionEvent(this, 0, "OK"));
@@ -58,8 +58,8 @@ public class CategoryEdit extends JDialog {
 
     private void loadData() {
         comboBoxGroup.setModel(new DefaultComboBoxModel<>(Group.values()));
-        comboBoxGroup.setSelectedItem(category.getGroup());
-        textFieldName.setText(category.getName());
+        comboBoxGroup.setSelectedItem(categoryModel.getGroup());
+        textFieldName.setText(categoryModel.getName());
         //textFieldNameWaterValue.setText(String.valueOf(category.getWaterValue()));
         //textFieldNameWaterPartner.setText(String.valueOf(category.getPartnerValue()));
     }

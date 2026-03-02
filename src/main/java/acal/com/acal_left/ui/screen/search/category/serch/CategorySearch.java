@@ -4,8 +4,8 @@
 
 package acal.com.acal_left.ui.screen.search.category.serch;
 
-import acal.com.acal_left.resouces.model.Category;
-import acal.com.acal_left.resouces.repository.CategoryRepository;
+import acal.com.acal_left.resouces.model.CategoryModel;
+import acal.com.acal_left.resouces.repository.CategoryJpaRepository;
 import acal.com.acal_left.ui.screen.search.category.item.CategoryEdit;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryRecord;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryTableModel;
@@ -22,9 +22,9 @@ public class CategorySearch extends JPanel {
 
     private static final Logger log = LoggerFactory.getLogger(CategorySearch.class);
 
-    private final CategoryRepository repository;
+    private final CategoryJpaRepository repository;
 
-    public CategorySearch(CategoryRepository repository) {
+    public CategorySearch(CategoryJpaRepository repository) {
         this.repository = repository;
 
         initComponents();
@@ -43,14 +43,14 @@ public class CategorySearch extends JPanel {
             int selectedRow = tableCategorySerch.getSelectedRow();
             if (selectedRow >= 0) {
                 CategoryTableModel model = (CategoryTableModel) tableCategorySerch.getModel();
-                Category selectedCategory = model.getList().get(selectedRow).getCategoryEntity();
+                CategoryModel selectedCategoryModel = model.getList().get(selectedRow).getCategoryModelEntity();
 
                 Window window = SwingUtilities.getWindowAncestor(this);
-                CategoryEdit categoryEdit = new CategoryEdit(window, selectedCategory);
+                CategoryEdit categoryEdit = new CategoryEdit(window, selectedCategoryModel);
 
                 categoryEdit.setOnOkListener(e -> {
-                    Category updatedCategory = categoryEdit.getUpdatedCategory();
-                    repository.save(updatedCategory);
+                    CategoryModel updatedCategoryModel = categoryEdit.getUpdatedCategory();
+                    repository.save(updatedCategoryModel);
                     loadData();
                 });
 

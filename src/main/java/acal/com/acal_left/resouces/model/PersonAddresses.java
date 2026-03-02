@@ -33,6 +33,6 @@ public class PersonAddresses {
 
     @JoinColumn(name = "id_categoria_socio", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Category category;
+    private CategoryModel categoryModel;
 
 }

@@ -1,7 +1,7 @@
 package acal.com.acal_left.core.usecase;
 
-import acal.com.acal_left.resouces.model.Category;
-import acal.com.acal_left.resouces.repository.CategoryRepository;
+import acal.com.acal_left.resouces.model.CategoryModel;
+import acal.com.acal_left.resouces.repository.CategoryJpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.List;
 @Component
 public class CategoryFindAllUseCase {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryJpaRepository categoryRepository;
 
-    public CategoryFindAllUseCase(CategoryRepository categoryRepository) {
+    public CategoryFindAllUseCase(CategoryJpaRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> execute() {
+    public List<CategoryModel> execute() {
         return categoryRepository.findAllByOrderByNameAsc();
     }
 }

@@ -1,14 +1,20 @@
 package acal.com.acal_left.resouces.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @Entity
 @Table(name = "category")
-public class Category {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategoryModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,3 +33,4 @@ public class Category {
     private Group group;
 
 }
+
