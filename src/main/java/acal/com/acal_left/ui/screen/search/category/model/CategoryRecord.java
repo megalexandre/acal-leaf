@@ -1,6 +1,6 @@
 package acal.com.acal_left.ui.screen.search.category.model;
 
-import acal.com.acal_left.resouces.model.CategoryModel;
+import acal.com.acal_left.resouces.model.CategoryEntity;
 import acal.com.acal_left.shared.BigDecimalUtil;
 import lombok.Data;
 
@@ -12,16 +12,16 @@ public class CategoryRecord {
     private final String amountPartner;
     private final String total;
     private final String category;
-    private final CategoryModel categoryModelEntity;
+    private final CategoryEntity categoryEntityEntity;
 
-    public CategoryRecord(CategoryModel categoryModel) {
-        this.id = categoryModel.getId();
-        this.name = categoryModel.getName();
-        this.amountWater = BigDecimalUtil.toBRL(categoryModel.getAmountWater());
-        this.amountPartner = BigDecimalUtil.toBRL(categoryModel.getAmountPartner());
-        this.total = BigDecimalUtil.toBRL(categoryModel.getAmountWater().add(categoryModel.getAmountPartner()));
-        this.category = categoryModel.getGroup().getDescription();
-        this.categoryModelEntity = categoryModel;
+    public CategoryRecord(CategoryEntity categoryEntity) {
+        this.id = categoryEntity.getId();
+        this.name = categoryEntity.getName();
+        this.amountWater = BigDecimalUtil.toBRL(categoryEntity.getAmountWater());
+        this.amountPartner = BigDecimalUtil.toBRL(categoryEntity.getAmountPartner());
+        this.total = BigDecimalUtil.toBRL(categoryEntity.getAmountWater().add(categoryEntity.getAmountPartner()));
+        this.category = categoryEntity.getGroup().getDescription();
+        this.categoryEntityEntity = categoryEntity;
     }
 
 }

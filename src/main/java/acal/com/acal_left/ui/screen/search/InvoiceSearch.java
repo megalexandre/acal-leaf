@@ -5,7 +5,7 @@ import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.Screen;
 import acal.com.acal_left.core.model.InvoiceQuery;
 import acal.com.acal_left.core.usecase.AddressFindAllUseCase;
-import acal.com.acal_left.core.usecase.CategoryFindAllUseCase;
+import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.InvoiceCreateReportUseCase;
 import acal.com.acal_left.core.usecase.PartnerFindAllUseCase;
 import acal.com.acal_left.resouces.model.Invoice;

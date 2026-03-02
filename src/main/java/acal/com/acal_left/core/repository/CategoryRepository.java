@@ -1,11 +1,11 @@
 package acal.com.acal_left.core.repository;
 
-import acal.com.acal_left.core.model.CategoryDomain;
+import acal.com.acal_left.core.model.Category;
 
 import java.util.List;
 
 public interface CategoryRepository {
 
-    List<CategoryDomain> findAllByOrderByNameAsc();
+    List<Category> findAllByOrderByNameAsc();
 
 }

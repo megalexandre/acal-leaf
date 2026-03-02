@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class CategoryDomain {
+public class Category {
 
     private Integer id;
     private String name;

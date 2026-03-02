@@ -4,9 +4,7 @@
 
 package acal.com.acal_left.ui.screen.search.category.serch;
 
-import acal.com.acal_left.resouces.model.CategoryModel;
 import acal.com.acal_left.resouces.repository.CategoryJpaRepository;
-import acal.com.acal_left.ui.screen.search.category.item.CategoryEdit;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryRecord;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryTableModel;
 import org.slf4j.Logger;
@@ -42,20 +40,21 @@ public class CategorySearch extends JPanel {
         if (!event.getValueIsAdjusting()) {
             int selectedRow = tableCategorySerch.getSelectedRow();
             if (selectedRow >= 0) {
+                /*
                 CategoryTableModel model = (CategoryTableModel) tableCategorySerch.getModel();
-                CategoryModel selectedCategoryModel = model.getList().get(selectedRow).getCategoryModelEntity();
+                CategoryEntity selectedCategoryEntity = model.getList().get(selectedRow).getCategoryEntityEntity();
 
                 Window window = SwingUtilities.getWindowAncestor(this);
-                CategoryEdit categoryEdit = new CategoryEdit(window, selectedCategoryModel);
+                CategoryEdit categoryEdit = new CategoryEdit(window, selectedCategoryEntity);
 
                 categoryEdit.setOnOkListener(e -> {
-                    CategoryModel updatedCategoryModel = categoryEdit.getUpdatedCategory();
-                    repository.save(updatedCategoryModel);
+                    CategoryEntity updatedCategoryEntity = categoryEdit.getUpdatedCategory();
+                    repository.save(updatedCategoryEntity);
                     loadData();
                 });
 
                 categoryEdit.setVisible(true);
-
+                */
             }
         }
     }
