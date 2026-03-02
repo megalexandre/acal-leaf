@@ -4,9 +4,12 @@
 
 package acal.com.acal_left.ui.screen.main;
 
+import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.LoginSuccessEvent;
 import acal.com.acal_left.model.User;
 import acal.com.acal_left.ui.routes.ScreenManager;
+import acal.com.acal_left.ui.screen.registration.PartnerScreen;
+import org.jdesktop.swingx.*;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -21,20 +24,40 @@ import static acal.com.acal_left.core.event.Screen.INVOICE_SEARCH;
 @Component
 public class MainScreen extends JFrame {
 
-    private ScreenManager screenManager;
+    private final ScreenManager screenManager;
+    private final PartnerScreen partnerScreen;
+
     private User user;
 
-    public MainScreen(ScreenManager screenManager) {
+    public MainScreen(ScreenManager screenManager, PartnerScreen partnerScreen) {
         this.screenManager = screenManager;
+        this.partnerScreen = partnerScreen;
 
         initComponents();
+
+        mainPanel.add(partnerScreen, "partner");
     }
+
+
 
     @EventListener
     public void onLoginSuccess(LoginSuccessEvent event) {
         this.user = event.getUser();
         this.labelUsername.setText(this.user.getUsername());
         this.setVisible(true);
+    }
+
+    @EventListener
+    public void onAreaChange(ChangeScreenEvent event) {
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+
+        switch(event.getScreen()) {
+            case CUSTOMER_REGISTER:
+                cardLayout.show(mainPanel, "partner");
+                break;
+            case INVOICE_SEARCH:
+                break;
+        }
     }
 
     private void customerRegisterClick(ActionEvent e) {
@@ -59,7 +82,8 @@ public class MainScreen extends JFrame {
         menuItem4 = new JMenuItem();
         panel1 = new JPanel();
         labelUsername = new JLabel();
-        panel2 = new JPanel();
+        mainPanel = new JPanel();
+        panel3 = new JPanel();
 
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
@@ -115,22 +139,27 @@ public class MainScreen extends JFrame {
 
         //======== panel1 ========
         {
-            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
-            EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing
-            . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dialo\u0067", java .awt . Font. BOLD ,12 ) ,
-            java . awt. Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
-            { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "borde\u0072" .equals ( e. getPropertyName () ) )
-            throw new RuntimeException( ) ;} } );
+            panel1.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0
+            ,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM
+            ,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.red),
+            panel1. getBorder()));panel1. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
+            ){if("bord\u0065r".equals(e.getPropertyName()))throw new RuntimeException();}});
             panel1.setLayout(new HorizontalLayout());
             panel1.add(labelUsername);
         }
         contentPane.add(panel1, BorderLayout.SOUTH);
 
-        //======== panel2 ========
+        //======== mainPanel ========
         {
-            panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
+            mainPanel.setLayout(new CardLayout());
+
+            //======== panel3 ========
+            {
+                panel3.setLayout(new VerticalLayout());
+            }
+            mainPanel.add(panel3, "card1");
         }
-        contentPane.add(panel2, BorderLayout.CENTER);
+        contentPane.add(mainPanel, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -149,6 +178,7 @@ public class MainScreen extends JFrame {
     private JMenuItem menuItem4;
     private JPanel panel1;
     private JLabel labelUsername;
-    private JPanel panel2;
+    private JPanel mainPanel;
+    private JPanel panel3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
