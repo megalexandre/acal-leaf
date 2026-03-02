@@ -14,6 +14,10 @@ public class CategoryTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public List<CategoryRecord> getList() {
+        return categories;
+    }
+
     @Override
     public int getRowCount() { return categories.size(); }
 

@@ -2,20 +2,25 @@
  * Created by JFormDesigner on Mon Mar 02 11:19:33 BRT 2026
  */
 
-package acal.com.acal_left.ui.screen.search.category;
+package acal.com.acal_left.ui.screen.search.category.serch;
 
-import acal.com.acal_left.resouces.model.Group;
+import acal.com.acal_left.resouces.model.Category;
 import acal.com.acal_left.resouces.repository.CategoryRepository;
-import acal.com.acal_left.ui.renders.GroupRenderer;
+import acal.com.acal_left.ui.screen.search.category.item.CategoryEdit;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryRecord;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryTableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 
 @Component
 public class CategorySearch extends JPanel {
+
+    private static final Logger log = LoggerFactory.getLogger(CategorySearch.class);
 
     private final CategoryRepository repository;
 
@@ -26,7 +31,33 @@ public class CategorySearch extends JPanel {
 
         CategoryTableModel model = new CategoryTableModel();
         tableCategorySerch.setModel(model);
+
+        // Adicionar listener de seleção de linha
+        tableCategorySerch.getSelectionModel().addListSelectionListener(this::onRowSelected);
+
         loadData();
+    }
+
+    private void onRowSelected(ListSelectionEvent event) {
+        if (!event.getValueIsAdjusting()) {
+            int selectedRow = tableCategorySerch.getSelectedRow();
+            if (selectedRow >= 0) {
+                CategoryTableModel model = (CategoryTableModel) tableCategorySerch.getModel();
+                Category selectedCategory = model.getList().get(selectedRow).getCategoryEntity();
+
+                Window window = SwingUtilities.getWindowAncestor(this);
+                CategoryEdit categoryEdit = new CategoryEdit(window, selectedCategory);
+
+                categoryEdit.setOnOkListener(e -> {
+                    Category updatedCategory = categoryEdit.getUpdatedCategory();
+                    repository.save(updatedCategory);
+                    loadData();
+                });
+
+                categoryEdit.setVisible(true);
+
+            }
+        }
     }
 
     public void loadData() {
@@ -43,11 +74,12 @@ public class CategorySearch extends JPanel {
         tableCategorySerch = new JTable();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER
+        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font
+        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r"
+        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //======== panel1 ========

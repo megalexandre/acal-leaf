@@ -12,6 +12,7 @@ public class CategoryRecord {
     private final String amountPartner;
     private final String total;
     private final String category;
+    private final Category categoryEntity;
 
     public CategoryRecord(Category category) {
         this.id = category.getId();
@@ -20,6 +21,7 @@ public class CategoryRecord {
         this.amountPartner = BigDecimalUtil.toBRL(category.getAmountPartner());
         this.total = BigDecimalUtil.toBRL(category.getAmountWater().add(category.getAmountPartner()));
         this.category = category.getGroup().getDescription();
+        this.categoryEntity = category;
     }
 
 }
