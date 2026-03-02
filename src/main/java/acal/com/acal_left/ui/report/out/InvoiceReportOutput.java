@@ -1,6 +1,6 @@
 package acal.com.acal_left.ui.report.out;
 
-import acal.com.acal_left.model.Invoice;
+import acal.com.acal_left.resouces.model.Invoice;
 
 public class InvoiceReportOutput {
 

@@ -1,8 +1,8 @@
 package acal.com.acal_left.core.usecase;
 
 import acal.com.acal_left.core.model.InvoiceQuery;
-import acal.com.acal_left.model.Invoice;
-import acal.com.acal_left.repository.InvoiceRepository;
+import acal.com.acal_left.resouces.model.Invoice;
+import acal.com.acal_left.resouces.repository.InvoiceRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

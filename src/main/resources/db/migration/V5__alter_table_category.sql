@@ -20,3 +20,6 @@ SET
 ALTER TABLE category
     MODIFY COLUMN amount_water DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     MODIFY COLUMN amount_partner DECIMAL(10,2) NOT NULL DEFAULT 0.00;
+
+UPDATE category c
+set group_id = 3 where group_id is null;

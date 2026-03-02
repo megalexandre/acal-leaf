@@ -1,4 +1,4 @@
-package acal.com.acal_left.model;
+package acal.com.acal_left.resouces.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,4 +22,8 @@ public class Category {
 
     @Column(name = "amount_partner", precision = 10, scale = 2, nullable = false)
     private BigDecimal amountPartner = BigDecimal.ZERO;
+
+    @Column(name = "group_id", nullable = false)
+    private Group group;
+
 }

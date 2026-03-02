@@ -1,6 +1,6 @@
-package acal.com.acal_left.repository;
+package acal.com.acal_left.resouces.repository;
 
-import acal.com.acal_left.model.Category;
+import acal.com.acal_left.resouces.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
 package acal.com.acal_left.core.usecase;
 
 import acal.com.acal_left.core.model.LoginAttempt;
-import acal.com.acal_left.model.User;
-import acal.com.acal_left.repository.UserRepository;
+import acal.com.acal_left.resouces.model.User;
+import acal.com.acal_left.resouces.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

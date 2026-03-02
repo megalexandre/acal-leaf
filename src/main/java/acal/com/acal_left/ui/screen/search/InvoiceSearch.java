@@ -8,7 +8,7 @@ import acal.com.acal_left.core.usecase.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.InvoiceCreateReportUseCase;
 import acal.com.acal_left.core.usecase.PartnerFindAllUseCase;
-import acal.com.acal_left.model.Invoice;
+import acal.com.acal_left.resouces.model.Invoice;
 import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
 import acal.com.acal_left.ui.model.ComboBoxOption;

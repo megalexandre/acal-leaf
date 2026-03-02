@@ -1,7 +1,7 @@
 package acal.com.acal_left.core.usecase;
 
-import acal.com.acal_left.model.Addresses;
-import acal.com.acal_left.repository.AddressRepository;
+import acal.com.acal_left.resouces.model.Addresses;
+import acal.com.acal_left.resouces.repository.AddressRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

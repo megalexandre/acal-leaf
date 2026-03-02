@@ -6,10 +6,13 @@ package acal.com.acal_left.ui.screen.main;
 
 import acal.com.acal_left.core.event.ChangeScreenEvent;
 import acal.com.acal_left.core.event.LoginSuccessEvent;
-import acal.com.acal_left.model.User;
+import acal.com.acal_left.core.event.Screen;
+import acal.com.acal_left.resouces.model.User;
 import acal.com.acal_left.ui.routes.ScreenManager;
-import org.jdesktop.swingx.*;
+import acal.com.acal_left.ui.screen.search.category.CategorySearch;
+import acal.com.acal_left.ui.screen.search.customer.CustomersSearch;
 import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +27,19 @@ import static acal.com.acal_left.core.event.Screen.INVOICE_SEARCH;
 public class MainScreen extends JFrame {
 
     private final ScreenManager screenManager;
+    private final CustomersSearch customersSearch;
+    private final CategorySearch categorySearch;
+
     private User user;
 
-    public MainScreen(ScreenManager screenManager
+    public MainScreen(
+        ScreenManager screenManager,
+        CustomersSearch customersSearch,
+        CategorySearch categorySearch
     ) {
         this.screenManager = screenManager;
-
+        this.customersSearch = customersSearch;
+        this.categorySearch = categorySearch;
         initComponents();
 
         //mainPanel.add(partnerScreen, "partner");
@@ -49,9 +59,14 @@ public class MainScreen extends JFrame {
 
         switch(event.getScreen()) {
             case CUSTOMER_REGISTER:
-                cardLayout.show(mainPanel, "partner");
+                mainPanel.add(customersSearch, "customersSearch");
+                cardLayout.show(mainPanel, "customersSearch");
                 break;
             case INVOICE_SEARCH:
+                break;
+            case CATEGORY_SEARCH:
+                mainPanel.add(categorySearch, "categorySearch");
+                cardLayout.show(mainPanel, "categorySearch");
                 break;
         }
     }
@@ -64,12 +79,17 @@ public class MainScreen extends JFrame {
         screenManager.changeScreen(INVOICE_SEARCH);
     }
 
+    private void categorySearchClick(ActionEvent e) {
+        screenManager.changeScreen(Screen.CATEGORY_SEARCH);
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
         menuBar1 = new JMenuBar();
         menu1 = new JMenu();
         menuItemCustomerRegister = new JMenuItem();
+        menuItemCategorySearch = new JMenuItem();
         menu2 = new JMenu();
         menuItem5 = new JMenuItem();
         menu3 = new JMenu();
@@ -84,6 +104,7 @@ public class MainScreen extends JFrame {
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
         setTitle("Acal ");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -98,6 +119,11 @@ public class MainScreen extends JFrame {
                 menuItemCustomerRegister.setText("S\u00f3cios");
                 menuItemCustomerRegister.addActionListener(e -> customerRegisterClick(e));
                 menu1.add(menuItemCustomerRegister);
+
+                //---- menuItemCategorySearch ----
+                menuItemCategorySearch.setText("Categorias");
+                menuItemCategorySearch.addActionListener(e -> categorySearchClick(e));
+                menu1.add(menuItemCategorySearch);
             }
             menuBar1.add(menu1);
 
@@ -135,14 +161,12 @@ public class MainScreen extends JFrame {
 
         //======== panel1 ========
         {
-            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder (
-            new javax . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
-            , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
-            , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 )
-            ,java . awt. Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener(
-            new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
-            ) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
-            ;} } );
+            panel1.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
+            . EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax
+            . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,
+            12 ), java. awt. Color. red) ,panel1. getBorder( )) ); panel1. addPropertyChangeListener (new java. beans
+            . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .
+            getPropertyName () )) throw new RuntimeException( ); }} );
             panel1.setLayout(new HorizontalLayout());
             panel1.add(labelUsername);
         }
@@ -169,6 +193,7 @@ public class MainScreen extends JFrame {
     private JMenuBar menuBar1;
     private JMenu menu1;
     private JMenuItem menuItemCustomerRegister;
+    private JMenuItem menuItemCategorySearch;
     private JMenu menu2;
     private JMenuItem menuItem5;
     private JMenu menu3;

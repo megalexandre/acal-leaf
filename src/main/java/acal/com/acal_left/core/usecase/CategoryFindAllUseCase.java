@@ -1,7 +1,7 @@
 package acal.com.acal_left.core.usecase;
 
-import acal.com.acal_left.model.Category;
-import acal.com.acal_left.repository.CategoryRepository;
+import acal.com.acal_left.resouces.model.Category;
+import acal.com.acal_left.resouces.repository.CategoryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

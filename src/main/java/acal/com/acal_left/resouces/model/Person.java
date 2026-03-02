@@ -1,4 +1,4 @@
-package acal.com.acal_left.model;
+package acal.com.acal_left.resouces.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
