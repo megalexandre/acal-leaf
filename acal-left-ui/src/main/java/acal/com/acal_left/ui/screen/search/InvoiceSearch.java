@@ -1,16 +1,16 @@
 
 package acal.com.acal_left.ui.screen.search;
 
-import acal.com.acal_left.core.event.ChangeScreenEvent;
-import acal.com.acal_left.core.event.Screen;
+import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.InvoiceQuery;
-import acal.com.acal_left.core.usecase.AddressFindAllUseCase;
-import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
-import acal.com.acal_left.core.usecase.InvoiceCreateReportUseCase;
 import acal.com.acal_left.core.usecase.PartnerFindAllUseCase;
-import acal.com.acal_left.resouces.model.Invoice;
+import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
+import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
+import acal.com.acal_left.core.usecase.invoice.InvoiceCreateReportUseCase;
 import acal.com.acal_left.shared.StringUtil;
 import acal.com.acal_left.ui.SwingUtils;
+import acal.com.acal_left.ui.event.ChangeScreenEvent;
+import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.model.ComboBoxOption;
 import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.ReportService;
@@ -174,8 +174,8 @@ public class InvoiceSearch extends JFrame {
 
             List<InvoiceReportOutput> invoices = getData();
 
-            List<InvoiceReportOutput> partnersOnly = getData().stream().filter(InvoiceReportOutput::getPartnerExclusive).toList();
-            List<InvoiceReportOutput> partners = getData().stream().filter(InvoiceReportOutput::getNormalPartner).toList();
+            List<InvoiceReportOutput> partnersOnly = invoices;
+            List<InvoiceReportOutput> partners = invoices;
 
             if (invoices.isEmpty()) {
                 showEmptyData();

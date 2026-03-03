@@ -26,12 +26,6 @@
 			<artifactId>acal-left-shared</artifactId>
 		</dependency>
 
-		<!-- Persistence module (visible to core only) -->
-		<dependency>
-			<groupId>acal.com</groupId>
-			<artifactId>acal-left-persistence</artifactId>
-		</dependency>
-
 		<!-- Spring Framework -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,6 +1,6 @@
-package acal.com.acal_left.core.event;
+package acal.com.acal_left.ui.event;
 
-import acal.com.acal_left.resouces.model.User;
+import acal.com.acal_left.core.model.User;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

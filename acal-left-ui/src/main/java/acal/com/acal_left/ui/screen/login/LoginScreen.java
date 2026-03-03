@@ -1,9 +1,9 @@
 package acal.com.acal_left.ui.screen.login;
 
-import acal.com.acal_left.core.usecase.LoginUseCase;
-import acal.com.acal_left.core.event.LoginSuccessEvent;
+import acal.com.acal_left.ui.event.LoginSuccessEvent;
 import acal.com.acal_left.core.model.LoginAttempt;
-import acal.com.acal_left.resouces.model.User;
+import acal.com.acal_left.core.model.User;
+import acal.com.acal_left.core.usecase.login.LoginUseCase;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;

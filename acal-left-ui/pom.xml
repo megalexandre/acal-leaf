@@ -99,6 +99,25 @@
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
+				<configuration>
+					<jvmTarget>21</jvmTarget>
+					<args>
+						<arg>-Xjvm-default=all</arg>
+					</args>
+				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<sourceDirs>
+								<sourceDir>${project.basedir}/src/main/java</sourceDir>
+							</sourceDirs>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

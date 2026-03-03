@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class Partner {
     private Integer id;
     private Person person;
+
+    public String getName(){
+        return person.getName();
+    }
 }

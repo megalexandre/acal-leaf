@@ -22,7 +22,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JComboBox" ) {
 							name: "comboBoxGroup"
 							auxiliary() {
-								"JavaCodeGenerator.typeParameters": "Group"
+								"JavaCodeGenerator.typeParameters": "MemberGroup"
 							}
 						} )
 					} )

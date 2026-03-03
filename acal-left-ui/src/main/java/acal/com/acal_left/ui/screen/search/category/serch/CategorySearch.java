@@ -4,35 +4,37 @@
 
 package acal.com.acal_left.ui.screen.search.category.serch;
 
-import acal.com.acal_left.resouces.repository.CategoryJpaRepository;
-import acal.com.acal_left.ui.screen.search.category.model.CategoryRecord;
+import acal.com.acal_left.core.model.Category;
+import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
+import acal.com.acal_left.core.usecase.category.CategorySaveUseCase;
+import acal.com.acal_left.ui.screen.search.category.model.CategoryTableContent;
 import acal.com.acal_left.ui.screen.search.category.model.CategoryTableModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
+import java.util.List;
 
 @Component
 public class CategorySearch extends JPanel {
 
-    private static final Logger log = LoggerFactory.getLogger(CategorySearch.class);
+    private final CategoryFindAllUseCase findAll;
+    private final CategorySaveUseCase save;
 
-    private final CategoryJpaRepository repository;
-
-    public CategorySearch(CategoryJpaRepository repository) {
-        this.repository = repository;
+    public CategorySearch(
+            CategoryFindAllUseCase findAll,
+            CategorySaveUseCase save
+            ) {
+        this.findAll = findAll;
+        this.save = save;
 
         initComponents();
 
         CategoryTableModel model = new CategoryTableModel();
         tableCategorySerch.setModel(model);
 
-        // Adicionar listener de seleção de linha
         tableCategorySerch.getSelectionModel().addListSelectionListener(this::onRowSelected);
-
         loadData();
     }
 
@@ -61,8 +63,12 @@ public class CategorySearch extends JPanel {
 
     public void loadData() {
         CategoryTableModel model = (CategoryTableModel) tableCategorySerch.getModel();
-        var itens = repository.findAll().stream().map(CategoryRecord::new).toList();
+        var itens = find().stream().map(CategoryTableContent::new).toList();
         model.setList(itens);
+    }
+
+    private List<Category> find(){
+        return findAll.execute();
     }
 
     private void initComponents() {

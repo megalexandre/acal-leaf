@@ -1,6 +1,5 @@
 package acal.com.acal_left.ui.report;
 
-import acal.com.acal_left.infrastructure.ReportManager;
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 
 import java.util.HashMap;

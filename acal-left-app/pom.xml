@@ -27,6 +27,12 @@
 			<artifactId>acal-left-ui</artifactId>
 		</dependency>
 
+		<!-- Persistence module -->
+		<dependency>
+			<groupId>acal.com</groupId>
+			<artifactId>acal-left-persistence</artifactId>
+		</dependency>
+
 		<!-- Spring Boot Starters - Application Layer -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

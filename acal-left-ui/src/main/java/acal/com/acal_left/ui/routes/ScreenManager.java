@@ -1,7 +1,7 @@
 package acal.com.acal_left.ui.routes;
 
-import acal.com.acal_left.core.event.ChangeScreenEvent;
-import acal.com.acal_left.core.event.Screen;
+import acal.com.acal_left.ui.event.ChangeScreenEvent;
+import acal.com.acal_left.ui.event.Screen;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 

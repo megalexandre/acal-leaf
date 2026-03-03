@@ -10,7 +10,6 @@ module acal.left.core {
     requires static lombok;
     requires kotlin.stdlib;
 
-    exports acal.com.acal_left.core.event;
     exports acal.com.acal_left.core.model;
     exports acal.com.acal_left.core.repository;
     exports acal.com.acal_left.core.usecase;

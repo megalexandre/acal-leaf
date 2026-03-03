@@ -26,6 +26,11 @@
 			<artifactId>acal-left-shared</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>acal.com</groupId>
+			<artifactId>acal-left-core</artifactId>
+		</dependency>
+
 		<!-- Spring Data JPA and ORM Support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,10 +94,6 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>acal.com</groupId>
-			<artifactId>acal-left-core</artifactId>
 		</dependency>
 	</dependencies>
 

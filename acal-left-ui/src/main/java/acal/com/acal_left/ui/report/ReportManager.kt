@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui
+package acal.com.acal_left.ui.report
 
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
@@ -9,7 +9,6 @@ import net.sf.jasperreports.export.SimpleExporterInput
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-
 
 class ReportManager {
 

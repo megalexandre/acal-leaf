@@ -1,6 +1,8 @@
 module acal.left.persistence {
     requires acal.left.shared;
     requires acal.left.core;
+    requires static lombok;
+
     requires jakarta.persistence;
     requires spring.context;
     requires spring.data.jpa;

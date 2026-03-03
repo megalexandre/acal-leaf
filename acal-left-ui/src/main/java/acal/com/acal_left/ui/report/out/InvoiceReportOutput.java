@@ -1,7 +1,10 @@
 package acal.com.acal_left.ui.report.out;
 
-import acal.com.acal_left.resouces.model.Invoice;
 
+import acal.com.acal_left.core.model.Invoice;
+import lombok.Getter;
+
+@Getter
 public class InvoiceReportOutput {
 
     private String partner = "João Silva";
@@ -21,75 +24,6 @@ public class InvoiceReportOutput {
     private Boolean isNormalPartner;
 
     public InvoiceReportOutput(Invoice invoice) {
-        this.partner = invoice.getPersonAddresses().getPerson().getName();
-        this.number = invoice.getId().toString();
-        this.partnerNumber = invoice.getPersonAddresses().getNumber();
-        this.isPartnerExclusive = invoice.isPartnerExclusive();
-        this.isNormalPartner = invoice.isNormalPartner();
-    }
-
-    public String getPartner() {
-        return partner;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getPartnerNumber() {
-        return partnerNumber;
-    }
-
-    public String getExcessValue() {
-        return excessValue;
-    }
-
-    public String getExcessLimit() {
-        return excessLimit;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public String getPartnerCategory() {
-        return partnerCategory;
-    }
-
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getPayment() {
-        return payment;
-    }
-
-    public Boolean getPartnerExclusive() {
-        return isPartnerExclusive;
-    }
-
-    public void setPartnerExclusive(Boolean partnerExclusive) {
-        isPartnerExclusive = partnerExclusive;
-    }
-
-    public Boolean getNormalPartner() {
-        return isNormalPartner;
-    }
-
-    public void setNormalPartner(Boolean normalPartner) {
-        isNormalPartner = normalPartner;
     }
 }
 

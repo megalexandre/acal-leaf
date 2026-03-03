@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * @author alex
- */
 @Component
 public class CustomersSearch extends JPanel {
     public CustomersSearch() {

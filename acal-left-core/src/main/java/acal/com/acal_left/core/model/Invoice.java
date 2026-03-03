@@ -13,8 +13,6 @@ public class Invoice {
 
     private Integer id;
 
-    //private PersonAddresses personAddresses;
-
     //public boolean isPartnerExclusive() {
     //    return personAddresses.isPartnerExclusive();
     //}

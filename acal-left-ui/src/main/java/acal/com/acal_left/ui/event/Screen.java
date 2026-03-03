@@ -1,4 +1,4 @@
-package acal.com.acal_left.core.event;
+package acal.com.acal_left.ui.event;
 
 public enum Screen {
     CATEGORY_SEARCH,

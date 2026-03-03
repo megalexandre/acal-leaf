@@ -4,10 +4,10 @@
 
 package acal.com.acal_left.ui.screen.main;
 
-import acal.com.acal_left.core.event.ChangeScreenEvent;
-import acal.com.acal_left.core.event.LoginSuccessEvent;
-import acal.com.acal_left.core.event.Screen;
-import acal.com.acal_left.resouces.model.User;
+import acal.com.acal_left.core.model.User;
+import acal.com.acal_left.ui.event.ChangeScreenEvent;
+import acal.com.acal_left.ui.event.LoginSuccessEvent;
+import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import acal.com.acal_left.ui.screen.search.category.serch.CategorySearch;
 import acal.com.acal_left.ui.screen.search.customer.CustomersSearch;
@@ -20,8 +20,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static acal.com.acal_left.core.event.Screen.CUSTOMER_REGISTER;
-import static acal.com.acal_left.core.event.Screen.INVOICE_SEARCH;
+import static acal.com.acal_left.ui.event.Screen.CUSTOMER_REGISTER;
+import static acal.com.acal_left.ui.event.Screen.INVOICE_SEARCH;
 
 @Component
 public class MainScreen extends JFrame {
@@ -41,8 +41,6 @@ public class MainScreen extends JFrame {
         this.customersSearch = customersSearch;
         this.categorySearch = categorySearch;
         initComponents();
-
-        //mainPanel.add(partnerScreen, "partner");
     }
 
 

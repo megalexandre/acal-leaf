@@ -4,8 +4,9 @@
 
 package acal.com.acal_left.ui.screen.search.category.item;
 
-import acal.com.acal_left.resouces.model.CategoryEntity;
-import acal.com.acal_left.resouces.model.Group;
+import acal.com.acal_left.core.model.Category;
+import acal.com.acal_left.shared.model.MemberGroup;
+import acal.com.acal_left.ui.screen.search.category.CategoryRequest;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -21,13 +22,13 @@ public class CategoryEdit extends JDialog {
 
     @Setter
     private ActionListener onOkListener;
-    public CategoryEntity categoryEntity;
+    public CategoryRequest request;
 
-    public CategoryEdit(Window owner, CategoryEntity categoryEntity) {
+    public CategoryEdit(Window owner, CategoryRequest request) {
         super(owner);
         initComponents();
 
-        this.categoryEntity = categoryEntity;
+        this.request = request;
 
         okButton.addActionListener(e -> onOkButtonClicked());
         cancelButton.addActionListener(e -> onCancelButtonClicked());
@@ -35,15 +36,16 @@ public class CategoryEdit extends JDialog {
         this.loadData();
     }
 
-    public CategoryEntity getUpdatedCategory() {
-        categoryEntity.setGroup((Group) comboBoxGroup.getSelectedItem());
-        categoryEntity.setName(textFieldName.getText());
-        return categoryEntity;
+    public Category getUpdatedCategory() {
+        request.setMemberGroup((MemberGroup) comboBoxGroup.getSelectedItem());
+        request.setName(textFieldName.getText());
+
+        return request.toCategory();
     }
 
     private void onOkButtonClicked() {
-        categoryEntity.setGroup((Group) comboBoxGroup.getSelectedItem());
-        categoryEntity.setName(textFieldName.getText());
+        request.setMemberGroup((MemberGroup) comboBoxGroup.getSelectedItem());
+        request.setName(textFieldName.getText());
 
         if (onOkListener != null) {
             onOkListener.actionPerformed(new java.awt.event.ActionEvent(this, 0, "OK"));
@@ -52,16 +54,13 @@ public class CategoryEdit extends JDialog {
     }
 
     private void onCancelButtonClicked() {
-        // Apenas fecha a tela sem emitir evento
         dispose();
     }
 
     private void loadData() {
-        comboBoxGroup.setModel(new DefaultComboBoxModel<>(Group.values()));
-        comboBoxGroup.setSelectedItem(categoryEntity.getGroup());
-        textFieldName.setText(categoryEntity.getName());
-        //textFieldNameWaterValue.setText(String.valueOf(category.getWaterValue()));
-        //textFieldNameWaterPartner.setText(String.valueOf(category.getPartnerValue()));
+        comboBoxGroup.setModel(new DefaultComboBoxModel<>(MemberGroup.values()));
+        comboBoxGroup.setSelectedItem(request.getMemberGroup());
+        textFieldName.setText(request.getName());
     }
 
     private void initComponents() {
@@ -87,17 +86,19 @@ public class CategoryEdit extends JDialog {
 
         //======== this ========
         setPreferredSize(new Dimension(512, 384));
-        Container contentPane = getContentPane();
+        var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new EmptyBorder
-            ( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-            . TitledBorder. BOTTOM, new Font ("Dia\u006cog" ,Font .BOLD ,12 ), Color. red) ,dialogPane. getBorder( )) ); dialogPane. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-            propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
-            ; }} );
+            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
+            .swing.border.EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing
+            .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
+            Font("Dialo\u0067",java.awt.Font.BOLD,12),java.awt.Color.red
+            ),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
+            public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.getPropertyName(
+            )))throw new RuntimeException();}});
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
@@ -183,7 +184,7 @@ public class CategoryEdit extends JDialog {
     private JPanel contentPanel;
     private JPanel panel1;
     private JLabel label1;
-    private JComboBox<Group> comboBoxGroup;
+    private JComboBox<MemberGroup> comboBoxGroup;
     private JPanel panel2;
     private JLabel label2;
     private JTextField textFieldName;

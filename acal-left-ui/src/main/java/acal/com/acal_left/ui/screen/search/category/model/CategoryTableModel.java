@@ -7,14 +7,14 @@ import java.util.List;
 public class CategoryTableModel extends AbstractTableModel {
 
     private final String[] columns = {"Categoria:", "Nome:",  "Valor Água:", "Valor Sócio:", "Total:"};
-    private List<CategoryRecord> categories = new ArrayList<>();
+    private List<CategoryTableContent> categories = new ArrayList<>();
 
-    public void setList(List<CategoryRecord> categories) {
+    public void setList(List<CategoryTableContent> categories) {
         this.categories = categories;
         fireTableDataChanged();
     }
 
-    public List<CategoryRecord> getList() {
+    public List<CategoryTableContent> getList() {
         return categories;
     }
 
@@ -29,11 +29,11 @@ public class CategoryTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        CategoryRecord c = categories.get(rowIndex);
+        CategoryTableContent c = categories.get(rowIndex);
         CategoryColumns column = CategoryColumns.values()[columnIndex];
 
         return switch (column) {
-            case CATEGORY -> c.getCategory();
+            case CATEGORY -> c.getMemberGroup();
             case NAME -> c.getName();
             case WATER -> c.getAmountWater();
             case PARTNER -> c.getAmountPartner();
