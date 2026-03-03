@@ -1,4 +1,6 @@
-package acal.com.acal_left.ui.screen.search.category.model;
+package acal.com.acal_left.ui.flatlaf.screen.category.model;
+
+import acal.com.acal_left.core.model.Category;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -14,8 +16,11 @@ public class CategoryTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public List<CategoryTableContent> getList() {
-        return categories;
+    public Category getCategory(int rowIndex) {
+        if (rowIndex >= 0 && rowIndex < categories.size()) {
+            return categories.get(rowIndex).getCategory();
+        }
+        return null;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui.screen.search.category;
+package acal.com.acal_left.ui.flatlaf.screen.category.model;
 
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.shared.model.MemberGroup;
@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class CategoryRequest {
+public class CategoryCreateAttempt {
+
     private Integer id;
     private String name;
     private BigDecimal amountWater;

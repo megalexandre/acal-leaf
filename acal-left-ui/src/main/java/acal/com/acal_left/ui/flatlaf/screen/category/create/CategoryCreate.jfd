@@ -5,60 +5,10 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"preferredSize": new java.awt.Dimension( 512, 384 )
+			"preferredSize": new java.awt.Dimension( 512, 380 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "dialogPane"
 				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
-					"gap": 10
-				} ) {
-					name: "contentPanel"
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel1"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label1"
-							"text": "Grupo:"
-						} )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxGroup"
-							auxiliary() {
-								"JavaCodeGenerator.typeParameters": "MemberGroup"
-							}
-						} )
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel2"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label2"
-							"text": "Nome:"
-						} )
-						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "textFieldName"
-						} )
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel3"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label3"
-							"text": "Valor Água:"
-						} )
-						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "textFieldNameWaterValue"
-						} )
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel4"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label4"
-							"text": "Valor Sócio:"
-						} )
-						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "textFieldNameWaterPartner"
-						} )
-					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "Center"
-				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 					"$columnSpecs": "0:1.0, 80, 80"
 					"$rowSpecs": "0"
@@ -84,12 +34,63 @@ new FormModel {
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "South"
 				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+					"gap": 10
+				} ) {
+					name: "contentPanel"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel1"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Grupo:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxGroup"
+							"preferredSize": new java.awt.Dimension( 200, 25 )
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "MemberGroup"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel2"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label2"
+							"text": "Nome:"
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textFieldName"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel3"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label3"
+							"text": "Valor Água:"
+						} )
+						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
+							name: "textFieldNameWaterValue"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel4"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label4"
+							"text": "Valor Sócio:"
+						} )
+						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
+							name: "textFieldNamePartnerValue"
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 380 )
+			"size": new java.awt.Dimension( 400, 300 )
 		} )
 	}
 }

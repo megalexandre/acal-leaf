@@ -1,72 +1,87 @@
 /*
- * Created by JFormDesigner on Mon Mar 02 13:24:56 BRT 2026
+ * Created by JFormDesigner on Tue Mar 03 00:21:48 BRT 2026
  */
 
-package acal.com.acal_left.ui.screen.search.category.item;
+package acal.com.acal_left.ui.flatlaf.screen.category.create;
 
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.shared.model.MemberGroup;
-import acal.com.acal_left.ui.screen.search.category.CategoryRequest;
+import acal.com.acal_left.ui.filter.MoneyTextField;
+import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryCreateAttempt;
+import acal.com.acal_left.ui.render.MemberGroupRenderer;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * @author alex
- */
-public class CategoryEdit extends JDialog {
+public class CategoryCreate extends JDialog {
 
     @Setter
-    private ActionListener onOkListener;
-    public CategoryRequest request;
+    private ActionListener onSuccess;
+    public CategoryCreateAttempt attempt;
 
-    public CategoryEdit(Window owner, CategoryRequest request) {
+    public CategoryCreate(Window owner, Category category) {
         super(owner);
         initComponents();
 
-        this.request = request;
+        setModal(true);
 
+        if(category != null) {
+            this.attempt = CategoryCreateAttempt.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .amountPartner(category.getAmountPartner())
+                    .amountWater(category.getAmountWater())
+                    .memberGroup(category.getMemberGroup())
+                    .build();
+        }
+
+        this.init();
         okButton.addActionListener(e -> onOkButtonClicked());
-        cancelButton.addActionListener(e -> onCancelButtonClicked());
-
-        this.loadData();
     }
 
-    public Category getUpdatedCategory() {
-        request.setMemberGroup((MemberGroup) comboBoxGroup.getSelectedItem());
-        request.setName(textFieldName.getText());
+    private void init() {
+        comboBoxGroup.setModel(new DefaultComboBoxModel<>(MemberGroup.values()));
+        comboBoxGroup.setRenderer(new MemberGroupRenderer());
 
-        return request.toCategory();
+        if(attempt != null) {
+            comboBoxGroup.setSelectedItem(attempt.getMemberGroup());
+            textFieldName.setText(attempt.getName());
+            textFieldNamePartnerValue.setBigDecimal(attempt.getAmountPartner());
+            textFieldNameWaterValue.setBigDecimal(attempt.getAmountWater());
+        }
+
     }
 
     private void onOkButtonClicked() {
-        request.setMemberGroup((MemberGroup) comboBoxGroup.getSelectedItem());
-        request.setName(textFieldName.getText());
+        Category builder = Category.builder()
+            .id(attempt.getId())
+            .name(textFieldName.getText())
+            .amountPartner(textFieldNamePartnerValue.getBigDecimal())
+            .amountWater(textFieldNameWaterValue.getBigDecimal())
+            .memberGroup((MemberGroup) comboBoxGroup.getSelectedItem())
+            .build();
 
-        if (onOkListener != null) {
-            onOkListener.actionPerformed(new java.awt.event.ActionEvent(this, 0, "OK"));
-        }
+        onSuccess.actionPerformed(new ActionEvent(builder, ActionEvent.ACTION_PERFORMED, "OK"));
         dispose();
     }
+
 
     private void onCancelButtonClicked() {
         dispose();
     }
 
-    private void loadData() {
-        comboBoxGroup.setModel(new DefaultComboBoxModel<>(MemberGroup.values()));
-        comboBoxGroup.setSelectedItem(request.getMemberGroup());
-        textFieldName.setText(request.getName());
-    }
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
+        // Generated using JFormDesigner non-commercial license
         dialogPane = new JPanel();
+        buttonBar = new JPanel();
+        okButton = new JButton();
+        cancelButton = new JButton();
         contentPanel = new JPanel();
         panel1 = new JPanel();
         label1 = new JLabel();
@@ -76,30 +91,41 @@ public class CategoryEdit extends JDialog {
         textFieldName = new JTextField();
         panel3 = new JPanel();
         label3 = new JLabel();
-        textFieldNameWaterValue = new JTextField();
+        textFieldNameWaterValue = new MoneyTextField();
         panel4 = new JPanel();
         label4 = new JLabel();
-        textFieldNameWaterPartner = new JTextField();
-        buttonBar = new JPanel();
-        okButton = new JButton();
-        cancelButton = new JButton();
+        textFieldNamePartnerValue = new MoneyTextField();
 
         //======== this ========
-        setPreferredSize(new Dimension(512, 384));
+        setPreferredSize(new Dimension(512, 380));
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
-            .swing.border.EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing
-            .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
-            Font("Dialo\u0067",java.awt.Font.BOLD,12),java.awt.Color.red
-            ),dialogPane. getBorder()));dialogPane. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
-            public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.getPropertyName(
-            )))throw new RuntimeException();}});
             dialogPane.setLayout(new BorderLayout());
+
+            //======== buttonBar ========
+            {
+                buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
+                buttonBar.setLayout(new GridBagLayout());
+                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
+                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
+
+                //---- okButton ----
+                okButton.setText("OK");
+                buttonBar.add(okButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 5), 0, 0));
+
+                //---- cancelButton ----
+                cancelButton.setText("Cancel");
+                buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+            }
+            dialogPane.add(buttonBar, BorderLayout.SOUTH);
 
             //======== contentPanel ========
             {
@@ -112,6 +138,9 @@ public class CategoryEdit extends JDialog {
                     //---- label1 ----
                     label1.setText("Grupo:");
                     panel1.add(label1);
+
+                    //---- comboBoxGroup ----
+                    comboBoxGroup.setPreferredSize(new Dimension(200, 25));
                     panel1.add(comboBoxGroup);
                 }
                 contentPanel.add(panel1);
@@ -145,32 +174,11 @@ public class CategoryEdit extends JDialog {
                     //---- label4 ----
                     label4.setText("Valor S\u00f3cio:");
                     panel4.add(label4);
-                    panel4.add(textFieldNameWaterPartner);
+                    panel4.add(textFieldNamePartnerValue);
                 }
                 contentPanel.add(panel4);
             }
             dialogPane.add(contentPanel, BorderLayout.CENTER);
-
-            //======== buttonBar ========
-            {
-                buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
-                buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
-
-                //---- okButton ----
-                okButton.setText("OK");
-                buttonBar.add(okButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 5), 0, 0));
-
-                //---- cancelButton ----
-                cancelButton.setText("Cancel");
-                buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-            }
-            dialogPane.add(buttonBar, BorderLayout.SOUTH);
         }
         contentPane.add(dialogPane, BorderLayout.CENTER);
         pack();
@@ -179,8 +187,11 @@ public class CategoryEdit extends JDialog {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
+    // Generated using JFormDesigner non-commercial license
     private JPanel dialogPane;
+    private JPanel buttonBar;
+    private JButton okButton;
+    private JButton cancelButton;
     private JPanel contentPanel;
     private JPanel panel1;
     private JLabel label1;
@@ -190,12 +201,9 @@ public class CategoryEdit extends JDialog {
     private JTextField textFieldName;
     private JPanel panel3;
     private JLabel label3;
-    private JTextField textFieldNameWaterValue;
+    private MoneyTextField textFieldNameWaterValue;
     private JPanel panel4;
     private JLabel label4;
-    private JTextField textFieldNameWaterPartner;
-    private JPanel buttonBar;
-    private JButton okButton;
-    private JButton cancelButton;
+    private MoneyTextField textFieldNamePartnerValue;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

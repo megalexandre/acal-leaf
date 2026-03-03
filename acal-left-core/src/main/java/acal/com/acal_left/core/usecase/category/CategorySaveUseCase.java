@@ -15,7 +15,7 @@ public class CategorySaveUseCase {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> execute() {
-        return categoryRepository.findAllByOrderByNameAsc();
+    public Category execute(Category category) {
+        return categoryRepository.save(category);
     }
 }

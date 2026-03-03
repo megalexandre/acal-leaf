@@ -2,7 +2,7 @@ package acal.com.acal_left.ui.flatlaf.screen.dashboard;
 
 import acal.com.acal_left.ui.event.ChangeScreenEvent;
 import acal.com.acal_left.ui.event.LoginSuccessEvent;
-import acal.com.acal_left.ui.flatlaf.screen.category.CategoryScreen;
+import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui.screen.search.category.model;
+package acal.com.acal_left.ui.flatlaf.screen.category.model;
 
 import lombok.Getter;
 
