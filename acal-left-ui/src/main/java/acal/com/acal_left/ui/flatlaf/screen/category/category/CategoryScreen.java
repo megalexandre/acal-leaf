@@ -8,6 +8,7 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.category.create.CategoryCreate;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableModel;
+import acal.com.acal_left.ui.render.FlatZebraRenderer;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -32,12 +33,12 @@ public class CategoryScreen extends JPanel {
         this.save = save;
 
         initComponents();
+
     }
 
     private void searchActionListener(ActionEvent e) {
         tableCategorySearch.setModel(new CategoryTableModel());
         CategoryTableModel model = (CategoryTableModel) tableCategorySearch.getModel();
-
         var itens = findAll.execute().stream().map(CategoryTableContent::new).toList();
         model.setList(itens);
     }
@@ -108,6 +109,9 @@ public class CategoryScreen extends JPanel {
         {
 
             //---- tableCategorySearch ----
+            tableCategorySearch.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            tableCategorySearch.setShowHorizontalLines(true);
+            tableCategorySearch.setShowVerticalLines(true);
             tableCategorySearch.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {

@@ -23,6 +23,9 @@ new FormModel {
 				name: "scrollPane1"
 				add( new FormComponent( "javax.swing.JTable" ) {
 					name: "tableCategorySearch"
+					"selectionMode": 0
+					"showHorizontalLines": true
+					"showVerticalLines": true
 					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "tableCategorySearchMouseClicked", true ) )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {

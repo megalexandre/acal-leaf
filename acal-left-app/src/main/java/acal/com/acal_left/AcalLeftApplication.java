@@ -1,6 +1,6 @@
 package acal.com.acal_left;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,7 +19,7 @@ public class AcalLeftApplication {
 	public static void main(String[] args) {
 		//SplashScreenBootstrap.showSplash();
 
-		FlatDarkLaf.setup();
+		FlatLightLaf.setup();
 		new SpringApplicationBuilder(AcalLeftApplication.class)
 				.headless(false)
 				.run(args);

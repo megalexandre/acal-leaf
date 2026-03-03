@@ -70,8 +70,7 @@ public class CategoryCreate extends JDialog {
         dispose();
     }
 
-
-    private void onCancelButtonClicked() {
+    private void onCancelButtonClicked(ActionEvent e) {
         dispose();
     }
 
@@ -121,6 +120,7 @@ public class CategoryCreate extends JDialog {
 
                 //---- cancelButton ----
                 cancelButton.setText("Cancel");
+                cancelButton.addActionListener(e -> onCancelButtonClicked(e));
                 buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 0, 0), 0, 0));

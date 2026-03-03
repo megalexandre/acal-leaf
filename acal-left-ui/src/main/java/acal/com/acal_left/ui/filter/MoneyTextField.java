@@ -18,30 +18,27 @@ public class MoneyTextField extends JTextField {
     private void init() {
         setHorizontalAlignment(JTextField.RIGHT);
         setText(FORMAT.format(0));
-        
-        // Instala o filtro de digitação que fizemos antes
         ((AbstractDocument) getDocument()).setDocumentFilter(new MoneyDocumentFilter());
     }
 
-    // --- O "DE/PARA" DIRETO NO COMPONENTE ---
-
-    /**
-     * Devolve o valor como BigDecimal pronto para sua entidade Category
-     */
     public BigDecimal getBigDecimal() {
         try {
-            String cleanString = getText().replaceAll("[R$\\s.]", "").replace(",", ".");
-            // Como o filtro trabalha com centavos (ex: 125 vira R$ 1,25), 
-            // dividimos por 100 para ter o valor real.
-            return new BigDecimal(cleanString).divide(new BigDecimal("100"));
+            String text = getText()
+                .replaceAll("[R$\\s\\u00A0]", "")   // Remove R$, $, espaços normais e não-quebráveis
+                .replaceAll("\\.", "")              // Remove separador de milhares (ponto)
+                .replace(",", ".")                  // Troca vírgula decimal por ponto
+                .trim();
+
+            if (text.isEmpty()) {
+                return BigDecimal.ZERO;
+            }
+
+            return new BigDecimal(text);
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
     }
 
-    /**
-     * Recebe um BigDecimal da sua entidade e já formata na tela
-     */
     public void setBigDecimal(BigDecimal value) {
         if (value == null) {
             setText(FORMAT.format(0));
@@ -72,7 +69,6 @@ public class MoneyTextField extends JTextField {
 
         @Override
         public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-            // Garante que ao apagar tudo, o campo volte para R$ 0,00
             replace(fb, offset, length, "", null);
         }
     }
