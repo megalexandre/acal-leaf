@@ -88,6 +88,10 @@ public class PartnerScreen extends JPanel {
         return e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e);
     }
 
+    private void createActionListener(ActionEvent e) {
+        createDialog(null);
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -130,6 +134,7 @@ public class PartnerScreen extends JPanel {
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
+                buttonCreate.addActionListener(e -> createActionListener(e));
                 panel2.add(buttonCreate);
             }
             panel3.add(panel2);

@@ -19,21 +19,15 @@ public class AddressRepositoryImpl implements AddressRepository {
 
     @Override
     public List<Address> findAllByOrderByNameAsc() {
-        return addressJpaRepository.findAllByOrderByNameAsc()
+        return addressJpaRepository.findAllByOrderByTypeAscNameAsc()
             .stream().map(AddressRepositoryImpl::toEntity).toList();
     }
 
-    public static Address toEntity(AddressEntity entity) {
+    public static Address toEntity(AddressEntity item) {
         return Address.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .build();
-    }
-
-    public static AddressEntity fromEntity(Address address) {
-        return AddressEntity.builder()
-                .id(address.getId())
-                .name(address.getName())
+                .id(item.getId())
+                .type(item.getType())
+                .name(item.getName())
                 .build();
     }
 }

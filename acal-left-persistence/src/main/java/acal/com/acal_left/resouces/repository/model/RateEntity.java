@@ -22,4 +22,9 @@ public class RateEntity  {
     @Column(name = "valor")
     private BigDecimal amount;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
+
 }

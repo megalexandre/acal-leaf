@@ -1,5 +1,6 @@
 package acal.com.acal_left.resouces.repository.repository.impl;
 
+import acal.com.acal_left.core.model.Document;
 import acal.com.acal_left.core.model.Partner;
 import acal.com.acal_left.core.model.Person;
 import acal.com.acal_left.core.model.filter.PartnerFilter;
@@ -21,12 +22,6 @@ public class PartnerRepositoryImpl implements PartnerRepository {
     }
 
     @Override
-    public List<Partner> findOrderByName() {
-        return partnerJpaRepository.findByFilter(null)
-                .stream().map(PartnerRepositoryImpl::toEntity).toList();
-    }
-
-    @Override
     public List<Partner> findByFilter(PartnerFilter filter) {
         return partnerJpaRepository.findByFilter(filter.getName())
                 .stream().map(PartnerRepositoryImpl::toEntity).toList();
@@ -39,13 +34,6 @@ public class PartnerRepositoryImpl implements PartnerRepository {
                 .build();
     }
 
-    public static PartnerEntity fromEntity(Partner partner) {
-        PartnerEntity entity = new PartnerEntity();
-        entity.setId(partner.getId());
-        entity.setPerson(fromPersonEntity(partner.getPerson()));
-        return entity;
-    }
-
     public static Person toPersonEntity(PersonEntity personEntity) {
         if (personEntity == null) {
             return null;
@@ -53,18 +41,10 @@ public class PartnerRepositoryImpl implements PartnerRepository {
         return Person.builder()
                 .id(personEntity.getId())
                 .name(personEntity.getName())
+                .document(Document.builder().value(personEntity.getDocument()).build())
                 .build();
     }
 
-    public static PersonEntity fromPersonEntity(Person person) {
-        if (person == null) {
-            return null;
-        }
-        PersonEntity entity = new PersonEntity();
-        entity.setId(person.getId());
-        entity.setName(person.getName());
-        return entity;
-    }
 }
 
 

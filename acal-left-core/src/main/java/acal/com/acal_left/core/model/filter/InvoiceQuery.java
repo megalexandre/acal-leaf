@@ -1,4 +1,4 @@
-package acal.com.acal_left.core.model;
+package acal.com.acal_left.core.model.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

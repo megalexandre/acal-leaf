@@ -24,4 +24,12 @@ public class AddressEntity {
     @Column(name = "nome")
     private String name;
 
+    @Basic(optional = false)
+    @Column(name = "tipo")
+    private String type;
+
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 }

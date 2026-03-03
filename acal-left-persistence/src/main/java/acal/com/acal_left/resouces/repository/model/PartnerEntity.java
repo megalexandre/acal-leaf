@@ -18,5 +18,9 @@ public class PartnerEntity {
     @OneToOne(optional = false)
     private PersonEntity person;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 
 }

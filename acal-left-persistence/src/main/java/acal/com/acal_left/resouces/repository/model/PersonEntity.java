@@ -11,7 +11,6 @@ public class PersonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
     private Integer id;
 
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
@@ -21,4 +20,26 @@ public class PersonEntity {
     @Column(name = "nome")
     private String name;
 
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "cnpj")
+    private String cnpj;
+
+
+    public String getDocument() {
+        if (cpf != null && !cpf.isEmpty()) {
+            return cpf;
+
+        } else if (cnpj != null && !cnpj.isEmpty()) {
+            return cnpj;
+        }
+
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 }

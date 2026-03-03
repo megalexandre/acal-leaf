@@ -21,6 +21,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "buttonCreate"
 						"text": "Adicionar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createActionListener", true ) )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {

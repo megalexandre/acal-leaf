@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AddressJpaRepository extends JpaRepository<AddressEntity, Integer> {
-    List<AddressEntity> findAllByOrderByNameAsc();
+    List<AddressEntity> findAllByOrderByTypeAscNameAsc();
 }

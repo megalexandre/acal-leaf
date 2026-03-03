@@ -1,19 +1,16 @@
-package acal.com.acal_left.core.model;
+package acal.com.acal_left.core.model.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @Builder
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-public class Person {
-
-    private Integer id;
+@NoArgsConstructor
+public class LinkFilter {
     private String name;
-    private Document document;
-
 
 }

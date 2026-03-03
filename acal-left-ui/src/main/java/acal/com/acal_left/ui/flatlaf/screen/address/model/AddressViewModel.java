@@ -1,11 +1,11 @@
-package acal.com.acal_left.core.model;
+package acal.com.acal_left.ui.flatlaf.screen.address.model;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class Address {
+public class AddressViewModel {
 
     private Integer id;
     private String name;

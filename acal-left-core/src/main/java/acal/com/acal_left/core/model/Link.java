@@ -1,5 +1,6 @@
 package acal.com.acal_left.core.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,15 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Partner {
+public class Link {
+
     private Integer id;
+    private String number;
+    private Boolean active;
+    private Address address;
     private Person person;
-
-    public String getName(){
-        return person.getName();
-    }
-
-    public String getDocument(){
-        return person.getDocument().getNumber();
-    }
+    private Partner partner;
+    private Category category;
 }

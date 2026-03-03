@@ -1,7 +1,7 @@
 package acal.com.acal_left.resouces.repository.repository.impl;
 
 import acal.com.acal_left.core.model.Invoice;
-import acal.com.acal_left.core.model.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.repository.InvoiceRepository;
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.InvoiceJpaRepository;

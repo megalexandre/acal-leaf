@@ -15,8 +15,12 @@ public class InvoiceEntity {
 
     @JoinColumn(name = "id_endereco_pessoa", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PersonAddressEntity personAddress;
+    private LinkEntity personAddress;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
     /*
     @Column(name = "dataGerada")
     private Timestamp data;

@@ -6,7 +6,7 @@ import lombok.Data;
 @Entity
 @Table(name = "enderecopessoa")
 @Data
-public class PersonAddressEntity {
+public class LinkEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +31,8 @@ public class PersonAddressEntity {
     @ManyToOne(optional = false)
     private CategoryEntity category;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 }
