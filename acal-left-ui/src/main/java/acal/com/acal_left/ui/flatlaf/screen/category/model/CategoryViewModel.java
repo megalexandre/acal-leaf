@@ -17,4 +17,14 @@ public class CategoryViewModel {
     private BigDecimal amountPartner;
     private MemberGroup memberGroup;
 
+    public static CategoryViewModel buildFromEntity(Category category) {
+        return CategoryViewModel.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .amountPartner(category.getAmountPartner())
+                .amountWater(category.getAmountWater())
+                .memberGroup(category.getMemberGroup())
+                .build();
+    }
+
 }

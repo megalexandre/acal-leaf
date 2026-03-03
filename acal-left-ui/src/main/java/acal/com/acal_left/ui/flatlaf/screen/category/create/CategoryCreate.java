@@ -22,7 +22,7 @@ public class CategoryCreate extends JDialog {
 
     @Setter
     private ActionListener onSuccess;
-    public CategoryViewModel attempt;
+    private CategoryViewModel model;
 
     public CategoryCreate(Window owner, Category category) {
         super(owner);
@@ -31,13 +31,7 @@ public class CategoryCreate extends JDialog {
         setModal(true);
 
         if(category != null) {
-            this.attempt = CategoryViewModel.builder()
-                    .id(category.getId())
-                    .name(category.getName())
-                    .amountPartner(category.getAmountPartner())
-                    .amountWater(category.getAmountWater())
-                    .memberGroup(category.getMemberGroup())
-                    .build();
+            this.model = CategoryViewModel.buildFromEntity(category);
         }
 
         this.init();
@@ -48,18 +42,18 @@ public class CategoryCreate extends JDialog {
         comboBoxGroup.setModel(new DefaultComboBoxModel<>(MemberGroup.values()));
         comboBoxGroup.setRenderer(new MemberGroupRenderer());
 
-        if(attempt != null) {
-            comboBoxGroup.setSelectedItem(attempt.getMemberGroup());
-            textFieldName.setText(attempt.getName());
-            textFieldNamePartnerValue.setBigDecimal(attempt.getAmountPartner());
-            textFieldNameWaterValue.setBigDecimal(attempt.getAmountWater());
+        if(model != null) {
+            comboBoxGroup.setSelectedItem(model.getMemberGroup());
+            textFieldName.setText(model.getName());
+            textFieldNamePartnerValue.setBigDecimal(model.getAmountPartner());
+            textFieldNameWaterValue.setBigDecimal(model.getAmountWater());
         }
 
     }
 
     private void onOkButtonClicked() {
         Category builder = Category.builder()
-            .id(attempt.getId())
+            .id(model.getId())
             .name(textFieldName.getText())
             .amountPartner(textFieldNamePartnerValue.getBigDecimal())
             .amountWater(textFieldNameWaterValue.getBigDecimal())
@@ -78,9 +72,6 @@ public class CategoryCreate extends JDialog {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         dialogPane = new JPanel();
-        buttonBar = new JPanel();
-        okButton = new JButton();
-        cancelButton = new JButton();
         contentPanel = new JPanel();
         panel1 = new JPanel();
         label1 = new JLabel();
@@ -94,6 +85,9 @@ public class CategoryCreate extends JDialog {
         panel4 = new JPanel();
         label4 = new JLabel();
         textFieldNamePartnerValue = new MoneyTextField();
+        buttonBar = new JPanel();
+        okButton = new JButton();
+        cancelButton = new JButton();
 
         //======== this ========
         setPreferredSize(new Dimension(512, 380));
@@ -104,28 +98,6 @@ public class CategoryCreate extends JDialog {
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
             dialogPane.setLayout(new BorderLayout());
-
-            //======== buttonBar ========
-            {
-                buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
-                buttonBar.setLayout(new GridBagLayout());
-                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
-                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
-
-                //---- okButton ----
-                okButton.setText("OK");
-                buttonBar.add(okButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 5), 0, 0));
-
-                //---- cancelButton ----
-                cancelButton.setText("Cancel");
-                cancelButton.addActionListener(e -> onCancelButtonClicked(e));
-                buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-            }
-            dialogPane.add(buttonBar, BorderLayout.SOUTH);
 
             //======== contentPanel ========
             {
@@ -179,6 +151,28 @@ public class CategoryCreate extends JDialog {
                 contentPanel.add(panel4);
             }
             dialogPane.add(contentPanel, BorderLayout.CENTER);
+
+            //======== buttonBar ========
+            {
+                buttonBar.setBorder(new EmptyBorder(12, 0, 0, 0));
+                buttonBar.setLayout(new GridBagLayout());
+                ((GridBagLayout)buttonBar.getLayout()).columnWidths = new int[] {0, 85, 80};
+                ((GridBagLayout)buttonBar.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0};
+
+                //---- okButton ----
+                okButton.setText("OK");
+                buttonBar.add(okButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 5), 0, 0));
+
+                //---- cancelButton ----
+                cancelButton.setText("Cancel");
+                cancelButton.addActionListener(e -> onCancelButtonClicked(e));
+                buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+            }
+            dialogPane.add(buttonBar, BorderLayout.SOUTH);
         }
         contentPane.add(dialogPane, BorderLayout.CENTER);
         pack();
@@ -189,9 +183,6 @@ public class CategoryCreate extends JDialog {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel dialogPane;
-    private JPanel buttonBar;
-    private JButton okButton;
-    private JButton cancelButton;
     private JPanel contentPanel;
     private JPanel panel1;
     private JLabel label1;
@@ -205,5 +196,8 @@ public class CategoryCreate extends JDialog {
     private JPanel panel4;
     private JLabel label4;
     private MoneyTextField textFieldNamePartnerValue;
+    private JPanel buttonBar;
+    private JButton okButton;
+    private JButton cancelButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -5,7 +5,6 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"preferredSize": new java.awt.Dimension( 512, 380 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "dialogPane"
 				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
@@ -17,20 +16,6 @@ new FormModel {
 						name: "panel1"
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label1"
-							"text": "Grupo:"
-						} )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "comboBoxGroup"
-							"preferredSize": new java.awt.Dimension( 200, 25 )
-							auxiliary() {
-								"JavaCodeGenerator.typeParameters": "MemberGroup"
-							}
-						} )
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel2"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label2"
 							"text": "Nome:"
 						} )
 						add( new FormComponent( "javax.swing.JTextField" ) {
@@ -38,23 +23,13 @@ new FormModel {
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel3"
+						name: "panel2"
 						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label3"
-							"text": "Valor Água:"
+							name: "label2"
+							"text": "Documento:"
 						} )
-						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
-							name: "textFieldNameWaterValue"
-						} )
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel4"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label4"
-							"text": "Valor Sócio:"
-						} )
-						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
-							name: "textFieldNamePartnerValue"
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textFieldDocument"
 						} )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
@@ -71,6 +46,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "okButton"
 						"text": "OK"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "okButtonActionListener", true ) )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
 						"gridy": 0
@@ -78,7 +54,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "cancelButton"
 						"text": "Cancel"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onCancelButtonClicked", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelButtonActionListener", true ) )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 2
 						"gridy": 0

@@ -1,9 +1,11 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.partner.partner;
 
+import acal.com.acal_left.core.model.Partner;
 import acal.com.acal_left.core.model.filter.PartnerFilter;
 import acal.com.acal_left.core.usecase.partner.PartnerFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.screen.partner.create.PartnerCreate;
 import acal.com.acal_left.ui.flatlaf.screen.partner.model.PartnerTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.partner.model.PartnerTableModel;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -13,9 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 @Component
 @Scope("prototype")
@@ -36,6 +36,35 @@ public class PartnerScreen extends JPanel {
         search();
     }
 
+    private void tableSearchMouseClicked(MouseEvent e) {
+        if (isDoubleClick(e)) {
+            JTable table = (JTable) e.getSource();
+            int viewRow = table.getSelectedRow();
+
+            if (viewRow != -1) {
+                int modelRow = table.convertRowIndexToModel(viewRow);
+                PartnerTableModel model = (PartnerTableModel) table.getModel();
+                Partner selectedCategory = model.get(modelRow);
+                createDialog(selectedCategory);
+            }
+        }
+    }
+
+    private void createDialog(Partner partner) {
+        Window window = SwingUtilities.getWindowAncestor(this);
+
+        PartnerCreate partnerCreate = new PartnerCreate(window, partner);
+        partnerCreate.pack();
+        partnerCreate.setLocationRelativeTo(window);
+        /*
+        partnerCreate.setOnSuccess(e -> {
+            save.execute((partner) e.getSource());
+                searchActionListener(null);
+        });
+        */
+        partnerCreate.setVisible(true);
+    }
+
     private void search(){
         table.setModel(new PartnerTableModel());
         PartnerTableModel model = (PartnerTableModel) table.getModel();
@@ -53,6 +82,10 @@ public class PartnerScreen extends JPanel {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             search();
         }
+    }
+
+    private boolean isDoubleClick(MouseEvent e) {
+        return e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e);
     }
 
 
@@ -110,6 +143,12 @@ public class PartnerScreen extends JPanel {
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setShowHorizontalLines(true);
             table.setShowVerticalLines(true);
+            table.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    tableSearchMouseClicked(e);
+                }
+            });
             scrollPane1.setViewportView(table);
         }
         add(scrollPane1, BorderLayout.CENTER);
