@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui;
+package acal.com.acal_left.ui.utils;
 
 import acal.com.acal_left.ui.filter.NumericDocumentFilter;
 

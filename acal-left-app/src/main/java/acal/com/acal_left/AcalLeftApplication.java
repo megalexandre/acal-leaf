@@ -1,6 +1,6 @@
 package acal.com.acal_left;
 
-import acal.com.acal_left.ui.boostrap.SplashScreenBootstrap;
+import acal.com.acal_left.ui.screen.boostrap.SplashScreenBootstrap;
 import com.formdev.flatlaf.FlatDarkLaf;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

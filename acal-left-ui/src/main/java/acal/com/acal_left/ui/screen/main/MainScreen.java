@@ -6,7 +6,6 @@ package acal.com.acal_left.ui.screen.main;
 
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.ui.event.ChangeScreenEvent;
-import acal.com.acal_left.ui.event.LoginSuccessEvent;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import acal.com.acal_left.ui.screen.search.category.serch.CategorySearch;
@@ -20,8 +19,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static acal.com.acal_left.ui.event.Screen.CUSTOMER_REGISTER;
-import static acal.com.acal_left.ui.event.Screen.INVOICE_SEARCH;
 
 @Component
 public class MainScreen extends JFrame {
@@ -43,26 +40,12 @@ public class MainScreen extends JFrame {
         initComponents();
     }
 
-
-    @EventListener
-    public void onLoginSuccess(LoginSuccessEvent event) {
-        this.user = event.getUser();
-        this.labelUsername.setText(this.user.getUsername());
-        this.setVisible(true);
-    }
-
     @EventListener
     public void onAreaChange(ChangeScreenEvent event) {
         CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 
         switch(event.getScreen()) {
-            case CUSTOMER_REGISTER:
-                mainPanel.add(customersSearch, "customersSearch");
-                cardLayout.show(mainPanel, "customersSearch");
-                break;
-            case INVOICE_SEARCH:
-                break;
-            case CATEGORY_SEARCH:
+            case CATEGORY:
                 mainPanel.add(categorySearch, "categorySearch");
                 cardLayout.show(mainPanel, "categorySearch");
                 break;
@@ -70,15 +53,13 @@ public class MainScreen extends JFrame {
     }
 
     private void customerRegisterClick(ActionEvent e) {
-        screenManager.changeScreen(CUSTOMER_REGISTER);
     }
 
     private void invoiceSearchClick(ActionEvent e) {
-        screenManager.changeScreen(INVOICE_SEARCH);
     }
 
     private void categorySearchClick(ActionEvent e) {
-        screenManager.changeScreen(Screen.CATEGORY_SEARCH);
+        screenManager.changeScreen(Screen.CATEGORY);
     }
 
     private void initComponents() {

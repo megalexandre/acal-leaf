@@ -8,7 +8,7 @@ import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceCreateReportUseCase;
 import acal.com.acal_left.shared.StringUtil;
-import acal.com.acal_left.ui.SwingUtils;
+import acal.com.acal_left.ui.utils.SwingUtils;
 import acal.com.acal_left.ui.event.ChangeScreenEvent;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.model.ComboBoxOption;
@@ -56,12 +56,6 @@ public class InvoiceSearch extends JFrame {
 
     @EventListener
     public void onScreenChange(ChangeScreenEvent event) {
-        if(event.getScreen() != Screen.INVOICE_SEARCH) {
-            clear();
-            return;
-        }
-        startScreen();
-        this.setVisible(true);
     }
 
     private void startScreen(){

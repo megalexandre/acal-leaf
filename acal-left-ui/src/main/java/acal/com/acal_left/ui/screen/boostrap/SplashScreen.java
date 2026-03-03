@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui.boostrap;
+package acal.com.acal_left.ui.screen.boostrap;
 
 import javax.swing.*;
 
