@@ -4,6 +4,7 @@ import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.core.repository.CategoryRepository;
 import acal.com.acal_left.resouces.repository.model.CategoryEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.CategoryJpaRepository;
+import acal.com.acal_left.shared.model.MemberGroup;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .name(entity.getName())
                 .amountWater(entity.getAmountWater())
                 .amountPartner(entity.getAmountPartner())
-                .memberGroup(entity.getMemberGroup())
+                .memberGroup(MemberGroup.from(entity.getMemberGroup()))
                 .build();
     }
 
@@ -39,7 +40,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .name(category.getName())
                 .amountWater(category.getAmountWater())
                 .amountPartner(category.getAmountPartner())
-                .memberGroup(category.getMemberGroup())
+                .memberGroup(category.getMemberGroup().getValue())
                 .build();
     }
 

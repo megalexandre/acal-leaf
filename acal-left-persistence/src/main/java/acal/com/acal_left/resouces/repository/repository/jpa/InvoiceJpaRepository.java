@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integer> {
 
-    @Query("SELECT DISTINCT i FROM Invoice i " +
-            "JOIN FETCH i.personAddressEntity pa " +
-            "JOIN FETCH pa.personEntity p " +
-            "LEFT JOIN FETCH p.partnerEntity " +
-            "JOIN FETCH pa.addressEntity a " +
-            "JOIN FETCH pa.categoryEntity c " +
+    @Query("SELECT DISTINCT i FROM InvoiceEntity i " +
+            "JOIN FETCH i.personAddress pa " +
+            "JOIN FETCH pa.person p " +
+            "LEFT JOIN FETCH p.partner " +
+            "JOIN FETCH pa.address a " +
+            "JOIN FETCH pa.category c " +
             "WHERE (:id IS NULL OR i.id = :id)" +
 
             "AND (:categoryId IS NULL OR c.id = :categoryId)" +

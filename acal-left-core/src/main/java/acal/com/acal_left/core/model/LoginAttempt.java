@@ -2,12 +2,15 @@ package acal.com.acal_left.core.model;
 
 
 import acal.com.acal_left.shared.StringUtil;
+import lombok.Builder;
+import lombok.Getter;
 
-public record LoginAttempt(String username, String password) {
+@Builder
+@Getter
+public class LoginAttempt {
 
-    public LoginAttempt(String username, char[] password) {
-        this(username, new String(password));
-    }
+    private final String username;
+    private final String password;
 
     public boolean isValid() {
         return isValid(username) && isValid(password);

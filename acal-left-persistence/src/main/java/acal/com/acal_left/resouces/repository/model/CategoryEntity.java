@@ -1,6 +1,5 @@
 package acal.com.acal_left.resouces.repository.model;
 
-import acal.com.acal_left.shared.model.MemberGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +29,8 @@ public class CategoryEntity {
     @Column(name = "amount_partner", precision = 10, scale = 2, nullable = false)
     private BigDecimal amountPartner;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "group_id", nullable = false)
-    private MemberGroup memberGroup;
+    private Integer memberGroup;
 
 }
 

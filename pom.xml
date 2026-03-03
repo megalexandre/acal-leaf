@@ -138,6 +138,19 @@
 							</goals>
 						</execution>
 						<execution>
+							<id>compile-module-info</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>compile</goal>
+							</goals>
+							<configuration>
+								<compileSourceRoots>
+									<compileSourceRoot>src/main/java9</compileSourceRoot>
+								</compileSourceRoots>
+								<multiReleaseOutput>false</multiReleaseOutput>
+							</configuration>
+						</execution>
+						<execution>
 							<id>testCompile</id>
 							<phase>test-compile</phase>
 							<goals>

@@ -1,9 +1,13 @@
-package acal.com.acal_left.ui.screen.login;
+/*
+ * Created by JFormDesigner on Mon Mar 02 22:39:33 BRT 2026
+ */
 
-import acal.com.acal_left.ui.event.LoginSuccessEvent;
+package acal.com.acal_left.ui.flatlaf.screen.login;
+
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.core.usecase.login.LoginUseCase;
+import acal.com.acal_left.ui.event.LoginSuccessEvent;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,7 +23,6 @@ import java.awt.event.KeyEvent;
 
 @Component
 public class LoginScreen extends JPanel {
-
     private final LoginUseCase loginUseCase;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -30,21 +33,8 @@ public class LoginScreen extends JPanel {
         initComponents();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void onApplicationReady() {
-        SwingUtilities.invokeLater(() -> {
-            JFrame mainFrame = new JFrame("Acal Left - Login");
-            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            mainFrame.setContentPane(LoginScreen.this);
-            mainFrame.pack();
-            mainFrame.setSize(400, 300);
-            mainFrame.setLocationRelativeTo(null);
-            mainFrame.setVisible(true);
-        });
-    }
-
     private void login(){
-        LoginAttempt attempt = new LoginAttempt(getUsername(), getPassword());
+        LoginAttempt attempt = getLoginAttempt();
 
         if (attempt.isNotValid()) {
             invalidLogin();
@@ -54,14 +44,19 @@ public class LoginScreen extends JPanel {
         loginUseCase
             .login(attempt)
             .ifPresentOrElse(this::successLogin, this::errorLogin);
+    }
 
+    private LoginAttempt getLoginAttempt(){
+        return LoginAttempt.builder()
+                .username(getUsername())
+                .password(getPassword())
+                .build();
     }
 
     private void successLogin(User user) {
         eventPublisher.publishEvent(new LoginSuccessEvent(this, user));
         close();
     }
-
 
     private void invalidLogin(){
         JOptionPane.showMessageDialog(
@@ -81,7 +76,6 @@ public class LoginScreen extends JPanel {
         );
     }
 
-    /* listeners */
     private void buttonLogin(ActionEvent e) {
         login();
     }
@@ -116,41 +110,50 @@ public class LoginScreen extends JPanel {
     }
 
 
+    @EventListener(ApplicationReadyEvent.class)
+    public void onApplicationReady() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame mainFrame = new JFrame("Acal Left - Login");
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setContentPane(LoginScreen.this);
+            mainFrame.pack();
+            mainFrame.setSize(400, 300);
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        });
+    }
+
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
-        panel4 = new JPanel();
+        // Generated using JFormDesigner non-commercial license
+        panel1 = new JPanel();
         panel3 = new JPanel();
         label1 = new JLabel();
         textFieldUsername = new JTextField();
-        panel2 = new JPanel();
+        panel4 = new JPanel();
         label2 = new JLabel();
         passwordFieldPassword = new JPasswordField();
-        panel5 = new JPanel();
-        panel1 = new JPanel();
-        button1 = new JButton();
-        label3 = new JLabel();
+        panel2 = new JPanel();
+        buttonConfirm = new JButton();
 
         //======== this ========
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new
-        EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing
-        . border .TitledBorder . BOTTOM, new Font ( "Dia\u006cog", Font. BOLD ,12 ) ,
-        Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
-        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )
-        throw new RuntimeException( ) ;} } );
-        setLayout(new BorderLayout(20, 20));
+        setPreferredSize(new Dimension(500, 300));
+        setMinimumSize(new Dimension(500, 300));
+        setMaximumSize(new Dimension(500, 300));
+        setLayout(new BorderLayout(10, 10));
 
-        //======== panel4 ========
+        //======== panel1 ========
         {
-            panel4.setLayout(new VerticalLayout());
+            panel1.setLayout(new VerticalLayout(10));
 
             //======== panel3 ========
             {
                 panel3.setLayout(new VerticalLayout());
 
                 //---- label1 ----
-                label1.setText("Us\u00faario:");
+                label1.setText("Nome:");
                 panel3.add(label1);
 
                 //---- textFieldUsername ----
@@ -162,15 +165,15 @@ public class LoginScreen extends JPanel {
                 });
                 panel3.add(textFieldUsername);
             }
-            panel4.add(panel3);
+            panel1.add(panel3);
 
-            //======== panel2 ========
+            //======== panel4 ========
             {
-                panel2.setLayout(new VerticalLayout());
+                panel4.setLayout(new VerticalLayout());
 
                 //---- label2 ----
-                label2.setText("Password:");
-                panel2.add(label2);
+                label2.setText("Senha:");
+                panel4.add(label2);
 
                 //---- passwordFieldPassword ----
                 passwordFieldPassword.addKeyListener(new KeyAdapter() {
@@ -179,47 +182,36 @@ public class LoginScreen extends JPanel {
                         passwordFieldPasswordKeyPressed(e);
                     }
                 });
-                panel2.add(passwordFieldPassword);
+                panel4.add(passwordFieldPassword);
             }
-            panel4.add(panel2);
+            panel1.add(panel4);
         }
-        add(panel4, BorderLayout.CENTER);
+        add(panel1, BorderLayout.CENTER);
 
-        //======== panel5 ========
+        //======== panel2 ========
         {
-            panel5.setLayout(new VerticalLayout(20));
+            panel2.setLayout(new BorderLayout());
 
-            //======== panel1 ========
-            {
-                panel1.setLayout(new BorderLayout());
-
-                //---- button1 ----
-                button1.setText("Login");
-                button1.addActionListener(e -> buttonLogin(e));
-                panel1.add(button1, BorderLayout.SOUTH);
-
-                //---- label3 ----
-                label3.setText("Entrar:");
-                panel1.add(label3, BorderLayout.NORTH);
-            }
-            panel5.add(panel1);
+            //---- buttonConfirm ----
+            buttonConfirm.setText("Entrar");
+            buttonConfirm.setPreferredSize(new Dimension(100, 35));
+            buttonConfirm.addActionListener(e -> buttonLogin(e));
+            panel2.add(buttonConfirm, BorderLayout.CENTER);
         }
-        add(panel5, BorderLayout.SOUTH);
+        add(panel2, BorderLayout.PAGE_END);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - megalexandre@gmail.com
-    private JPanel panel4;
+    // Generated using JFormDesigner non-commercial license
+    private JPanel panel1;
     private JPanel panel3;
     private JLabel label1;
     private JTextField textFieldUsername;
-    private JPanel panel2;
+    private JPanel panel4;
     private JLabel label2;
     private JPasswordField passwordFieldPassword;
-    private JPanel panel5;
-    private JPanel panel1;
-    private JButton button1;
-    private JLabel label3;
+    private JPanel panel2;
+    private JButton buttonConfirm;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

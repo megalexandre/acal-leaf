@@ -4,18 +4,23 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
-			"hgap": 20
-			"vgap": 20
+			"hgap": 10
+			"vgap": 10
 		} ) {
 			name: "this"
 			"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-				name: "panel4"
+			"preferredSize": new java.awt.Dimension( 500, 300 )
+			"minimumSize": new java.awt.Dimension( 500, 300 )
+			"maximumSize": new java.awt.Dimension( 500, 300 )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+				"gap": 10
+			} ) {
+				name: "panel1"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 					name: "panel3"
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label1"
-						"text": "Usúario:"
+						"text": "Nome:"
 					} )
 					add( new FormComponent( "javax.swing.JTextField" ) {
 						name: "textFieldUsername"
@@ -23,10 +28,10 @@ new FormModel {
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-					name: "panel2"
+					name: "panel4"
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label2"
-						"text": "Password:"
+						"text": "Senha:"
 					} )
 					add( new FormComponent( "javax.swing.JPasswordField" ) {
 						name: "passwordFieldPassword"
@@ -36,28 +41,18 @@ new FormModel {
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
-				"gap": 20
-			} ) {
-				name: "panel5"
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
-					name: "panel1"
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "button1"
-						"text": "Login"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonLogin", true ) )
-					}, new FormLayoutConstraints( class java.lang.String ) {
-						"value": "South"
-					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label3"
-						"text": "Entrar:"
-					}, new FormLayoutConstraints( class java.lang.String ) {
-						"value": "North"
-					} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panel2"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonConfirm"
+					"text": "Entrar"
+					"preferredSize": new java.awt.Dimension( 100, 35 )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonLogin", true ) )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "South"
+				"value": "Last"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

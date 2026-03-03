@@ -16,6 +16,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+    packages-to-scan: acal.com.acal_left.resouces.repository.model
 
   flyway:
     enabled: true

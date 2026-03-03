@@ -2,6 +2,11 @@ package acal.com.acal_left.shared.model;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Getter
 public enum MemberGroup {
 
@@ -9,28 +14,23 @@ public enum MemberGroup {
     EFFECTIVE(2, "Sócio Efetivo"),
     TEMPORARY(3, "Temporário");
 
-    private final int databaseValue;
+    private final int value;
     private final String description;
 
-    MemberGroup(int databaseValue, String description) {
-        this.databaseValue = databaseValue;
+    private static final Map<Integer, MemberGroup> LOOKUP = Arrays.stream(values())
+            .collect(Collectors.toMap(MemberGroup::getValue, Function.identity()));
+
+    MemberGroup(int value, String description) {
+        this.value = value;
         this.description = description;
     }
 
-    public Integer getDatabaseValue() {
-        return this.databaseValue;
-    }
-
-    public static MemberGroup fromDatabaseValue(Integer value) {
-        if (value == null) {
-            return null;
+    public static MemberGroup from(int value) {
+        MemberGroup group = LOOKUP.get(value);
+        if (group == null) {
+            throw new IllegalArgumentException("Valor de banco de dados inválido: " + value);
         }
-        for (MemberGroup group : MemberGroup.values()) {
-            if (group.databaseValue == value) {
-                return group;
-            }
-        }
-        throw new IllegalArgumentException("Invalid database value for MemberGroup: " + value);
+        return group;
     }
 
 }

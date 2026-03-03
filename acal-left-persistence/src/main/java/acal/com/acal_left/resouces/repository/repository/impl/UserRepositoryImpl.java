@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsernameAndPassword(LoginAttempt attempt) {
-        return userJpaRepository.findByUsernameAndPassword(attempt.username(), attempt.password())
+        return userJpaRepository.findByUsernameAndPassword(attempt.getUsername(), attempt.getPassword())
                 .map(UserRepositoryImpl::toEntity);
     }
 
@@ -33,11 +33,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public static UserEntity fromEntity(User user) {
-        UserEntity entity = new UserEntity();
-        entity.setId(user.getId());
-        entity.setUsername(user.getUsername());
-        entity.setPassword(user.getPassword());
-        return entity;
+        return UserEntity.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
     }
 }
 
