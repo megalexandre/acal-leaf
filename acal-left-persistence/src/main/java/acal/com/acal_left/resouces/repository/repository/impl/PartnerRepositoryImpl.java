@@ -2,6 +2,7 @@ package acal.com.acal_left.resouces.repository.repository.impl;
 
 import acal.com.acal_left.core.model.Partner;
 import acal.com.acal_left.core.model.Person;
+import acal.com.acal_left.core.model.filter.PartnerFilter;
 import acal.com.acal_left.core.repository.PartnerRepository;
 import acal.com.acal_left.resouces.repository.model.PartnerEntity;
 import acal.com.acal_left.resouces.repository.model.PersonEntity;
@@ -21,7 +22,13 @@ public class PartnerRepositoryImpl implements PartnerRepository {
 
     @Override
     public List<Partner> findOrderByName() {
-        return partnerJpaRepository.findAllByName()
+        return partnerJpaRepository.findByFilter(null)
+                .stream().map(PartnerRepositoryImpl::toEntity).toList();
+    }
+
+    @Override
+    public List<Partner> findByFilter(PartnerFilter filter) {
+        return partnerJpaRepository.findByFilter(filter.getName())
                 .stream().map(PartnerRepositoryImpl::toEntity).toList();
     }
 

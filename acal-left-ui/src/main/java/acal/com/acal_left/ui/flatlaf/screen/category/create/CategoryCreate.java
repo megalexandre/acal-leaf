@@ -7,7 +7,7 @@ package acal.com.acal_left.ui.flatlaf.screen.category.create;
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.shared.model.MemberGroup;
 import acal.com.acal_left.ui.filter.MoneyTextField;
-import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryCreateAttempt;
+import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
 import acal.com.acal_left.ui.render.MemberGroupRenderer;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
@@ -22,7 +22,7 @@ public class CategoryCreate extends JDialog {
 
     @Setter
     private ActionListener onSuccess;
-    public CategoryCreateAttempt attempt;
+    public CategoryViewModel attempt;
 
     public CategoryCreate(Window owner, Category category) {
         super(owner);
@@ -31,7 +31,7 @@ public class CategoryCreate extends JDialog {
         setModal(true);
 
         if(category != null) {
-            this.attempt = CategoryCreateAttempt.builder()
+            this.attempt = CategoryViewModel.builder()
                     .id(category.getId())
                     .name(category.getName())
                     .amountPartner(category.getAmountPartner())

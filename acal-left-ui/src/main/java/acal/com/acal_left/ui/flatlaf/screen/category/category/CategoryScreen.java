@@ -8,7 +8,8 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.category.create.CategoryCreate;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableModel;
-import acal.com.acal_left.ui.render.FlatZebraRenderer;
+import org.jdesktop.swingx.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Component
+@Scope("prototype")
 public class CategoryScreen extends JPanel {
 
     public final String name = Screen.CATEGORY.name();
@@ -82,8 +84,11 @@ public class CategoryScreen extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
+        panel3 = new JPanel();
         panel2 = new JPanel();
-        buttonCreate = new JButton();
+        label1 = new JLabel();
+        panel4 = new JPanel();
+        buttonCreate2 = new JButton();
         scrollPane1 = new JScrollPane();
         tableCategorySearch = new JTable();
         panel1 = new JPanel();
@@ -94,16 +99,32 @@ public class CategoryScreen extends JPanel {
         setPreferredSize(new Dimension(500, 300));
         setLayout(new BorderLayout());
 
-        //======== panel2 ========
+        //======== panel3 ========
         {
-            panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            panel3.setLayout(new VerticalLayout());
 
-            //---- buttonCreate ----
-            buttonCreate.setText("Adicionar");
-            buttonCreate.addActionListener(e -> addActionListener(e));
-            panel2.add(buttonCreate);
+            //======== panel2 ========
+            {
+                panel2.setLayout(new FlowLayout());
+
+                //---- label1 ----
+                label1.setText("Categorias");
+                panel2.add(label1);
+            }
+            panel3.add(panel2);
+
+            //======== panel4 ========
+            {
+                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+                //---- buttonCreate2 ----
+                buttonCreate2.setText("Adicionar");
+                buttonCreate2.addActionListener(e -> addActionListener(e));
+                panel4.add(buttonCreate2);
+            }
+            panel3.add(panel4);
         }
-        add(panel2, BorderLayout.PAGE_START);
+        add(panel3, BorderLayout.NORTH);
 
         //======== scrollPane1 ========
         {
@@ -131,14 +152,17 @@ public class CategoryScreen extends JPanel {
             buttonSearch.addActionListener(e -> searchActionListener(e));
             panel1.add(buttonSearch);
         }
-        add(panel1, BorderLayout.PAGE_END);
+        add(panel1, BorderLayout.SOUTH);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
+    private JPanel panel3;
     private JPanel panel2;
-    private JButton buttonCreate;
+    private JLabel label1;
+    private JPanel panel4;
+    private JButton buttonCreate2;
     private JScrollPane scrollPane1;
     private JTable tableCategorySearch;
     private JPanel panel1;

@@ -16,4 +16,8 @@ public class Partner {
     public String getName(){
         return person.getName();
     }
+
+    public String getDocument(){
+        return person.getDocument();
+    }
 }

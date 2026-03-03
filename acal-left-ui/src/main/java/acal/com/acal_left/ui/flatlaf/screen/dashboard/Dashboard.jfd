@@ -12,9 +12,14 @@ new FormModel {
 					name: "menu1"
 					"text": "Cadastros"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuItemPartner"
+						name: "menuItemCategory"
 						"text": "Categorias"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "categoryActionListener", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemPartener"
+						"text": "Sócios"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "partnerActionListener", true ) )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {

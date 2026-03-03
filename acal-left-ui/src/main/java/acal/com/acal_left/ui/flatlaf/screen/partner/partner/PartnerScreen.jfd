@@ -5,25 +5,22 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			"minimumSize": new java.awt.Dimension( 500, 300 )
-			"preferredSize": new java.awt.Dimension( 500, 300 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "panel3"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-					name: "panel2"
+					name: "panel1"
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label1"
-						"text": "Categorias"
+						name: "jtitle"
+						"text": "Sócios"
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 					"alignment": 2
 				} ) {
-					name: "panel4"
+					name: "panel2"
 					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "buttonCreate2"
+						name: "buttonCreate"
 						"text": "Adicionar"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addActionListener", true ) )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
@@ -32,23 +29,44 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "tableCategorySearch"
+					name: "table"
 					"selectionMode": 0
 					"showHorizontalLines": true
 					"showVerticalLines": true
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "tableCategorySearchMouseClicked", true ) )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
-				"alignment": 2
-			} ) {
-				name: "panel1"
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "buttonSearch"
-					"text": "Consultar"
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+				name: "panel4"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 2
+				} ) {
+					name: "panel5"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
+						"gap": 10
+					} ) {
+						name: "panel6"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Nome:"
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textPartnerName"
+							"preferredSize": new java.awt.Dimension( 200, 25 )
+							addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "textPartnerNameKeyPressed", true ) )
+						} )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 2
+				} ) {
+					name: "panel7"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonSearch2"
+						"text": "Consultar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
+					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"

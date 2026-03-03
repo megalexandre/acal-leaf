@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class CategoryCreateAttempt {
+public class CategoryViewModel {
 
     private Integer id;
     private String name;
@@ -17,13 +17,4 @@ public class CategoryCreateAttempt {
     private BigDecimal amountPartner;
     private MemberGroup memberGroup;
 
-    public Category toCategory(){
-        return Category.builder()
-                .id(id)
-                .name(name)
-                .amountWater(amountWater)
-                .amountPartner(amountPartner)
-                .memberGroup(memberGroup)
-                .build();
-    }
 }
