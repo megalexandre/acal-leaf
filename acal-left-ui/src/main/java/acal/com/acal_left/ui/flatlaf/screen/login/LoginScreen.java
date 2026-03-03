@@ -1,0 +1,217 @@
+/*
+ * Created by JFormDesigner on Mon Mar 02 22:39:33 BRT 2026
+ */
+
+package acal.com.acal_left.ui.flatlaf.screen.login;
+
+import acal.com.acal_left.core.model.LoginAttempt;
+import acal.com.acal_left.core.model.User;
+import acal.com.acal_left.core.usecase.login.LoginUseCase;
+import acal.com.acal_left.ui.event.LoginSuccessEvent;
+import org.jdesktop.swingx.VerticalLayout;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+@Component
+public class LoginScreen extends JPanel {
+    private final LoginUseCase loginUseCase;
+    private final ApplicationEventPublisher eventPublisher;
+
+    public LoginScreen(LoginUseCase loginUseCase, ApplicationEventPublisher eventPublisher) {
+        this.loginUseCase = loginUseCase;
+        this.eventPublisher = eventPublisher;
+
+        initComponents();
+    }
+
+    private void login(){
+        LoginAttempt attempt = getLoginAttempt();
+
+        if (attempt.isNotValid()) {
+            invalidLogin();
+            return;
+        }
+
+        loginUseCase
+            .login(attempt)
+            .ifPresentOrElse(this::successLogin, this::errorLogin);
+    }
+
+    private LoginAttempt getLoginAttempt(){
+        return LoginAttempt.builder()
+                .username(getUsername())
+                .password(getPassword())
+                .build();
+    }
+
+    private void successLogin(User user) {
+        eventPublisher.publishEvent(new LoginSuccessEvent(this, user));
+        close();
+    }
+
+    private void invalidLogin(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Por favor, preencha todos os campos corretamente.",
+                "Validação",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    private void errorLogin(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Username ou senha inválidos.",
+                "Erro de Login",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    private void buttonLogin(ActionEvent e) {
+        login();
+    }
+
+    private void passwordFieldPasswordKeyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
+    }
+
+    private void textFieldUsernameKeyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            login();
+        }
+    }
+
+    private String getUsername() {
+        return textFieldUsername.getText();
+    }
+
+    private String getPassword() {
+        return new String(passwordFieldPassword.getPassword());
+    }
+
+    private void close(){
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (frame != null) {
+                frame.dispose();
+            }
+        });
+    }
+
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void onApplicationReady() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame mainFrame = new JFrame("Acal Left - Login");
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setContentPane(LoginScreen.this);
+            mainFrame.pack();
+            mainFrame.setSize(400, 300);
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        });
+    }
+
+
+    private void initComponents() {
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner non-commercial license
+        panel1 = new JPanel();
+        panel3 = new JPanel();
+        label1 = new JLabel();
+        textFieldUsername = new JTextField();
+        panel4 = new JPanel();
+        label2 = new JLabel();
+        passwordFieldPassword = new JPasswordField();
+        panel2 = new JPanel();
+        buttonConfirm = new JButton();
+
+        //======== this ========
+        setBorder(new EmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(500, 300));
+        setMinimumSize(new Dimension(500, 300));
+        setMaximumSize(new Dimension(500, 300));
+        setLayout(new BorderLayout(10, 10));
+
+        //======== panel1 ========
+        {
+            panel1.setLayout(new VerticalLayout(10));
+
+            //======== panel3 ========
+            {
+                panel3.setLayout(new VerticalLayout());
+
+                //---- label1 ----
+                label1.setText("Nome:");
+                panel3.add(label1);
+
+                //---- textFieldUsername ----
+                textFieldUsername.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        textFieldUsernameKeyPressed(e);
+                    }
+                });
+                panel3.add(textFieldUsername);
+            }
+            panel1.add(panel3);
+
+            //======== panel4 ========
+            {
+                panel4.setLayout(new VerticalLayout());
+
+                //---- label2 ----
+                label2.setText("Senha:");
+                panel4.add(label2);
+
+                //---- passwordFieldPassword ----
+                passwordFieldPassword.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        passwordFieldPasswordKeyPressed(e);
+                    }
+                });
+                panel4.add(passwordFieldPassword);
+            }
+            panel1.add(panel4);
+        }
+        add(panel1, BorderLayout.CENTER);
+
+        //======== panel2 ========
+        {
+            panel2.setLayout(new BorderLayout());
+
+            //---- buttonConfirm ----
+            buttonConfirm.setText("Entrar");
+            buttonConfirm.setPreferredSize(new Dimension(100, 35));
+            buttonConfirm.addActionListener(e -> buttonLogin(e));
+            panel2.add(buttonConfirm, BorderLayout.CENTER);
+        }
+        add(panel2, BorderLayout.PAGE_END);
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    // Generated using JFormDesigner non-commercial license
+    private JPanel panel1;
+    private JPanel panel3;
+    private JLabel label1;
+    private JTextField textFieldUsername;
+    private JPanel panel4;
+    private JLabel label2;
+    private JPasswordField passwordFieldPassword;
+    private JPanel panel2;
+    private JButton buttonConfirm;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}

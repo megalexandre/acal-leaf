@@ -1,0 +1,44 @@
+package acal.com.acal_left.resouces.repository.repository.impl;
+
+import acal.com.acal_left.core.model.Invoice;
+import acal.com.acal_left.core.model.InvoiceQuery;
+import acal.com.acal_left.core.repository.InvoiceRepository;
+import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
+import acal.com.acal_left.resouces.repository.repository.jpa.InvoiceJpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class InvoiceRepositoryImpl implements InvoiceRepository {
+
+    private final InvoiceJpaRepository invoiceJpaRepository;
+
+    public InvoiceRepositoryImpl(InvoiceJpaRepository invoiceJpaRepository) {
+        this.invoiceJpaRepository = invoiceJpaRepository;
+    }
+
+    @Override
+    public List<Invoice> findInvoices(InvoiceQuery invoiceQuery) {
+        return invoiceJpaRepository.findInvoices(
+                invoiceQuery.getId(),
+                invoiceQuery.getCategoryId(),
+                invoiceQuery.getAddressId(),
+                invoiceQuery.getPartnerId()
+        ).stream().map(InvoiceRepositoryImpl::toEntity).toList();
+    }
+
+    public static Invoice toEntity(InvoiceEntity entity) {
+        return Invoice.builder()
+                .id(entity.getId())
+                .build();
+    }
+
+    public static InvoiceEntity fromEntity(Invoice invoice) {
+        InvoiceEntity entity = new InvoiceEntity();
+        entity.setId(invoice.getId());
+        return entity;
+    }
+}
+
+
