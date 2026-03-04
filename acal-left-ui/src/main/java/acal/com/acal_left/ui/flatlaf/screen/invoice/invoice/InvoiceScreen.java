@@ -1,10 +1,12 @@
 package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice;
 
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.invoice.InvoiceFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.render.InvoiceTableRender;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
@@ -89,6 +91,10 @@ public class InvoiceScreen extends JPanel {
         model.setList(items);
         table.setModel(model);
 
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(new InvoiceTableRender());
+        }
+
         updatePaginationLabel();
     }
 
@@ -170,6 +176,11 @@ public class InvoiceScreen extends JPanel {
 
         //======== scrollPane1 ========
         {
+
+            //---- table ----
+            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            table.setShowHorizontalLines(true);
+            table.setShowVerticalLines(true);
             scrollPane1.setViewportView(table);
         }
         add(scrollPane1, BorderLayout.CENTER);

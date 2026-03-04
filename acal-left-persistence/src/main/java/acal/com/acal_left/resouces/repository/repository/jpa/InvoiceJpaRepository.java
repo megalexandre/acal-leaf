@@ -23,7 +23,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
                 AND (:categoryId IS NULL OR c.id = :categoryId)
                 AND (:addressId IS NULL OR a.id = :addressId)
                 AND (:partnerId IS NULL OR p.partner.id = :partnerId)
-            ORDER BY i.period, a.type, a.name DESC
+            ORDER BY i.period DESC, a.type ASC, a.name ASC
             """)
 
     List<InvoiceEntity> findInvoices(
