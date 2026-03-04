@@ -8,15 +8,15 @@ public class LinkTableContent {
 
     private final Integer id;
     private final String name;
-    private final String number;
-    private final String document;
+    private final String address;
+    private final String active;
     private final Link item;
 
     public LinkTableContent(Link item) {
         this.id = item.getId();
-        this.name = item.getPartner().getName();
-        this.number = item.getNumber();
-        this.document = item.getPartner().getDocument();
+        this.name = item.getPerson().getName();
+        this.address = item.getAddress().getName() + " " + item.getNumber();
+        this.active = item.getActive() ? "Sim" : "Não";
         this.item = item;
     }
 

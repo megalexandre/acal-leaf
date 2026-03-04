@@ -5,6 +5,7 @@ import acal.com.acal_left.ui.event.LoginSuccessEvent;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.address.address.AddressScreen;
 import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
 import acal.com.acal_left.ui.flatlaf.screen.partner.partner.PartnerScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
@@ -27,19 +28,23 @@ public class Dashboard extends JFrame {
     private final PartnerScreen partnerScreen;
     private final AddressScreen addressScreen;
     public final LinkScreen linkScreen;
+    private final InvoiceScreen invoiceScreen;
+
 
     public Dashboard(
             ScreenManager screenManager,
             CategoryScreen categoryScreen,
             PartnerScreen partnerScreen,
             AddressScreen addressScreen,
-            LinkScreen linkScreen
+            LinkScreen linkScreen,
+            InvoiceScreen invoiceScreen
             ) {
         this.screenManager = screenManager;
         this.categoryScreen = categoryScreen;
         this.partnerScreen = partnerScreen;
         this.addressScreen = addressScreen;
         this.linkScreen = linkScreen;
+        this.invoiceScreen = invoiceScreen;
 
         initComponents();
         addScreens();
@@ -51,6 +56,7 @@ public class Dashboard extends JFrame {
         mainPanel.add(partnerScreen, partnerScreen.name);
         mainPanel.add(addressScreen, addressScreen.name);
         mainPanel.add(linkScreen, linkScreen.name);
+        mainPanel.add(invoiceScreen, invoiceScreen.name);
 
         CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
         cardLayout.show(mainPanel, "empty");
@@ -66,6 +72,7 @@ public class Dashboard extends JFrame {
         CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
         Screen newScreen = event.getScreen();
         cardLayout.show(mainPanel, newScreen.name());
+        this.setTitle(newScreen.getTitle());
     }
 
     private void categoryActionListener(ActionEvent e) {
@@ -82,6 +89,10 @@ public class Dashboard extends JFrame {
 
     private void linkActionListener(ActionEvent e) {
         screenManager.changeScreen(LINK);
+    }
+
+    private void invoiceActionListener(ActionEvent e) {
+        screenManager.changeScreen(INVOICE);
     }
 
     private void initComponents() {
@@ -152,6 +163,7 @@ public class Dashboard extends JFrame {
 
                 //---- menuItemInvoice ----
                 menuItemInvoice.setText("Faturas");
+                menuItemInvoice.addActionListener(e -> invoiceActionListener(e));
                 menu2.add(menuItemInvoice);
 
                 //---- menuItemOverdue ----

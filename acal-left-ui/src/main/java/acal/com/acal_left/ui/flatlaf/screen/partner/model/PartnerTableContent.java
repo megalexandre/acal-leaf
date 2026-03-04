@@ -14,7 +14,7 @@ public class PartnerTableContent {
     public PartnerTableContent(Partner item) {
         this.id = item.getId();
         this.name = item.getName();
-        this.document = item.getDocument();
+        this.document = item.getFormattedDocument();
         this.partner = item;
     }
 

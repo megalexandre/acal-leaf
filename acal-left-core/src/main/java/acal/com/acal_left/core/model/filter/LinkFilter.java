@@ -12,5 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LinkFilter {
     private String name;
+    private Boolean active;
+
+    public void reset() {
+        this.name = null;
+    }
 
 }

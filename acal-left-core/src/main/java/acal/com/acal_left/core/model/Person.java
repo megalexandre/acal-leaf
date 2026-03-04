@@ -14,6 +14,7 @@ public class Person {
     private Integer id;
     private String name;
     private Document document;
+    private Partner partner;
 
 
 }

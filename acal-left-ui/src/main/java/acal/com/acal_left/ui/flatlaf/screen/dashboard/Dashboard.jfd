@@ -46,6 +46,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemInvoice"
 						"text": "Faturas"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "invoiceActionListener", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuItemOverdue"

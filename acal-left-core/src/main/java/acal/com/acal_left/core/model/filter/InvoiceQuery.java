@@ -1,9 +1,13 @@
 package acal.com.acal_left.core.model.filter;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceQuery {
     private Integer id;
@@ -11,4 +15,3 @@ public class InvoiceQuery {
     private Integer addressId;
     private Integer partnerId;
 }
-

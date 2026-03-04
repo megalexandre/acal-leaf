@@ -11,17 +11,18 @@ import java.util.List;
 @Repository
 public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integer> {
 
-    @Query("SELECT DISTINCT i FROM InvoiceEntity i " +
-            "JOIN FETCH i.personAddress pa " +
-            "JOIN FETCH pa.person p " +
-            "LEFT JOIN FETCH p.partner " +
-            "JOIN FETCH pa.address a " +
-            "JOIN FETCH pa.category c " +
-            "WHERE (:id IS NULL OR i.id = :id)" +
-            "AND (:categoryId IS NULL OR c.id = :categoryId)" +
-            "AND (:addressId IS NULL OR a.id = :addressId)" +
-            "AND (:partnerId IS NULL OR p.partner.id = :partnerId)"
-    )
+    @Query("""
+            SELECT DISTINCT i FROM InvoiceEntity i
+            JOIN FETCH i.personAddress pa
+            JOIN FETCH pa.person p
+            LEFT JOIN FETCH p.partner
+            JOIN FETCH pa.address a
+            JOIN FETCH pa.category c
+            WHERE (:id IS NULL OR i.id = :id)
+                AND (:categoryId IS NULL OR c.id = :categoryId)
+                AND (:addressId IS NULL OR a.id = :addressId)
+                AND (:partnerId IS NULL OR p.partner.id = :partnerId)
+            """)
 
     List<InvoiceEntity> findInvoices(
         @Param("id") Integer id,

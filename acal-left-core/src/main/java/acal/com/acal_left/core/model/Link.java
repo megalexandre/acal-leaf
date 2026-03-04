@@ -15,8 +15,9 @@ public class Link {
     private Integer id;
     private String number;
     private Boolean active;
+
     private Address address;
     private Person person;
-    private Partner partner;
     private Category category;
+
 }

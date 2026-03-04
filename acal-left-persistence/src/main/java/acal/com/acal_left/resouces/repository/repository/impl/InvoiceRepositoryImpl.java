@@ -30,15 +30,12 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     public static Invoice toEntity(InvoiceEntity entity) {
         return Invoice.builder()
+                .person(PersonRepositoryImpl.toEntity(entity.getPersonAddress().getPerson()))
+                .period(entity.getPeriod())
                 .id(entity.getId())
                 .build();
     }
 
-    public static InvoiceEntity fromEntity(Invoice invoice) {
-        InvoiceEntity entity = new InvoiceEntity();
-        entity.setId(invoice.getId());
-        return entity;
-    }
 }
 
 

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,12 +14,8 @@ import lombok.NoArgsConstructor;
 public class Invoice {
 
     private Integer id;
+    private Person person;
+    private Address address;
+    private LocalDate period;
 
-    //public boolean isPartnerExclusive() {
-    //    return personAddresses.isPartnerExclusive();
-    //}
-
-    //public boolean isNormalPartner() {
-    //        return !personAddresses.isPartnerExclusive();
-    //    }
 }

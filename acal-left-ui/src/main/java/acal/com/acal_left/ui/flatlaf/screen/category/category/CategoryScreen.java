@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 @Component
 @Scope("prototype")
 public class CategoryScreen extends JPanel {
-
     public final String name = Screen.CATEGORY.name();
 
     private final CategoryFindAllUseCase findAll;
@@ -85,8 +84,6 @@ public class CategoryScreen extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         panel3 = new JPanel();
-        panel2 = new JPanel();
-        label1 = new JLabel();
         panel4 = new JPanel();
         buttonCreate2 = new JButton();
         scrollPane1 = new JScrollPane();
@@ -102,16 +99,6 @@ public class CategoryScreen extends JPanel {
         //======== panel3 ========
         {
             panel3.setLayout(new VerticalLayout());
-
-            //======== panel2 ========
-            {
-                panel2.setLayout(new FlowLayout());
-
-                //---- label1 ----
-                label1.setText("Categorias");
-                panel2.add(label1);
-            }
-            panel3.add(panel2);
 
             //======== panel4 ========
             {
@@ -159,8 +146,6 @@ public class CategoryScreen extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel panel3;
-    private JPanel panel2;
-    private JLabel label1;
     private JPanel panel4;
     private JButton buttonCreate2;
     private JScrollPane scrollPane1;

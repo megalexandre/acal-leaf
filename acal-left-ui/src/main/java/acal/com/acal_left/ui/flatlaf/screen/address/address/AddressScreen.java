@@ -40,8 +40,6 @@ public class AddressScreen extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         panel2 = new JPanel();
-        panel3 = new JPanel();
-        label1 = new JLabel();
         panel4 = new JPanel();
         button1 = new JButton();
         panel5 = new JPanel();
@@ -55,16 +53,6 @@ public class AddressScreen extends JPanel {
         //======== panel2 ========
         {
             panel2.setLayout(new VerticalLayout());
-
-            //======== panel3 ========
-            {
-                panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-                //---- label1 ----
-                label1.setText("Endere\u00e7os");
-                panel3.add(label1);
-            }
-            panel2.add(panel3);
 
             //======== panel4 ========
             {
@@ -105,8 +93,6 @@ public class AddressScreen extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel panel2;
-    private JPanel panel3;
-    private JLabel label1;
     private JPanel panel4;
     private JButton button1;
     private JPanel panel5;

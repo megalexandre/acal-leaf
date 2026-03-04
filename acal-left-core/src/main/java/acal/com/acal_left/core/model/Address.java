@@ -11,4 +11,8 @@ public class Address {
     private String name;
     private String type;
 
+    public String getFullAddress() {
+        return type + " " + name;
+    }
+
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Partner {
+
     private Integer id;
     private Person person;
 
@@ -19,5 +20,9 @@ public class Partner {
 
     public String getDocument(){
         return person.getDocument().getNumber();
+    }
+
+    public String getFormattedDocument(){
+        return person.getDocument().formatted();
     }
 }

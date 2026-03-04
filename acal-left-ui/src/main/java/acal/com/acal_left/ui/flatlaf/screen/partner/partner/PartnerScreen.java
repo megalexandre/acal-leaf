@@ -97,8 +97,6 @@ public class PartnerScreen extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         panel3 = new JPanel();
-        panel1 = new JPanel();
-        jtitle = new JLabel();
         panel2 = new JPanel();
         buttonCreate = new JButton();
         scrollPane1 = new JScrollPane();
@@ -117,16 +115,6 @@ public class PartnerScreen extends JPanel {
         //======== panel3 ========
         {
             panel3.setLayout(new VerticalLayout());
-
-            //======== panel1 ========
-            {
-                panel1.setLayout(new FlowLayout());
-
-                //---- jtitle ----
-                jtitle.setText("S\u00f3cios");
-                panel1.add(jtitle);
-            }
-            panel3.add(panel1);
 
             //======== panel2 ========
             {
@@ -206,8 +194,6 @@ public class PartnerScreen extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel panel3;
-    private JPanel panel1;
-    private JLabel jtitle;
     private JPanel panel2;
     private JButton buttonCreate;
     private JScrollPane scrollPane1;

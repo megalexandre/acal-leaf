@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class InvoiceCreateReportUseCase {
+public class InvoiceFindUseCase {
 
     private final InvoiceRepository invoiceRepository;
 
-    public InvoiceCreateReportUseCase(InvoiceRepository invoiceRepository) {
+    public InvoiceFindUseCase(InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
     }
 
