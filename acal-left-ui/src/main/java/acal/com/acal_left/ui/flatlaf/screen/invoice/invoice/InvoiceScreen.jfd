@@ -1,0 +1,70 @@
+JFDML JFormDesigner: "8.3" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+				name: "panel1"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "panel4"
+					"border": new javax.swing.border.CompoundBorder( new javax.swing.border.TitledBorder( "Paginação" ), &EmptyBorder0 new javax.swing.border.EmptyBorder( 5, 5, 5, 5 ) )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonFirstPage"
+						"text": "<<"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onFirstPage", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonPreviousPage"
+						"text": "<"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onPreviousPage", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelPagination"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonNextPage"
+						"text": ">"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onNextPage", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonLastPage"
+						"text": ">>"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onLastPage", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					name: "panel3"
+					"border": new javax.swing.border.CompoundBorder( new javax.swing.border.TitledBorder( "Filtros" ), #EmptyBorder0 )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"alignment": 2
+				} ) {
+					name: "panel2"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonSearch"
+						"text": "Consultas"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
+					} )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table"
+					"selectionMode": 0
+					"showHorizontalLines": true
+					"showVerticalLines": true
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 405, 300 )
+		} )
+	}
+}

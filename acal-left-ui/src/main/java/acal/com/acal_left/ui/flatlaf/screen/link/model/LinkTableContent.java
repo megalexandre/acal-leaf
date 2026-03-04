@@ -1,0 +1,23 @@
+package acal.com.acal_left.ui.flatlaf.screen.link.model;
+
+import acal.com.acal_left.core.model.Link;
+import lombok.Data;
+
+@Data
+public class LinkTableContent {
+
+    private final Integer id;
+    private final String name;
+    private final String address;
+    private final String active;
+    private final Link item;
+
+    public LinkTableContent(Link item) {
+        this.id = item.getId();
+        this.name = item.getPerson().getName();
+        this.address = item.getAddress().getName() + " " + item.getNumber();
+        this.active = item.getActive() ? "Sim" : "Não";
+        this.item = item;
+    }
+
+}

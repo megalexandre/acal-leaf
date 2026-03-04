@@ -19,4 +19,8 @@ public class HydrometerEntity implements Serializable {
     @Column(name = "Consumo")
     private Double usage;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 }

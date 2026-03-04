@@ -24,6 +24,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .stream().map(CategoryRepositoryImpl::toEntity).toList();
     }
 
+    @Override
+    public Category save(Category category) {
+        CategoryEntity categoryEntity = categoryJpaRepository.save(fromEntity(category));
+        return toEntity(categoryEntity);
+    }
+
     public static Category toEntity(CategoryEntity entity) {
         return Category.builder()
                 .id(entity.getId())

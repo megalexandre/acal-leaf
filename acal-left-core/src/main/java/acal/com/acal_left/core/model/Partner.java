@@ -10,10 +10,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Partner {
+
     private Integer id;
     private Person person;
 
     public String getName(){
         return person.getName();
+    }
+
+    public String getDocument(){
+        return person.getDocument().getNumber();
+    }
+
+    public String getFormattedDocument(){
+        return person.getDocument().formatted();
     }
 }

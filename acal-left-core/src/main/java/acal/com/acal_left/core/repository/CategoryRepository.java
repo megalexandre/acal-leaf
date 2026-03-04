@@ -7,5 +7,6 @@ import java.util.List;
 public interface CategoryRepository {
 
     List<Category> findAllByOrderByNameAsc();
+    Category save(Category category);
 
 }

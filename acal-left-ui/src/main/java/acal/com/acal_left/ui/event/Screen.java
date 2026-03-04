@@ -1,7 +1,19 @@
 package acal.com.acal_left.ui.event;
 
+import lombok.Getter;
+
 public enum Screen {
-    CATEGORY_SEARCH,
-    CUSTOMER_REGISTER,
-    INVOICE_SEARCH,
+    CATEGORY("Categoria"),
+    PARTNER("Sócio"),
+    ADDRESS("Endereço"),
+    LINK("Ligações"),
+    INVOICE("Faturas")
+    ;
+
+    @Getter
+    private final String title;
+
+    Screen(String title) {
+        this.title = title; }
+
 }

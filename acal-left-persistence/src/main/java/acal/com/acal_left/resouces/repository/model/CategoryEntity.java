@@ -32,5 +32,9 @@ public class CategoryEntity {
     @Column(name = "group_id", nullable = false)
     private Integer memberGroup;
 
+    @Override
+    public String toString() {
+        return "id:" + id;
+    }
 }
 
