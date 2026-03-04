@@ -1,32 +1,47 @@
 # CI/CD - Acal Left
 
-Este projeto inclui workflows GitHub Actions para automação de build e release.
+Este projeto inclui workflows GitHub Actions para automação de build e release **acionados por tags**.
 
 ## 🔄 Workflows Disponíveis
 
 ### 1. **Build Contínuo** (`build.yml`)
-Executa automaticamente em cada push para `main` ou `develop` e em PRs.
+Executa automaticamente quando uma tag é criada (ex: `v1.0.0`) ou manualmente via GitHub.
 
 **O que faz:**
 - ✅ Compila o projeto com Maven
-- ✅ Executa testes (testes de unidade)
 - ✅ Faz upload dos artefatos JAR/WAR
-- ✅ Gera relatórios de build
+- ✅ Deixa disponível por 30 dias
 
-**Artefatos disponíveis por 30 dias:**
-```
-- JAR files (de cada módulo)
-- WAR files (se houver)
-```
+**Trigger:**
+- Tag `v*` (exemplo: `v1.0.0`, `v2.1.3`)
+- Manual (via GitHub Actions)
 
 ### 2. **Release** (`release.yml`)
-Executa quando uma tag é criada (ex: `v1.0.0`) ou manualmente.
+Executa quando uma tag é criada ou manualmente.
 
 **O que faz:**
 - ✅ Compila o projeto
 - ✅ Cria uma Release no GitHub
 - ✅ Faz upload de todos os artefatos compilados
 - ✅ Gera notas de release
+
+**Trigger:**
+- Tag `v*`
+- Manual (via GitHub Actions)
+
+### 3. **Code Quality** (`quality.yml`)
+Executa quando uma tag é criada ou manualmente.
+
+**O que faz:**
+- ✅ Executa Maven Verify
+- ✅ Verifica vulnerabilidades
+- ✅ Gera relatórios de teste
+
+**Trigger:**
+- Tag `v*`
+- Manual (via GitHub Actions)
+
+2. Acesse **GitHub > Releases** para baixar os artefatos
 
 ## 📦 Como Usar
 
@@ -35,26 +50,26 @@ Executa quando uma tag é criada (ex: `v1.0.0`) ou manualmente.
 mvn clean package
 ```
 
-### Disparar Build no GitHub
-Apenas faça push para as branches `main` ou `develop`:
+### Criar uma Release (Recomendado)
 ```bash
-git push origin main
-```
-
-### Criar Release
-1. Crie uma tag:
-```bash
+# 1. Criar uma tag
 git tag v1.0.0
-git push origin v1.0.0
-```
 
-2. Acesse **GitHub > Releases** para baixar os artefatos
+# 2. Push da tag
+git push origin v1.0.0
+
+# 3. GitHub Actions executa automaticamente
+# → Todos os 3 workflows rodam
+# → Artefatos aparecem em Releases
+```
 
 ### Trigger Manual
 No GitHub:
 1. Vá para **Actions**
-2. Selecione **Build Release**
+2. Selecione um workflow
 3. Clique em **Run workflow**
+4. Escolha a branch (normalmente `main` ou `develop`)
+5. Clique **Run workflow**
 
 ## 📊 Estrutura de Artefatos
 
@@ -106,4 +121,6 @@ O workflow usa cache automático para dependências Maven, acelerando builds sub
 - [ ] Adicionar sonarqube para análise de código
 - [ ] Configurar deploy automático
 - [ ] Adicionar verificação de vulnerabilidades (OWASP)
+
+
 
