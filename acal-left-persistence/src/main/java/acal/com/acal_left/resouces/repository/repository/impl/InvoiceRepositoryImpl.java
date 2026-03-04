@@ -26,17 +26,9 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                 invoiceQuery.getAddressId(),
                 invoiceQuery.getPartnerId(),
                 invoiceQuery.getPageable()
-        ).stream().map(InvoiceRepositoryImpl::toEntity).toList();
-    }
-
-    public static Invoice toEntity(InvoiceEntity entity) {
-        return Invoice.builder()
-                .person(PersonRepositoryImpl.toEntity(entity.getPersonAddress().getPerson()))
-                .address(AddressRepositoryImpl.toEntity(entity.getPersonAddress().getAddress()))
-                .paidAt(entity.getPaidAt())
-                .period(entity.getPeriod())
-                .id(entity.getId())
-                .build();
+        ).stream()
+            .map(InvoiceEntity::toDomain)
+            .toList();
     }
 
 }

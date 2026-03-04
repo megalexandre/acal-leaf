@@ -7,7 +7,29 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 public class InvoiceTableModel extends AbstractTableModel {
+
+    @Getter
+    public enum InvoiceColumns {
+        NUMBER("Número:"),
+        PARTNER("Sócio:"),
+        ADDRESS("Endereço:"),
+        PERIOD("Competência:"),
+        DUE_DATE("Vencimento:"),
+        PAID("Pago:")
+        ;
+
+        private final String name;
+        InvoiceColumns(String name) { this.name = name; }
+
+        public static String[] getLabels() {
+            return stream(values())
+                    .map(InvoiceColumns::getName)
+                    .toArray(String[]::new);
+        }
+    }
 
     @Getter
     private List<InvoiceTableContent> items = new ArrayList<>();
@@ -40,11 +62,12 @@ public class InvoiceTableModel extends AbstractTableModel {
         InvoiceColumns column = InvoiceColumns.values()[columnIndex];
 
         return switch (column) {
-            case InvoiceColumns.PAID -> c.getPaid();
-            case InvoiceColumns.PARTNER -> c.getPartner();
-            case InvoiceColumns.NUMBER -> c.getNumber();
-            case InvoiceColumns.PERIOD -> c.getPeriod();
-            case InvoiceColumns.ADDRESS -> c.getAddress();
+            case PAID -> c.getPaid();
+            case DUE_DATE -> c.getDueDate();
+            case PARTNER -> c.getPartner();
+            case NUMBER -> c.getNumber();
+            case PERIOD -> c.getPeriod();
+            case ADDRESS -> c.getAddress();
         };
     }
 

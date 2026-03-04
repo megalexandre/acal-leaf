@@ -8,18 +8,27 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.category.create.CategoryCreate;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableModel;
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Component
 @Scope("prototype")
+@SuppressWarnings("FieldCanBeLocal")
 public class CategoryScreen extends JPanel {
     public final String name = Screen.CATEGORY.name();
 
@@ -38,8 +47,9 @@ public class CategoryScreen extends JPanel {
     }
 
     private void searchActionListener(ActionEvent e) {
-        tableCategorySearch.setModel(new CategoryTableModel());
-        CategoryTableModel model = (CategoryTableModel) tableCategorySearch.getModel();
+        table.setModel(new CategoryTableModel());
+        table.setAutoCreateRowSorter(true);
+        CategoryTableModel model = (CategoryTableModel) table.getModel();
         var itens = findAll.execute().stream().map(CategoryTableContent::new).toList();
         model.setList(itens);
     }
@@ -80,6 +90,7 @@ public class CategoryScreen extends JPanel {
         return e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e);
     }
 
+    @SuppressWarnings("Convert2MethodRef")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
@@ -87,7 +98,7 @@ public class CategoryScreen extends JPanel {
         panel4 = new JPanel();
         buttonCreate2 = new JButton();
         scrollPane1 = new JScrollPane();
-        tableCategorySearch = new JTable();
+        table = new JTable();
         panel1 = new JPanel();
         buttonSearch = new JButton();
 
@@ -116,17 +127,17 @@ public class CategoryScreen extends JPanel {
         //======== scrollPane1 ========
         {
 
-            //---- tableCategorySearch ----
-            tableCategorySearch.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            tableCategorySearch.setShowHorizontalLines(true);
-            tableCategorySearch.setShowVerticalLines(true);
-            tableCategorySearch.addMouseListener(new MouseAdapter() {
+            //---- table ----
+            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            table.setShowHorizontalLines(true);
+            table.setShowVerticalLines(true);
+            table.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     tableCategorySearchMouseClicked(e);
                 }
             });
-            scrollPane1.setViewportView(tableCategorySearch);
+            scrollPane1.setViewportView(table);
         }
         add(scrollPane1, BorderLayout.CENTER);
 
@@ -149,7 +160,7 @@ public class CategoryScreen extends JPanel {
     private JPanel panel4;
     private JButton buttonCreate2;
     private JScrollPane scrollPane1;
-    private JTable tableCategorySearch;
+    private JTable table;
     private JPanel panel1;
     private JButton buttonSearch;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

@@ -8,13 +8,13 @@ public final class SplashScreenBootstrap {
 
     private static Timer textTimer;
     private static int phraseIndex = 0;
+
     private static final String[] PHRASES = {
             "Carregando módulos...",
             "Sincronizando dados...",
             "Preparando interface...",
             "Quase pronto..."
     };
-
 
     private static final Object LOCK = new Object();
     private static JWindow splashWindow;

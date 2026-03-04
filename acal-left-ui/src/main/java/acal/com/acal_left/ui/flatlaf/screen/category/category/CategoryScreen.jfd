@@ -25,7 +25,7 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "tableCategorySearch"
+					name: "table"
 					"selectionMode": 0
 					"showHorizontalLines": true
 					"showVerticalLines": true

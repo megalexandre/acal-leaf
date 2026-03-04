@@ -1,7 +1,3 @@
-/*
- * Created by JFormDesigner on Tue Mar 03 00:21:48 BRT 2026
- */
-
 package acal.com.acal_left.ui.flatlaf.screen.category.create;
 
 import acal.com.acal_left.core.model.Category;

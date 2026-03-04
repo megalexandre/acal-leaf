@@ -1,6 +1,16 @@
 package acal.com.acal_left.resouces.repository.model;
 
-import jakarta.persistence.*;
+import acal.com.acal_left.core.model.Invoice;
+import acal.com.acal_left.resouces.repository.repository.impl.AddressRepositoryImpl;
+import acal.com.acal_left.resouces.repository.repository.impl.PersonRepositoryImpl;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,6 +35,20 @@ public class InvoiceEntity {
 
     @Column(name = "data_pagamento")
     private LocalDateTime paidAt;
+
+    @Column(name = "data_vencimento")
+    private LocalDateTime dueDate;
+
+    public static Invoice toDomain(InvoiceEntity entity) {
+        return Invoice.builder()
+                .person(PersonRepositoryImpl.toEntity(entity.getPersonAddress().getPerson()))
+                .address(AddressRepositoryImpl.toEntity(entity.getPersonAddress().getAddress()))
+                .dueDate(entity.getDueDate())
+                .paidAt(entity.getPaidAt())
+                .period(entity.getPeriod())
+                .id(entity.getId())
+                .build();
+    }
 
     @Override
     public String toString() {

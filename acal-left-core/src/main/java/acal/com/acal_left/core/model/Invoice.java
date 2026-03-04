@@ -19,6 +19,11 @@ public class Invoice {
     private Address address;
     private LocalDate period;
     private LocalDateTime paidAt;
+    private LocalDateTime dueDate;
+
+    public boolean isOverDue() {
+        return dueDate != null && LocalDateTime.now().isAfter(dueDate) && !isPaid();
+    }
 
     public boolean isPaid(){
         return paidAt != null;
