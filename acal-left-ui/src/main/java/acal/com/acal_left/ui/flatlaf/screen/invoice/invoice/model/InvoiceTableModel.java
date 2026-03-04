@@ -40,6 +40,7 @@ public class InvoiceTableModel extends AbstractTableModel {
         InvoiceColumns column = InvoiceColumns.values()[columnIndex];
 
         return switch (column) {
+            case InvoiceColumns.PAID -> c.getPaid();
             case InvoiceColumns.PARTNER -> c.getPartner();
             case InvoiceColumns.NUMBER -> c.getNumber();
             case InvoiceColumns.PERIOD -> c.getPeriod();

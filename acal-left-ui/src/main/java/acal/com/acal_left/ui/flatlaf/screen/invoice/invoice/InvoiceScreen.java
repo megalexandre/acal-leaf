@@ -4,7 +4,7 @@ import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.invoice.InvoiceFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
-import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.PaginatedInvoiceTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,8 @@ import java.awt.event.ActionEvent;
 public class InvoiceScreen extends JPanel {
     public final String name = Screen.INVOICE.name();
     private final InvoiceFindUseCase find;
-    private PaginatedInvoiceTableModel paginatedModel;
+    private int currentPage = 0;
+    private int pageSize = 100;
     private boolean hasMorePages = false;
 
     public InvoiceScreen(InvoiceFindUseCase find) {
@@ -31,70 +32,63 @@ public class InvoiceScreen extends JPanel {
     }
 
     private void searchActionListener(ActionEvent e) {
-        paginatedModel = new PaginatedInvoiceTableModel();
-        table.setModel(paginatedModel);
+        currentPage = 0;
         fetchPageData();
     }
 
     private void updatePaginationLabel() {
-        if (paginatedModel != null) {
-            int currentPage = paginatedModel.getPagination().getCurrentPage() + 1;
-            int pageSize = paginatedModel.getPagination().getPageSize();
-            int itemsInThisPage = paginatedModel.getPageItems().size();
+        InvoiceTableModel model = (InvoiceTableModel) table.getModel();
+        int itemsInThisPage = model.getItems().size();
 
-            int estimatedTotal = itemsInThisPage < pageSize ?
-                (paginatedModel.getPagination().getCurrentPage() * pageSize) + itemsInThisPage :
-                (paginatedModel.getPagination().getCurrentPage() + 1) * pageSize;
+        labelPagination.setText(String.format("Página %d (%d itens)", currentPage + 1, itemsInThisPage));
 
-            int totalPages = (int) Math.ceil((double) estimatedTotal / pageSize);
-
-            labelPagination.setText(String.format("Página %d de %d (%d itens)", currentPage, Math.max(totalPages, 1), estimatedTotal));
-
-            // Habilitar/desabilitar botões
-            buttonFirstPage.setEnabled(paginatedModel.getPagination().getCurrentPage() > 0);
-            buttonPreviousPage.setEnabled(paginatedModel.getPagination().hasPreviousPage());
-            buttonNextPage.setEnabled(hasMorePages);
-            buttonLastPage.setEnabled(hasMorePages);
-        }
+        buttonFirstPage.setEnabled(currentPage > 0);
+        buttonPreviousPage.setEnabled(currentPage > 0);
+        buttonNextPage.setEnabled(hasMorePages);
+        buttonLastPage.setEnabled(hasMorePages);
     }
 
     private void onFirstPage(ActionEvent e) {
-        if (paginatedModel != null && paginatedModel.getPagination().getCurrentPage() > 0) {
-            paginatedModel.firstPage();
+        if (currentPage > 0) {
+            currentPage = 0;
             fetchPageData();
         }
     }
 
     private void onPreviousPage(ActionEvent e) {
-        if (paginatedModel != null && paginatedModel.getPagination().hasPreviousPage()) {
-            paginatedModel.previousPage();
+        if (currentPage > 0) {
+            currentPage--;
             fetchPageData();
         }
     }
 
     private void onNextPage(ActionEvent e) {
-        if (paginatedModel != null && paginatedModel.getPagination().hasNextPage()) {
-            paginatedModel.nextPage();
+        if (hasMorePages) {
+            currentPage++;
             fetchPageData();
         }
     }
 
     private void onLastPage(ActionEvent e) {
-        if (paginatedModel != null && paginatedModel.getPagination().hasNextPage()) {
-            paginatedModel.lastPage();
+        if (hasMorePages) {
+            currentPage++;
             fetchPageData();
         }
     }
 
     private void fetchPageData() {
-        int currentPage = paginatedModel.getPagination().getCurrentPage();
-        int pageSize = paginatedModel.getPagination().getPageSize();
         var pageable = PageRequest.of(currentPage, pageSize);
-        var items = find.execute(InvoiceQuery.builder().pageable(pageable).build()).stream().map(InvoiceTableContent::new).toList();
+        var items = find.execute(InvoiceQuery.builder().pageable(pageable).build())
+                .stream()
+                .map(InvoiceTableContent::new)
+                .toList();
 
         hasMorePages = items.size() >= pageSize;
 
-        paginatedModel.setList(items);
+        InvoiceTableModel model = new InvoiceTableModel();
+        model.setList(items);
+        table.setModel(model);
+
         updatePaginationLabel();
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,5 +18,10 @@ public class Invoice {
     private Person person;
     private Address address;
     private LocalDate period;
+    private LocalDateTime paidAt;
+
+    public boolean isPaid(){
+        return paidAt != null;
+    }
 
 }

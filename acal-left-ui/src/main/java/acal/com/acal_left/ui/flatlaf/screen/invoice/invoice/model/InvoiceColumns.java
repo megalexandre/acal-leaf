@@ -9,6 +9,7 @@ public enum InvoiceColumns {
     NUMBER("Número:"),
     PARTNER("Sócio:"),
     ADDRESS("Endereço:"),
+    PAID("Pago:"),
     PERIOD("Competência:")
     ;
 

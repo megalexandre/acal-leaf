@@ -44,30 +44,6 @@ public class PaginatedInvoiceTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public void nextPage() {
-        if (pagination.hasNextPage()) {
-            pagination.nextPage();
-            updatePageItems();
-        }
-    }
-
-    public void previousPage() {
-        if (pagination.hasPreviousPage()) {
-            pagination.previousPage();
-            updatePageItems();
-        }
-    }
-
-    public void firstPage() {
-        pagination.firstPage();
-        updatePageItems();
-    }
-
-    public void lastPage() {
-        pagination.lastPage();
-        updatePageItems();
-    }
-
     public Invoice get(int rowIndex) {
         if (rowIndex >= 0 && rowIndex < pageItems.size()) {
             return pageItems.get(rowIndex).getItem();
@@ -96,6 +72,7 @@ public class PaginatedInvoiceTableModel extends AbstractTableModel {
         InvoiceColumns column = InvoiceColumns.values()[columnIndex];
 
         return switch (column) {
+            case InvoiceColumns.PAID -> c.getPaid();
             case InvoiceColumns.PARTNER -> c.getPartner();
             case InvoiceColumns.NUMBER -> c.getNumber();
             case InvoiceColumns.PERIOD -> c.getPeriod();

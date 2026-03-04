@@ -14,6 +14,7 @@ public class InvoiceTableContent {
     private final String partner;
     private final String period;
     private final String address;
+    private final String paid;
     private final Invoice item;
 
     public InvoiceTableContent(Invoice item) {
@@ -22,6 +23,7 @@ public class InvoiceTableContent {
         this.partner = item.getPerson().getName();
         this.address = item.getAddress().getFullAddress();
         this.period = item.getPeriod() == null ? "" : item.getPeriod().format(PERIOD_FORMATTER);
+        this.paid = item.isPaid() ? "Sim" : "Não";
         this.item = item;
     }
 

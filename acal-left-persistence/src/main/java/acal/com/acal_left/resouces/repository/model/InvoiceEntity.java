@@ -23,6 +23,9 @@ public class InvoiceEntity {
     @Column(name = "data_referente")
     private LocalDate period;
 
+    @Column(name = "data_pagamento")
+    private LocalDateTime paidAt;
+
     @Override
     public String toString() {
         return "id:" + id;

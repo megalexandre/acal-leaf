@@ -33,6 +33,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         return Invoice.builder()
                 .person(PersonRepositoryImpl.toEntity(entity.getPersonAddress().getPerson()))
                 .address(AddressRepositoryImpl.toEntity(entity.getPersonAddress().getAddress()))
+                .paidAt(entity.getPaidAt())
                 .period(entity.getPeriod())
                 .id(entity.getId())
                 .build();
