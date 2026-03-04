@@ -1,6 +1,7 @@
 package acal.com.acal_left.resouces.repository.repository.jpa;
 
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,7 +29,8 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
         @Param("id") Integer id,
         @Param("categoryId") Integer categoryId,
         @Param("addressId") Integer addressId,
-        @Param("partnerId") Integer partnerId
+        @Param("partnerId") Integer partnerId,
+        Pageable pageable
     );
 
 }

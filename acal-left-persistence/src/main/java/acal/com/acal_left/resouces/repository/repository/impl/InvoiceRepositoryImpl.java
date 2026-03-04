@@ -24,7 +24,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                 invoiceQuery.getId(),
                 invoiceQuery.getCategoryId(),
                 invoiceQuery.getAddressId(),
-                invoiceQuery.getPartnerId()
+                invoiceQuery.getPartnerId(),
+                invoiceQuery.getPageable()
         ).stream().map(InvoiceRepositoryImpl::toEntity).toList();
     }
 

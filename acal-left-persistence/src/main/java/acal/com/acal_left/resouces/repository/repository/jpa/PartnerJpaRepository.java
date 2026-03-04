@@ -11,9 +11,13 @@ import java.util.List;
 @Repository
 public interface PartnerJpaRepository extends JpaRepository<PartnerEntity, Integer> {
 
-    @Query("SELECT p FROM PartnerEntity p " +
-            "JOIN FETCH p.person per " +
-            "WHERE (:name IS NULL OR LOWER(per.name) LIKE LOWER(CONCAT(:name, '%'))) " +
-            "ORDER BY per.name ASC")
+    @Query(
+        """
+        SELECT p FROM PartnerEntity p
+            JOIN FETCH p.person per 
+        WHERE (:name IS NULL OR LOWER(per.name) LIKE LOWER(CONCAT(:name, '%'))) 
+            ORDER BY per.name ASC
+        """
+)
     List<PartnerEntity> findByFilter(@Param("name") String name);
 }

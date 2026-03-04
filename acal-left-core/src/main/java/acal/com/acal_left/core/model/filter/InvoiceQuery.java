@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Pageable;
 
 @Data
 @Builder
@@ -14,4 +15,5 @@ public class InvoiceQuery {
     private Integer categoryId;
     private Integer addressId;
     private Integer partnerId;
+    private Pageable pageable;
 }
