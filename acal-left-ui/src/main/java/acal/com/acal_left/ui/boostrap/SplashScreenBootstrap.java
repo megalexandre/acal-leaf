@@ -6,6 +6,16 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class SplashScreenBootstrap {
 
+    private static Timer textTimer;
+    private static int phraseIndex = 0;
+    private static final String[] PHRASES = {
+            "Carregando módulos...",
+            "Sincronizando dados...",
+            "Preparando interface...",
+            "Quase pronto..."
+    };
+
+
     private static final Object LOCK = new Object();
     private static JWindow splashWindow;
 
@@ -17,7 +27,6 @@ public final class SplashScreenBootstrap {
             return;
         }
 
-        // está pasando duas vezes aqui
         if (splashWindow != null && splashWindow.isVisible()) {
             return;
         }
@@ -40,6 +49,11 @@ public final class SplashScreenBootstrap {
         }
 
         SwingUtilities.invokeLater(() -> {
+            if (textTimer != null) {
+                textTimer.stop();
+                textTimer = null;
+            }
+
             synchronized (LOCK) {
                 if (splashWindow != null) {
                     splashWindow.setVisible(false);
@@ -65,10 +79,16 @@ public final class SplashScreenBootstrap {
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
         title.setForeground(new Color(30, 35, 44));
 
-        JLabel subtitle = new JLabel("Iniciando aplicacao...", SwingConstants.CENTER);
+        JLabel subtitle = new JLabel(PHRASES[0], SwingConstants.CENTER);
         subtitle.setAlignmentX(0.5f);
         subtitle.setFont(subtitle.getFont().deriveFont(Font.PLAIN, 13f));
         subtitle.setForeground(new Color(85, 92, 103));
+
+        textTimer = new Timer(2000, e -> {
+            phraseIndex = (phraseIndex + 1) % PHRASES.length;
+            subtitle.setText(PHRASES[phraseIndex]);
+        });
+        textTimer.start();
 
         JProgressBar progress = new JProgressBar();
         progress.setIndeterminate(true);
