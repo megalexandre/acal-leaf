@@ -2,7 +2,6 @@ package acal.com.acal_left.resouces.repository.model;
 
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.resouces.repository.repository.impl.AddressRepositoryImpl;
-import acal.com.acal_left.resouces.repository.repository.impl.PersonRepositoryImpl;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -19,6 +20,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "conta")
 @Data
+@NamedEntityGraph(
+    name = "InvoiceEntity.withAllRelationships",
+    attributeNodes = {
+        @NamedAttributeNode("personAddress")
+    }
+)
 public class InvoiceEntity {
 
     @Id
@@ -39,9 +46,11 @@ public class InvoiceEntity {
     @Column(name = "data_vencimento")
     private LocalDateTime dueDate;
 
+
     public static Invoice toDomain(InvoiceEntity entity) {
         return Invoice.builder()
-                .person(PersonRepositoryImpl.toEntity(entity.getPersonAddress().getPerson()))
+                .number(entity.getPersonAddress().getNumber())
+                .person(PersonEntity.toEntity(entity.getPersonAddress().getPerson()))
                 .address(AddressRepositoryImpl.toEntity(entity.getPersonAddress().getAddress()))
                 .dueDate(entity.getDueDate())
                 .paidAt(entity.getPaidAt())

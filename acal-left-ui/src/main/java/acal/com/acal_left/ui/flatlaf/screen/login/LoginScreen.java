@@ -14,9 +14,17 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -31,6 +39,7 @@ public class LoginScreen extends JPanel {
         this.eventPublisher = eventPublisher;
 
         initComponents();
+        successLogin(new User());
     }
 
     private void login(){
@@ -157,6 +166,7 @@ public class LoginScreen extends JPanel {
                 panel3.add(label1);
 
                 //---- textFieldUsername ----
+                textFieldUsername.setText("alexandre");
                 textFieldUsername.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -176,6 +186,7 @@ public class LoginScreen extends JPanel {
                 panel4.add(label2);
 
                 //---- passwordFieldPassword ----
+                passwordFieldPassword.setText("senha");
                 passwordFieldPassword.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {

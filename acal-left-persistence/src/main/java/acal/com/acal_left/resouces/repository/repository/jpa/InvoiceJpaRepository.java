@@ -13,7 +13,25 @@ import java.util.List;
 public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integer> {
 
     @Query("""
-            SELECT DISTINCT i FROM InvoiceEntity i
+            SELECT COUNT(i) FROM InvoiceEntity i
+            JOIN i.personAddress pa
+            JOIN pa.person p
+            JOIN pa.address a
+            JOIN pa.category c
+            WHERE (:id IS NULL OR i.id = :id)
+                AND (:categoryId IS NULL OR c.id = :categoryId)
+                AND (:addressId IS NULL OR a.id = :addressId)
+                AND (:personId IS NULL OR p.id = :personId)
+            """)
+    long countInvoices(
+        @Param("id") Integer id,
+        @Param("categoryId") Integer categoryId,
+        @Param("addressId") Integer addressId,
+        @Param("personId") Integer personId
+    );
+
+    @Query("""
+            SELECT i FROM InvoiceEntity i
             JOIN FETCH i.personAddress pa
             JOIN FETCH pa.person p
             JOIN FETCH p.partner
@@ -22,15 +40,14 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             WHERE (:id IS NULL OR i.id = :id)
                 AND (:categoryId IS NULL OR c.id = :categoryId)
                 AND (:addressId IS NULL OR a.id = :addressId)
-                AND (:partnerId IS NULL OR p.partner.id = :partnerId)
+                AND (:personId IS NULL OR p.id = :personId)
             ORDER BY i.period DESC, a.type ASC, a.name ASC
             """)
-
-    List<InvoiceEntity> findInvoices(
+    List<InvoiceEntity> findInvoicesWithPagination(
         @Param("id") Integer id,
         @Param("categoryId") Integer categoryId,
         @Param("addressId") Integer addressId,
-        @Param("partnerId") Integer partnerId,
+        @Param("personId") Integer personId,
         Pageable pageable
     );
 

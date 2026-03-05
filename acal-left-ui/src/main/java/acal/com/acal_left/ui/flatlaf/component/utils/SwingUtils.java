@@ -1,6 +1,6 @@
-package acal.com.acal_left.ui.utils;
+package acal.com.acal_left.ui.flatlaf.component.utils;
 
-import acal.com.acal_left.ui.filter.NumericDocumentFilter;
+import acal.com.acal_left.ui.flatlaf.component.filter.NumericDocumentFilter;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;

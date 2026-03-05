@@ -4,6 +4,7 @@ import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.repository.LinkRepository;
 import acal.com.acal_left.resouces.repository.model.LinkEntity;
+import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.LinkJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +37,7 @@ public class LinkRepositoryImpl implements LinkRepository {
                 .active(!entity.isInactive())
                 .address(AddressRepositoryImpl.toEntity(entity.getAddress()))
                 .category(CategoryRepositoryImpl.toEntity( entity.getCategory()))
-                .person(PersonRepositoryImpl.toEntity(entity.getPerson()))
+                .person(PersonEntity.toEntity(entity.getPerson()))
                 .build();
     }
 

@@ -4,6 +4,7 @@ import acal.com.acal_left.core.model.Partner;
 import acal.com.acal_left.core.model.filter.PartnerFilter;
 import acal.com.acal_left.core.repository.PartnerRepository;
 import acal.com.acal_left.resouces.repository.model.PartnerEntity;
+import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.PartnerJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +28,7 @@ public class PartnerRepositoryImpl implements PartnerRepository {
     public static Partner toEntity(PartnerEntity entity) {
         return Partner.builder()
                 .id(entity.getId())
-                .person(PersonRepositoryImpl.toEntity(entity.getPerson()))
+                .person(PersonEntity.toEntity(entity.getPerson()))
                 .build();
     }
 

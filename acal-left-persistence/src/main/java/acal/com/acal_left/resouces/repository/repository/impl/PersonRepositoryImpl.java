@@ -1,14 +1,15 @@
 package acal.com.acal_left.resouces.repository.repository.impl;
 
-import acal.com.acal_left.core.model.Document;
-import acal.com.acal_left.core.model.Partner;
 import acal.com.acal_left.core.model.Person;
+import acal.com.acal_left.core.repository.PersonRepository;
 import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.PersonJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public class PersonRepositoryImpl  {
+public class PersonRepositoryImpl implements PersonRepository {
 
     private final PersonJpaRepository repository;
 
@@ -16,16 +17,9 @@ public class PersonRepositoryImpl  {
         this.repository = repository;
     }
 
-    public static Person toEntity(PersonEntity personEntity) {
-        return Person.builder()
-                .id(personEntity.getId())
-                .name(personEntity.getName())
-                .partner(
-                    Partner.builder()
-                        .build()
-                )
-                .document(Document.builder().value(personEntity.getDocument()).build())
-                .build();
+    @Override
+    public List<Person> findAll() {
+        return repository.findOrderByName().stream().map(PersonEntity::toEntity).toList();
     }
 
 }

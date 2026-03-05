@@ -10,7 +10,7 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableModel;
 import acal.com.acal_left.ui.flatlaf.screen.link.render.LinkTableRenderer;
-import acal.com.acal_left.ui.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

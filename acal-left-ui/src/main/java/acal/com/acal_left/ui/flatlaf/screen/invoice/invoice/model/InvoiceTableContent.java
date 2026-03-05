@@ -20,16 +20,17 @@ public class InvoiceTableContent {
     private final String paid;
     private final String dueDate;
     private final Boolean isOverDue;
-
+    private final Invoice.Status status;
     private final Invoice item;
 
     public InvoiceTableContent(Invoice item) {
         this.id = item.getId();
         this.number = item.getId().toString();
         this.partner = item.getPerson().getName();
-        this.address = item.getAddress().getFullAddress();
+        this.address = item.getAddress().getFullAddress() + " " + item.getNumber();
         this.dueDate = item.getDueDate().format(DATE_TIME_FORMATTER);
-        this.period = item.getPeriod() == null ? "" : item.getPeriod().format(PERIOD_FORMATTER);
+        this.period = item.getPeriod().format(PERIOD_FORMATTER);
+        this.status = item.getStatus();
         this.paid = item.isPaid() ? "Sim" : "Não";
         this.isOverDue = item.isOverDue();
         this.item = item;

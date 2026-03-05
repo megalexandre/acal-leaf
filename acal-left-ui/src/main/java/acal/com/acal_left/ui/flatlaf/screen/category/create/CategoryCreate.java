@@ -2,9 +2,9 @@ package acal.com.acal_left.ui.flatlaf.screen.category.create;
 
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.shared.model.MemberGroup;
-import acal.com.acal_left.ui.filter.MoneyTextField;
+import acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
-import acal.com.acal_left.ui.render.MemberGroupRenderer;
+import acal.com.acal_left.ui.flatlaf.component.render.MemberGroupRenderer;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 

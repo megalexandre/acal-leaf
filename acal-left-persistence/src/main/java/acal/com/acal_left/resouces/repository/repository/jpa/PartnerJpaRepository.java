@@ -18,6 +18,6 @@ public interface PartnerJpaRepository extends JpaRepository<PartnerEntity, Integ
         WHERE (:name IS NULL OR LOWER(per.name) LIKE LOWER(CONCAT(:name, '%'))) 
             ORDER BY per.name ASC
         """
-)
+    )
     List<PartnerEntity> findByFilter(@Param("name") String name);
 }

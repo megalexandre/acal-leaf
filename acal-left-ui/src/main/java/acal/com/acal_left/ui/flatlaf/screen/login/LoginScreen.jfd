@@ -24,6 +24,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JTextField" ) {
 						name: "textFieldUsername"
+						"text": "alexandre"
 						addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "textFieldUsernameKeyPressed", true ) )
 					} )
 				} )
@@ -35,6 +36,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JPasswordField" ) {
 						name: "passwordFieldPassword"
+						"text": "senha"
 						addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "passwordFieldPasswordKeyPressed", true ) )
 					} )
 				} )

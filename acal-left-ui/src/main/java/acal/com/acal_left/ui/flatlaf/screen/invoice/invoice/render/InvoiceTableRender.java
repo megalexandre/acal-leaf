@@ -16,6 +16,7 @@ public class InvoiceTableRender extends DefaultTableCellRenderer {
         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 
+
         /*
         InvoiceTableModel model = (InvoiceTableModel) table.getModel();
         int modelRow = table.convertRowIndexToModel(row);

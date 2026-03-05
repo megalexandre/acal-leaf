@@ -1,4 +1,4 @@
-package acal.com.acal_left.ui.model;
+package acal.com.acal_left.ui.flatlaf.component.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +15,12 @@ public class ComboBoxOption {
     private String name;
 
     public static Integer getSelectedId(JComboBox<ComboBoxOption> comboBox) {
+
         if(comboBox == null) {
             return null;
         }
 
-        Object selected = comboBox.getSelectedItem();
-
-        if (selected instanceof ComboBoxOption option) {
+        if (comboBox.getSelectedItem() instanceof ComboBoxOption option) {
             return option.getId();
         }
 

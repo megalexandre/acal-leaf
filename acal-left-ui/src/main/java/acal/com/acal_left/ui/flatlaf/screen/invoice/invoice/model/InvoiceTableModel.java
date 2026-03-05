@@ -18,7 +18,7 @@ public class InvoiceTableModel extends AbstractTableModel {
         ADDRESS("Endereço:"),
         PERIOD("Competência:"),
         DUE_DATE("Vencimento:"),
-        PAID("Pago:")
+        STATUS("Status:")
         ;
 
         private final String name;
@@ -62,7 +62,7 @@ public class InvoiceTableModel extends AbstractTableModel {
         InvoiceColumns column = InvoiceColumns.values()[columnIndex];
 
         return switch (column) {
-            case PAID -> c.getPaid();
+            case STATUS -> c.getStatus();
             case DUE_DATE -> c.getDueDate();
             case PARTNER -> c.getPartner();
             case NUMBER -> c.getNumber();
@@ -73,6 +73,12 @@ public class InvoiceTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
+        InvoiceColumns column = InvoiceColumns.values()[columnIndex];
+
+        if (column == InvoiceColumns.STATUS) {
+            return Invoice.Status.class;
+        }
+
         return String.class;
     }
 }

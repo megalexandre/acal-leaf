@@ -14,6 +14,6 @@ public class InvoiceQuery {
     private Integer id;
     private Integer categoryId;
     private Integer addressId;
-    private Integer partnerId;
+    private Integer personId;
     private Pageable pageable;
 }

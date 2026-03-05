@@ -1,5 +1,8 @@
 package acal.com.acal_left.resouces.repository.model;
 
+import acal.com.acal_left.core.model.Document;
+import acal.com.acal_left.core.model.Partner;
+import acal.com.acal_left.core.model.Person;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,7 +29,6 @@ public class PersonEntity {
     @Column(name = "cnpj")
     private String cnpj;
 
-
     public String getDocument() {
         if (cpf != null && !cpf.isEmpty()) {
             return cpf;
@@ -36,6 +38,18 @@ public class PersonEntity {
         }
 
         return null;
+    }
+
+    public static Person toEntity(PersonEntity personEntity) {
+        return Person.builder()
+                .id(personEntity.getId())
+                .name(personEntity.getName())
+                .partner(
+                        Partner.builder()
+                                .build()
+                )
+                .document(Document.builder().value(personEntity.getDocument()).build())
+                .build();
     }
 
     @Override
