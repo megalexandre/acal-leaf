@@ -8,6 +8,7 @@ import java.util.List;
 public class ReportService {
 
     public byte[] createReport(List<InvoiceReportOutput> invoices) {
+
         var templateStream = getClass().getClassLoader()
                 .getResourceAsStream("reports/invoice_report.jrxml");
 
@@ -15,9 +16,7 @@ public class ReportService {
             throw new IllegalStateException("Template de relatório não encontrado!");
         }
 
-        ReportManager reportManager = new ReportManager();
-
-        return reportManager.generatePdfReport(
+        return new ReportManager().generatePdfReport(
                 templateStream,
                 invoices,
                 new HashMap<>()

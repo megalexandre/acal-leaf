@@ -9,8 +9,8 @@
     <property name="ireport.x" value="402"/>
     <property name="ireport.y" value="297"/>
 
+    <field name="id" class="java.lang.String"/>
     <field name="partner" class="java.lang.String"/>
-    <field name="number" class="java.lang.String"/>
     <field name="partnerNumber" class="java.lang.String"/>
     <field name="excessValue" class="java.lang.String"/>
     <field name="excessLimit" class="java.lang.String"/>
@@ -393,7 +393,7 @@
                 <textElement verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
             </textField>
             <image>
                 <reportElement uuid="b20c9da2-28aa-4b92-83e4-67ca517ed60f" x="4" y="27" width="95" height="54"/>
