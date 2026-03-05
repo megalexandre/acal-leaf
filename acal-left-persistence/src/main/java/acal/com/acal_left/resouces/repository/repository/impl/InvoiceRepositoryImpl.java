@@ -22,6 +22,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     public Page<Invoice> findInvoices(InvoiceQuery invoiceQuery) {
         long total = invoiceJpaRepository.countInvoices(
                 invoiceQuery.getId(),
+                invoiceQuery.getPeriod(),
+                invoiceQuery.getDueDate(),
                 invoiceQuery.getCategoryId(),
                 invoiceQuery.getAddressId(),
                 invoiceQuery.getPersonId()
@@ -29,6 +31,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
         var invoices = invoiceJpaRepository.findInvoicesWithPagination(
                 invoiceQuery.getId(),
+                invoiceQuery.getPeriod(),
+                invoiceQuery.getDueDate(),
                 invoiceQuery.getCategoryId(),
                 invoiceQuery.getAddressId(),
                 invoiceQuery.getPersonId(),

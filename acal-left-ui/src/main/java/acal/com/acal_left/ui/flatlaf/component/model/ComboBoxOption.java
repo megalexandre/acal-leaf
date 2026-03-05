@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +25,10 @@ public class ComboBoxOption {
         }
 
         return null;
+    }
+
+    public static ComboBoxOption empty() {
+        return new ComboBoxOption(null, "");
     }
 
     @Override

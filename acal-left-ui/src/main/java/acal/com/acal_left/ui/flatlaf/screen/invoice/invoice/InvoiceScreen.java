@@ -2,9 +2,11 @@ package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice;
 
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceFindUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.component.render.StatusBadgeRenderer;
 import acal.com.acal_left.ui.flatlaf.component.utils.SwingUtils;
@@ -18,9 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,12 +30,19 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.text.MaskFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Scope("prototype")
@@ -43,6 +52,9 @@ public class InvoiceScreen extends JPanel {
 
     @Autowired
     private PersonFindUseCase personFind;
+
+    @Autowired
+    private AddressFindAllUseCase addressFind;
 
     @Autowired
     private InvoiceFindUseCase find;
@@ -62,37 +74,48 @@ public class InvoiceScreen extends JPanel {
     }
 
     private void initEvents() {
-        comboBoxPartner.addPopupMenuListener(new PopupMenuListener() {
+        createMask(formattedPeriod, "##/####");
+        createMask(formattedDueDate, "##/##/####");
 
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        ComboBoxLoader.setupLazyLoad(comboBoxPartner, this::getOrLoadPersons);
+        ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
+    }
 
-                if(!screenData.hasPersons()){
-                    screenData.setPersons(personFind.execute());
-                }
 
-                if (comboBoxPartner.getItemCount() == 0) {
-                    DefaultComboBoxModel<ComboBoxOption> model =
-                       new DefaultComboBoxModel<>(screenData.getPersonsOptions());
-                    comboBoxPartner.setModel(model);
-                }
-            }
 
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-            }
+    private List<ComboBoxOption> getOrLoadPersons() {
+        if (screenData.getPersons().isEmpty()) {
+            screenData.setPersons(personFind.execute());
+        }
+        return Arrays.asList(screenData.getPersonsOptions());
+    }
 
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-            }
-
-        });
+    private List<ComboBoxOption> getOrLoadAddresses() {
+        if (screenData.getAddresses().isEmpty()) {
+            screenData.setAddresses(addressFind.execute());
+        }
+        return Arrays.asList(screenData.getAddressesOptions());
     }
 
     private void searchActionListener(ActionEvent e) {
-        currentPage = 0;
+        search(0);
+    }
+
+    private void search(int page){
+        currentPage = page;
         fetchPageData();
     }
+
+    private void clearActionListener(ActionEvent e) {
+        textFieldId.setText("");
+        formattedPeriod.setText("");
+        formattedDueDate.setText("");
+        comboBoxPartner.setSelectedIndex(0);
+        comboBoxAddress.setSelectedIndex(0);
+
+        search(0);
+    }
+
 
     private void updatePaginationLabel() {
         InvoiceTableModel model = (InvoiceTableModel) table.getModel();
@@ -160,6 +183,9 @@ public class InvoiceScreen extends JPanel {
         return InvoiceQuery.builder()
                 .id(getId())
                 .personId(getPersonId())
+                .period(getPeriod())
+                .dueDate(getDueDate())
+                .addressId(getAddressId())
                 .pageable(pageable).build();
     }
 
@@ -169,6 +195,53 @@ public class InvoiceScreen extends JPanel {
 
     private Integer getPersonId(){
         return ComboBoxOption.getSelectedId(comboBoxPartner);
+    }
+
+    private Integer getAddressId(){
+        return ComboBoxOption.getSelectedId(comboBoxAddress);
+    }
+
+    private LocalDateTime getDueDate(){
+        String texto = formattedDueDate.getText().trim();
+
+        if (texto.contains("_") || texto.length() < 10) {
+            return null;
+        }
+
+        try {
+            DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return LocalDate.parse(texto, parser).atStartOfDay();
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    private LocalDate getPeriod() {
+        String texto = formattedPeriod.getText().trim();
+
+        if (texto.contains("_") || texto.length() < 7) {
+            return null;
+        }
+
+        try {
+            DateTimeFormatter parser = DateTimeFormatter.ofPattern("MM/yyyy");
+            YearMonth mesAno = YearMonth.parse(texto, parser);
+            return mesAno.atDay(1);
+
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+
+    private void createMask(JFormattedTextField field, String mask){
+        try{
+            MaskFormatter item = new MaskFormatter(mask);
+            item.setPlaceholderCharacter('_');
+            item.install(field);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SuppressWarnings("Convert2MethodRef")
@@ -193,14 +266,15 @@ public class InvoiceScreen extends JPanel {
         comboBoxPartner = new JComboBox<>();
         panel7 = new JPanel();
         label3 = new JLabel();
-        textFieldAddress = new JTextField();
+        comboBoxAddress = new JComboBox<>();
         panel8 = new JPanel();
         label4 = new JLabel();
-        textFieldPeriod = new JTextField();
+        formattedPeriod = new JFormattedTextField();
         panel9 = new JPanel();
         label5 = new JLabel();
-        textFieldDueDate = new JTextField();
+        formattedDueDate = new JFormattedTextField();
         panel2 = new JPanel();
+        buttonClear = new JButton();
         buttonSearch = new JButton();
 
         //======== this ========
@@ -287,7 +361,7 @@ public class InvoiceScreen extends JPanel {
                     //---- label3 ----
                     label3.setText("Endere\u00e7o:");
                     panel7.add(label3);
-                    panel7.add(textFieldAddress);
+                    panel7.add(comboBoxAddress);
                 }
                 panel3.add(panel7);
 
@@ -299,7 +373,7 @@ public class InvoiceScreen extends JPanel {
                     //---- label4 ----
                     label4.setText("Compet\u00eancia:");
                     panel8.add(label4);
-                    panel8.add(textFieldPeriod);
+                    panel8.add(formattedPeriod);
                 }
                 panel3.add(panel8);
 
@@ -311,7 +385,7 @@ public class InvoiceScreen extends JPanel {
                     label5.setText("Vencimento:");
                     label5.setPreferredSize(new Dimension(150, 19));
                     panel9.add(label5);
-                    panel9.add(textFieldDueDate);
+                    panel9.add(formattedDueDate);
                 }
                 panel3.add(panel9);
             }
@@ -320,6 +394,11 @@ public class InvoiceScreen extends JPanel {
             //======== panel2 ========
             {
                 panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+                //---- buttonClear ----
+                buttonClear.setText("Limpar");
+                buttonClear.addActionListener(e -> clearActionListener(e));
+                panel2.add(buttonClear);
 
                 //---- buttonSearch ----
                 buttonSearch.setText("Consultas");
@@ -352,14 +431,15 @@ public class InvoiceScreen extends JPanel {
     private JComboBox<ComboBoxOption> comboBoxPartner;
     private JPanel panel7;
     private JLabel label3;
-    private JTextField textFieldAddress;
+    private JComboBox<ComboBoxOption> comboBoxAddress;
     private JPanel panel8;
     private JLabel label4;
-    private JTextField textFieldPeriod;
+    private JFormattedTextField formattedPeriod;
     private JPanel panel9;
     private JLabel label5;
-    private JTextField textFieldDueDate;
+    private JFormattedTextField formattedDueDate;
     private JPanel panel2;
+    private JButton buttonClear;
     private JButton buttonSearch;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -20,11 +22,15 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             JOIN pa.category c
             WHERE (:id IS NULL OR i.id = :id)
                 AND (:categoryId IS NULL OR c.id = :categoryId)
+                AND (:period IS NULL OR i.period = :period)
+                AND (:dueDate IS NULL OR i.dueDate = :dueDate)
                 AND (:addressId IS NULL OR a.id = :addressId)
                 AND (:personId IS NULL OR p.id = :personId)
             """)
     long countInvoices(
         @Param("id") Integer id,
+        @Param("period") LocalDate period,
+        @Param("dueDate") LocalDateTime dueDate,
         @Param("categoryId") Integer categoryId,
         @Param("addressId") Integer addressId,
         @Param("personId") Integer personId
@@ -39,12 +45,16 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             JOIN FETCH pa.category c
             WHERE (:id IS NULL OR i.id = :id)
                 AND (:categoryId IS NULL OR c.id = :categoryId)
+                AND (:period IS NULL OR i.period = :period)
+                AND (:dueDate IS NULL OR i.dueDate = :dueDate)
                 AND (:addressId IS NULL OR a.id = :addressId)
                 AND (:personId IS NULL OR p.id = :personId)
             ORDER BY i.period DESC, a.type ASC, a.name ASC
             """)
     List<InvoiceEntity> findInvoicesWithPagination(
         @Param("id") Integer id,
+        @Param("period") LocalDate period,
+        @Param("dueDate") LocalDateTime dueDate,
         @Param("categoryId") Integer categoryId,
         @Param("addressId") Integer addressId,
         @Param("personId") Integer personId,
