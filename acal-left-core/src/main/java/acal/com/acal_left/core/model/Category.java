@@ -15,5 +15,6 @@ public class Category {
     private BigDecimal amountWater;
     private BigDecimal amountPartner;
     private MemberGroup memberGroup;
+    private Boolean isHydrometer;
 
 }

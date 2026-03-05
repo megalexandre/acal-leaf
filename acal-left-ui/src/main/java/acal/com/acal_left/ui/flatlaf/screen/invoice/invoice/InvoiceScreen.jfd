@@ -136,5 +136,30 @@ new FormModel {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 970, 745 )
 		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenu"
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItemInvoiceView"
+				"text": "Visualizar"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "invoiceViewActionListener", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItem3"
+				"text": "Editar"
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItem4"
+				"text": "Deletar"
+			} )
+			add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+				name: "separator1"
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItem1"
+				"text": "Imprimir"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 1070, 180 )
+		} )
 	}
 }

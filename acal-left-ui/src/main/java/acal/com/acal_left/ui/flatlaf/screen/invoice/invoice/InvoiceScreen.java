@@ -10,9 +10,12 @@ import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.component.render.StatusBadgeRenderer;
 import acal.com.acal_left.ui.flatlaf.component.utils.SwingUtils;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
+import acal.com.acal_left.ui.report.ReportService;
+import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,17 +27,23 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -79,8 +88,44 @@ public class InvoiceScreen extends JPanel {
 
         ComboBoxLoader.setupLazyLoad(comboBoxPartner, this::getOrLoadPersons);
         ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
+
+        table.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                int row = table.rowAtPoint(e.getPoint());
+                if (row != -1) {
+                    table.setRowSelectionInterval(row, row);
+                    Invoice invoice = ((InvoiceTableModel) table.getModel()).get(row);
+                    popupMenu.putClientProperty("selected", invoice);
+                    popupMenu.show(table, e.getX(), e.getY());
+                }
+            }
+            }
+        });
     }
 
+    private void invoiceViewActionListener(ActionEvent e) {
+        Invoice i = (Invoice) popupMenu.getClientProperty("selected");
+        new ReportService().createReport(List.of(InvoiceReportOutput.fromDomain(i)));
+
+
+        createDialog((Invoice) popupMenu.getClientProperty("selected"));
+    }
+
+    private void createDialog(Invoice invoice) {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        InvoiceCreateDialog createDialog = new InvoiceCreateDialog(window, invoice);
+        createDialog.pack();
+        createDialog.setLocationRelativeTo(window);
+        /*
+        categoryEdit.setOnSuccess(e -> {
+            save.execute((Category) e.getSource());
+            searchActionListener(null);
+        });
+         */
+        createDialog.setVisible(true);
+    }
 
 
     private List<ComboBoxOption> getOrLoadPersons() {
@@ -244,6 +289,8 @@ public class InvoiceScreen extends JPanel {
         }
     }
 
+
+
     @SuppressWarnings("Convert2MethodRef")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -276,6 +323,11 @@ public class InvoiceScreen extends JPanel {
         panel2 = new JPanel();
         buttonClear = new JButton();
         buttonSearch = new JButton();
+        popupMenu = new JPopupMenu();
+        menuItemInvoiceView = new JMenuItem();
+        menuItem3 = new JMenuItem();
+        menuItem4 = new JMenuItem();
+        menuItem1 = new JMenuItem();
 
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
@@ -408,6 +460,28 @@ public class InvoiceScreen extends JPanel {
             panel1.add(panel2);
         }
         add(panel1, BorderLayout.SOUTH);
+
+        //======== popupMenu ========
+        {
+
+            //---- menuItemInvoiceView ----
+            menuItemInvoiceView.setText("Visualizar");
+            menuItemInvoiceView.addActionListener(e -> invoiceViewActionListener(e));
+            popupMenu.add(menuItemInvoiceView);
+
+            //---- menuItem3 ----
+            menuItem3.setText("Editar");
+            popupMenu.add(menuItem3);
+
+            //---- menuItem4 ----
+            menuItem4.setText("Deletar");
+            popupMenu.add(menuItem4);
+            popupMenu.addSeparator();
+
+            //---- menuItem1 ----
+            menuItem1.setText("Imprimir");
+            popupMenu.add(menuItem1);
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -441,5 +515,10 @@ public class InvoiceScreen extends JPanel {
     private JPanel panel2;
     private JButton buttonClear;
     private JButton buttonSearch;
+    private JPopupMenu popupMenu;
+    private JMenuItem menuItemInvoiceView;
+    private JMenuItem menuItem3;
+    private JMenuItem menuItem4;
+    private JMenuItem menuItem1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

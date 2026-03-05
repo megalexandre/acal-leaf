@@ -14,6 +14,7 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -46,6 +47,12 @@ public class InvoiceEntity {
     @Column(name = "data_vencimento")
     private LocalDateTime dueDate;
 
+    @Column(name = "amount_partner", precision = 10, scale = 2, nullable = false)
+    private BigDecimal amountPartner;
+
+    @Column(name = "amount_water", nullable = false)
+    private BigDecimal amountWater;
+
 
     public static Invoice toDomain(InvoiceEntity entity) {
         return Invoice.builder()
@@ -55,6 +62,8 @@ public class InvoiceEntity {
                 .dueDate(entity.getDueDate())
                 .paidAt(entity.getPaidAt())
                 .period(entity.getPeriod())
+                .amountPartner(entity.getAmountPartner())
+                .amountWater(entity.getAmountWater())
                 .id(entity.getId())
                 .build();
     }

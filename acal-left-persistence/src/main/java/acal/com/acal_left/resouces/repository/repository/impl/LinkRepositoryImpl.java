@@ -3,6 +3,7 @@ package acal.com.acal_left.resouces.repository.repository.impl;
 import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.repository.LinkRepository;
+import acal.com.acal_left.resouces.repository.model.CategoryEntity;
 import acal.com.acal_left.resouces.repository.model.LinkEntity;
 import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.LinkJpaRepository;
@@ -36,7 +37,7 @@ public class LinkRepositoryImpl implements LinkRepository {
                 .number(entity.getNumber())
                 .active(!entity.isInactive())
                 .address(AddressRepositoryImpl.toEntity(entity.getAddress()))
-                .category(CategoryRepositoryImpl.toEntity( entity.getCategory()))
+                .category(CategoryEntity.toEntity( entity.getCategory()))
                 .person(PersonEntity.toEntity(entity.getPerson()))
                 .build();
     }

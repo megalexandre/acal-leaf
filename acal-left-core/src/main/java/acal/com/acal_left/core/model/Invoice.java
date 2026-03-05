@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -37,13 +38,21 @@ public class Invoice {
     private Integer id;
     private Person person;
     private Address address;
+    private Category category;
     private String number;
     private LocalDate period;
     private LocalDateTime paidAt;
     private LocalDateTime dueDate;
 
+    private BigDecimal amountPartner;
+    private BigDecimal amountWater;
+
     public boolean isPaid(){
         return paidAt != null;
+    }
+
+    public BigDecimal totalAmount() {
+        return amountPartner.add(amountWater);
     }
 
     public boolean isOverDue() {

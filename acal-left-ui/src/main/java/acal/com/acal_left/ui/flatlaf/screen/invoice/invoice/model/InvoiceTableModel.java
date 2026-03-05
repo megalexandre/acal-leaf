@@ -17,6 +17,7 @@ public class InvoiceTableModel extends AbstractTableModel {
         PARTNER("Sócio:"),
         ADDRESS("Endereço:"),
         PERIOD("Competência:"),
+        TOTAL("Valor Total:"),
         DUE_DATE("Vencimento:"),
         STATUS("Status:")
         ;
@@ -65,6 +66,7 @@ public class InvoiceTableModel extends AbstractTableModel {
             case STATUS -> c.getStatus();
             case DUE_DATE -> c.getDueDate();
             case PARTNER -> c.getPartner();
+            case TOTAL -> c.getTotal();
             case NUMBER -> c.getNumber();
             case PERIOD -> c.getPeriod();
             case ADDRESS -> c.getAddress();

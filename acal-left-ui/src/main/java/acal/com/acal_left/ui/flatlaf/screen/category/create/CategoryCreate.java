@@ -3,16 +3,31 @@ package acal.com.acal_left.ui.flatlaf.screen.category.create;
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.shared.model.MemberGroup;
 import acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField;
-import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
 import acal.com.acal_left.ui.flatlaf.component.render.MemberGroupRenderer;
+import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 public class CategoryCreate extends JDialog {
 
@@ -37,9 +52,13 @@ public class CategoryCreate extends JDialog {
     private void init() {
         comboBoxGroup.setModel(new DefaultComboBoxModel<>(MemberGroup.values()));
         comboBoxGroup.setRenderer(new MemberGroupRenderer());
+        comboBoxHydrometer.setModel(new DefaultComboBoxModel<>(new Boolean[]{TRUE, FALSE}));
+        comboBoxHydrometer.setSelectedItem(FALSE);
+        comboBoxHydrometer.setRenderer(new YesNoComboBoxRenderer());
 
         if(model != null) {
             comboBoxGroup.setSelectedItem(model.getMemberGroup());
+            comboBoxHydrometer.setSelectedItem(model.isHydrometer());
             textFieldName.setText(model.getName());
             textFieldNamePartnerValue.setBigDecimal(model.getAmountPartner());
             textFieldNameWaterValue.setBigDecimal(model.getAmountWater());
@@ -48,9 +67,12 @@ public class CategoryCreate extends JDialog {
     }
 
     private void onOkButtonClicked() {
+        Integer id = (model == null? null : model.getId());
+
         Category builder = Category.builder()
-            .id(model.getId())
+            .id(id)
             .name(textFieldName.getText())
+            .isHydrometer((Boolean) comboBoxHydrometer.getSelectedItem())
             .amountPartner(textFieldNamePartnerValue.getBigDecimal())
             .amountWater(textFieldNameWaterValue.getBigDecimal())
             .memberGroup((MemberGroup) comboBoxGroup.getSelectedItem())
@@ -75,6 +97,9 @@ public class CategoryCreate extends JDialog {
         panel2 = new JPanel();
         label2 = new JLabel();
         textFieldName = new JTextField();
+        panel5 = new JPanel();
+        label5 = new JLabel();
+        comboBoxHydrometer = new JComboBox<>();
         panel3 = new JPanel();
         label3 = new JLabel();
         textFieldNameWaterValue = new MoneyTextField();
@@ -123,6 +148,17 @@ public class CategoryCreate extends JDialog {
                     panel2.add(textFieldName);
                 }
                 contentPanel.add(panel2);
+
+                //======== panel5 ========
+                {
+                    panel5.setLayout(new VerticalLayout());
+
+                    //---- label5 ----
+                    label5.setText("Hidr\u00f4metro?:");
+                    panel5.add(label5);
+                    panel5.add(comboBoxHydrometer);
+                }
+                contentPanel.add(panel5);
 
                 //======== panel3 ========
                 {
@@ -186,6 +222,9 @@ public class CategoryCreate extends JDialog {
     private JPanel panel2;
     private JLabel label2;
     private JTextField textFieldName;
+    private JPanel panel5;
+    private JLabel label5;
+    private JComboBox<Boolean> comboBoxHydrometer;
     private JPanel panel3;
     private JLabel label3;
     private MoneyTextField textFieldNameWaterValue;

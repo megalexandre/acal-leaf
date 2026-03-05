@@ -31,6 +31,8 @@ public class LinkEntity {
     @ManyToOne(optional = false)
     private CategoryEntity category;
 
+
+
     @Override
     public String toString() {
         return "id:" + id;

@@ -1,6 +1,7 @@
 package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model;
 
 import acal.com.acal_left.core.model.Invoice;
+import acal.com.acal_left.shared.BigDecimalUtil;
 import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,9 @@ public class InvoiceTableContent {
     private final String dueDate;
     private final Boolean isOverDue;
     private final Invoice.Status status;
+    private final String total;
     private final Invoice item;
+
 
     public InvoiceTableContent(Invoice item) {
         this.id = item.getId();
@@ -33,6 +36,7 @@ public class InvoiceTableContent {
         this.status = item.getStatus();
         this.paid = item.isPaid() ? "Sim" : "Não";
         this.isOverDue = item.isOverDue();
+        this.total = BigDecimalUtil.toBRL(item.totalAmount());
         this.item = item;
     }
 

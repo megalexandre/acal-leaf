@@ -38,12 +38,25 @@ new FormModel {
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel5"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label5"
+							"text": "Hidrômetro?:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxHydrometer"
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "Boolean"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "panel3"
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label3"
 							"text": "Valor Água:"
 						} )
-						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
+						add( new FormComponent( "acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField" ) {
 							name: "textFieldNameWaterValue"
 						} )
 					} )
@@ -53,7 +66,7 @@ new FormModel {
 							name: "label4"
 							"text": "Valor Sócio:"
 						} )
-						add( new FormComponent( "acal.com.acal_left.ui.filter.MoneyTextField" ) {
+						add( new FormComponent( "acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField" ) {
 							name: "textFieldNamePartnerValue"
 						} )
 					} )
@@ -91,7 +104,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"size": new java.awt.Dimension( 485, 425 )
 		} )
 	}
 }

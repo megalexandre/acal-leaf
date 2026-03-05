@@ -1,14 +1,19 @@
 package acal.com.acal_left.ui.flatlaf.component.filter;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JTextField;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 public class MoneyTextField extends JTextField {
 
-    private static final NumberFormat FORMAT = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    private static final NumberFormat FORMAT = NumberFormat.getCurrencyInstance(
+            Locale.of("pt", "BR")
+    );
 
     public MoneyTextField() {
         super();
