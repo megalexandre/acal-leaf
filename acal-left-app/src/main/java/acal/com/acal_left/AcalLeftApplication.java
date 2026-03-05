@@ -20,6 +20,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "acal.com.acal_left.resouces.repository.repository.jpa")
 public class AcalLeftApplication {
 
+
 	public static void main(String[] args) {
 		SplashScreenBootstrap.showSplash();
 		FlatLightLaf.setup();
@@ -30,7 +31,7 @@ public class AcalLeftApplication {
 	}
 
 	@EventListener(ApplicationReadyEvent.class)
-	public void onApplicationReady() {
+	public void onApplicationReady(ApplicationReadyEvent event) {
 		SplashScreenBootstrap.closeSplash();
 	}
 
@@ -38,4 +39,5 @@ public class AcalLeftApplication {
 	public void onApplicationFailed() {
 		SplashScreenBootstrap.closeSplash();
 	}
+
 }

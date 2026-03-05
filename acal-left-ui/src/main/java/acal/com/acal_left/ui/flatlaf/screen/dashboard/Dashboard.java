@@ -10,6 +10,8 @@ import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
 import acal.com.acal_left.ui.flatlaf.screen.partner.partner.PartnerScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import static acal.com.acal_left.ui.event.Screen.ADDRESS;
 import static acal.com.acal_left.ui.event.Screen.CATEGORY;
@@ -34,15 +38,7 @@ import static acal.com.acal_left.ui.event.Screen.PARTNER;
 public abstract class Dashboard extends JFrame {
 
     private final ScreenManager screenManager;
-
-
-    public Dashboard(
-            ScreenManager screenManager
-            ) {
-        this.screenManager = screenManager;
-        initComponents();
-        addScreens();
-    }
+    private final ApplicationContext applicationContext;
 
     @Lookup
     public abstract CategoryScreen getCategoryScreen();
@@ -58,6 +54,24 @@ public abstract class Dashboard extends JFrame {
 
     @Lookup
     public abstract InvoiceScreen getInvoiceScreen();
+
+    public Dashboard(
+            ScreenManager screenManager,
+            ApplicationContext applicationContext
+            ) {
+        this.screenManager = screenManager;
+        this.applicationContext = applicationContext;
+
+        initComponents();
+        addScreens();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                shutdownApplication();
+            }
+        });
+    }
 
     private void addScreens() {
         mainPanel.add(new JPanel(), "empty");
@@ -82,6 +96,16 @@ public abstract class Dashboard extends JFrame {
             this.setTitle(newScreen.getTitle());
             mainPanel.revalidate();
             mainPanel.repaint();
+        }
+    }
+
+    private void shutdownApplication() {
+        try {
+            if (applicationContext != null) {
+                SpringApplication.exit(applicationContext, () -> 0);
+            }
+        } catch (Exception e) {
+            System.exit(1);
         }
     }
 

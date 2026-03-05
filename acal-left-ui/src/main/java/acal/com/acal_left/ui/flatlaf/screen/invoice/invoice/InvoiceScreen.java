@@ -14,6 +14,7 @@ import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
+import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.ReportService;
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 import org.jdesktop.swingx.VerticalLayout;
@@ -106,11 +107,15 @@ public class InvoiceScreen extends JPanel {
     }
 
     private void invoiceViewActionListener(ActionEvent e) {
-        Invoice i = (Invoice) popupMenu.getClientProperty("selected");
-        new ReportService().createReport(List.of(InvoiceReportOutput.fromDomain(i)));
-
-
         createDialog((Invoice) popupMenu.getClientProperty("selected"));
+    }
+
+    private void invoicePrintActionListener(ActionEvent e) {
+        Invoice i = (Invoice) popupMenu.getClientProperty("selected");
+
+        new PdfViewerService().openPdf(
+            new ReportService().createReport(List.of(InvoiceReportOutput.fromDomain(i)))
+        );
     }
 
     private void createDialog(Invoice invoice) {
@@ -205,7 +210,6 @@ public class InvoiceScreen extends JPanel {
     }
 
     private void fetchPageData() {
-
         Page<InvoiceTableContent> page =
             find.execute(buildQuery())
             .map(InvoiceTableContent::new);
@@ -290,7 +294,6 @@ public class InvoiceScreen extends JPanel {
     }
 
 
-
     @SuppressWarnings("Convert2MethodRef")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -327,7 +330,7 @@ public class InvoiceScreen extends JPanel {
         menuItemInvoiceView = new JMenuItem();
         menuItem3 = new JMenuItem();
         menuItem4 = new JMenuItem();
-        menuItem1 = new JMenuItem();
+        menuItemInvoicePrint = new JMenuItem();
 
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
@@ -478,9 +481,10 @@ public class InvoiceScreen extends JPanel {
             popupMenu.add(menuItem4);
             popupMenu.addSeparator();
 
-            //---- menuItem1 ----
-            menuItem1.setText("Imprimir");
-            popupMenu.add(menuItem1);
+            //---- menuItemInvoicePrint ----
+            menuItemInvoicePrint.setText("Imprimir");
+            menuItemInvoicePrint.addActionListener(e -> invoicePrintActionListener(e));
+            popupMenu.add(menuItemInvoicePrint);
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
@@ -519,6 +523,6 @@ public class InvoiceScreen extends JPanel {
     private JMenuItem menuItemInvoiceView;
     private JMenuItem menuItem3;
     private JMenuItem menuItem4;
-    private JMenuItem menuItem1;
+    private JMenuItem menuItemInvoicePrint;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -62,10 +62,14 @@ public class InvoiceEntity {
                 .dueDate(entity.getDueDate())
                 .paidAt(entity.getPaidAt())
                 .period(entity.getPeriod())
-                .amountPartner(entity.getAmountPartner())
-                .amountWater(entity.getAmountWater())
+                .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
+                .amountWater(getBigDecimalValue(entity.getAmountWater()))
                 .id(entity.getId())
                 .build();
+    }
+
+    private static BigDecimal getBigDecimalValue(BigDecimal value) {
+        return value != null ? value : BigDecimal.ZERO;
     }
 
     @Override

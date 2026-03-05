@@ -9,11 +9,11 @@ public class ReportService {
 
     public byte[] createReport(List<InvoiceReportOutput> invoices) {
 
-        var templateStream = getClass().getClassLoader()
-                .getResourceAsStream("reports/invoice_report.jrxml");
+        String templatePath = "/reports/invoice_report.jrxml";
+        var templateStream = ReportService.class.getResourceAsStream(templatePath);
 
         if (templateStream == null) {
-            throw new IllegalStateException("Template de relatório não encontrado!");
+            throw new IllegalStateException("Template de relatório não encontrado no classpath: " + templatePath);
         }
 
         return new ReportManager().generatePdfReport(

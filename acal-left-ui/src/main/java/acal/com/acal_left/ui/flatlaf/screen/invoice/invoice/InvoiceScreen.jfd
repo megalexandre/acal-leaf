@@ -155,8 +155,9 @@ new FormModel {
 				name: "separator1"
 			} )
 			add( new FormComponent( "javax.swing.JMenuItem" ) {
-				name: "menuItem1"
+				name: "menuItemInvoicePrint"
 				"text": "Imprimir"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "invoicePrintActionListener", true ) )
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 1070, 180 )
