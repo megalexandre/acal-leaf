@@ -16,7 +16,6 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Integer> {
             JOIN FETCH l.address a
             JOIN FETCH l.category c
             JOIN FETCH l.person p
-            LEFT JOIN FETCH p.partner
         WHERE
             (:inactive IS NULL OR l.inactive = :inactive)
         """

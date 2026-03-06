@@ -1,24 +1,24 @@
-package acal.com.acal_left.ui.flatlaf.screen.partner.model;
+package acal.com.acal_left.ui.flatlaf.screen.person.model;
 
-import acal.com.acal_left.core.model.Partner;
+import acal.com.acal_left.core.model.Person;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartnerTableModel extends AbstractTableModel {
+public class PersonTableModel extends AbstractTableModel {
 
-    private final String[] columns = PartnerColumns.getLabels();
-    private List<PartnerTableContent> items = new ArrayList<>();
+    private final String[] columns = PersonColumns.getLabels();
+    private List<PersonTableContent> items = new ArrayList<>();
 
-    public void setList(List<PartnerTableContent> items) {
+    public void setList(List<PersonTableContent> items) {
         this.items = items;
         fireTableDataChanged();
     }
 
-    public Partner get(int rowIndex) {
+    public Person get(int rowIndex) {
         if (rowIndex >= 0 && rowIndex < items.size()) {
-            return items.get(rowIndex).getPartner();
+            return items.get(rowIndex).getPerson();
         }
         return null;
     }
@@ -34,8 +34,8 @@ public class PartnerTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        PartnerTableContent c = items.get(rowIndex);
-        PartnerColumns column = PartnerColumns.values()[columnIndex];
+        PersonTableContent c = items.get(rowIndex);
+        PersonColumns column = PersonColumns.values()[columnIndex];
 
         return switch (column) {
             case NAME -> c.getName();

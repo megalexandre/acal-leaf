@@ -8,11 +8,10 @@ import acal.com.acal_left.core.model.Invoice;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -33,7 +32,6 @@ public class InvoiceCreateDialog extends JDialog {
     }
 
     private void init(){
-        label1.setText(invoice.getNumber());
     }
 
 
@@ -41,8 +39,7 @@ public class InvoiceCreateDialog extends JDialog {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         dialogPane = new JPanel();
-        contentPanel = new JPanel();
-        label1 = new JLabel();
+        invoicePanel = new JPanel();
         buttonBar = new JPanel();
         okButton = new JButton();
         cancelButton = new JButton();
@@ -54,17 +51,14 @@ public class InvoiceCreateDialog extends JDialog {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
+            dialogPane.setPreferredSize(new Dimension(1024, 768));
             dialogPane.setLayout(new BorderLayout());
 
-            //======== contentPanel ========
+            //======== invoicePanel ========
             {
-                contentPanel.setLayout(new FlowLayout());
-
-                //---- label1 ----
-                label1.setText("text");
-                contentPanel.add(label1);
+                invoicePanel.setLayout(new BorderLayout());
             }
-            dialogPane.add(contentPanel, BorderLayout.CENTER);
+            dialogPane.add(invoicePanel, BorderLayout.CENTER);
 
             //======== buttonBar ========
             {
@@ -96,8 +90,7 @@ public class InvoiceCreateDialog extends JDialog {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel dialogPane;
-    private JPanel contentPanel;
-    private JLabel label1;
+    private JPanel invoicePanel;
     private JPanel buttonBar;
     private JButton okButton;
     private JButton cancelButton;

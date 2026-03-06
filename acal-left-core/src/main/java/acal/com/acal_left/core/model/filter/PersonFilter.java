@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class PartnerFilter {
+public class PersonFilter {
     private String name;
 
     public void setName(String name) {

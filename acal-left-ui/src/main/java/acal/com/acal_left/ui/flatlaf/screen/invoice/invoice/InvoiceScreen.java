@@ -2,6 +2,7 @@ package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice;
 
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.PersonFilter;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceFindUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
@@ -135,7 +136,7 @@ public class InvoiceScreen extends JPanel {
 
     private List<ComboBoxOption> getOrLoadPersons() {
         if (screenData.getPersons().isEmpty()) {
-            screenData.setPersons(personFind.execute());
+            screenData.setPersons(personFind.execute(new PersonFilter()));
         }
         return Arrays.asList(screenData.getPersonsOptions());
     }

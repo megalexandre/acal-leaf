@@ -69,7 +69,7 @@ public class CategoryCreate extends JDialog {
     private void onOkButtonClicked() {
         Integer id = (model == null? null : model.getId());
 
-        Category builder = Category.builder()
+        Category category = Category.builder()
             .id(id)
             .name(textFieldName.getText())
             .isHydrometer((Boolean) comboBoxHydrometer.getSelectedItem())
@@ -78,7 +78,7 @@ public class CategoryCreate extends JDialog {
             .memberGroup((MemberGroup) comboBoxGroup.getSelectedItem())
             .build();
 
-        onSuccess.actionPerformed(new ActionEvent(builder, ActionEvent.ACTION_PERFORMED, "OK"));
+        onSuccess.actionPerformed(new ActionEvent(category, ActionEvent.ACTION_PERFORMED, "OK"));
         dispose();
     }
 

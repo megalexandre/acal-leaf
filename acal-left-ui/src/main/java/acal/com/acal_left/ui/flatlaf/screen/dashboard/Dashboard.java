@@ -7,7 +7,7 @@ import acal.com.acal_left.ui.flatlaf.screen.address.address.AddressScreen;
 import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
-import acal.com.acal_left.ui.flatlaf.screen.partner.partner.PartnerScreen;
+import acal.com.acal_left.ui.flatlaf.screen.person.partner.PersonScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.boot.SpringApplication;
@@ -44,7 +44,7 @@ public abstract class Dashboard extends JFrame {
     public abstract CategoryScreen getCategoryScreen();
 
     @Lookup
-    public abstract PartnerScreen getPartnerScreen();
+    public abstract PersonScreen getPartnerScreen();
 
     @Lookup
     public abstract AddressScreen getAddressScreen();

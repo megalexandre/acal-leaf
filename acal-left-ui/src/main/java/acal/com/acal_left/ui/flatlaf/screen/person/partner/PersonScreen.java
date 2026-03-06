@@ -1,34 +1,49 @@
+package acal.com.acal_left.ui.flatlaf.screen.person.partner;
 
-package acal.com.acal_left.ui.flatlaf.screen.partner.partner;
-
-import acal.com.acal_left.core.model.Partner;
-import acal.com.acal_left.core.model.filter.PartnerFilter;
-import acal.com.acal_left.core.usecase.partner.PartnerFindUseCase;
+import acal.com.acal_left.core.model.Person;
+import acal.com.acal_left.core.model.filter.PersonFilter;
+import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
+import acal.com.acal_left.core.usecase.person.PersonSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
-import acal.com.acal_left.ui.flatlaf.screen.partner.create.PartnerCreate;
-import acal.com.acal_left.ui.flatlaf.screen.partner.model.PartnerTableContent;
-import acal.com.acal_left.ui.flatlaf.screen.partner.model.PartnerTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.person.create.PersonCreate;
+import acal.com.acal_left.ui.flatlaf.screen.person.model.PersonTableContent;
+import acal.com.acal_left.ui.flatlaf.screen.person.model.PersonTableModel;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @Component
 @Scope("prototype")
-public class PartnerScreen extends JPanel {
+public class PersonScreen extends JPanel {
 
     public final String name = Screen.PARTNER.name();
-    private final PartnerFilter filter = new PartnerFilter();
+    private final PersonFilter filter = new PersonFilter();
 
-    public PartnerFindUseCase findAll;
+    public PersonFindUseCase findAll;
+    public PersonSaveUseCase save;
 
-    public PartnerScreen(PartnerFindUseCase findAll) {
+    public PersonScreen(PersonFindUseCase findAll, PersonSaveUseCase save) {
         this.findAll = findAll;
-
+        this.save = save;
         initComponents();
     }
 
@@ -43,34 +58,34 @@ public class PartnerScreen extends JPanel {
 
             if (viewRow != -1) {
                 int modelRow = table.convertRowIndexToModel(viewRow);
-                PartnerTableModel model = (PartnerTableModel) table.getModel();
-                Partner selectedCategory = model.get(modelRow);
+                PersonTableModel model = (PersonTableModel) table.getModel();
+                Person selectedCategory = model.get(modelRow);
                 createDialog(selectedCategory);
             }
         }
     }
 
-    private void createDialog(Partner partner) {
+    private void createDialog(Person person) {
         Window window = SwingUtilities.getWindowAncestor(this);
 
-        PartnerCreate partnerCreate = new PartnerCreate(window, partner);
-        partnerCreate.pack();
-        partnerCreate.setLocationRelativeTo(window);
-        /*
-        partnerCreate.setOnSuccess(e -> {
-            save.execute((partner) e.getSource());
-                searchActionListener(null);
+        PersonCreate personCreate = new PersonCreate(window, person);
+        personCreate.pack();
+        personCreate.setLocationRelativeTo(window);
+        personCreate.setOnSuccess(e -> {
+            if (e != null && e.getSource() instanceof Person savedPerson) {
+                save.execute(savedPerson);
+                search();
+            }
         });
-        */
-        partnerCreate.setVisible(true);
+        personCreate.setVisible(true);
     }
 
     private void search(){
-        table.setModel(new PartnerTableModel());
-        PartnerTableModel model = (PartnerTableModel) table.getModel();
+        table.setModel(new PersonTableModel());
+        PersonTableModel model = (PersonTableModel) table.getModel();
 
         createFilter();
-        var itens = findAll.execute(filter).stream().map(PartnerTableContent::new).toList();
+        var itens = findAll.execute(filter).stream().map(PersonTableContent::new).toList();
         model.setList(itens);
     }
 

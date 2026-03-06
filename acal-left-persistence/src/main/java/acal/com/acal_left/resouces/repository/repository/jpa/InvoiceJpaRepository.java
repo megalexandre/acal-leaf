@@ -40,7 +40,6 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             SELECT i FROM InvoiceEntity i
             JOIN FETCH i.personAddress pa
             JOIN FETCH pa.person p
-            JOIN FETCH p.partner
             JOIN FETCH pa.address a
             JOIN FETCH pa.category c
             WHERE (:id IS NULL OR i.id = :id)

@@ -8,12 +8,9 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "dialogPane"
 				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-					name: "contentPanel"
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label1"
-						"text": "text"
-					} )
+				"preferredSize": new java.awt.Dimension( 1024, 768 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+					name: "invoicePanel"
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"
 				} )

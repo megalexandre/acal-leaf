@@ -1,41 +1,79 @@
-package acal.com.acal_left.ui.flatlaf.screen.partner.create;
+package acal.com.acal_left.ui.flatlaf.screen.person.create;
 
-import acal.com.acal_left.core.model.Partner;
-import acal.com.acal_left.ui.flatlaf.screen.partner.model.PartnerViewModel;
+import acal.com.acal_left.core.model.Document;
+import acal.com.acal_left.core.model.Person;
+import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class PartnerCreate extends JDialog {
+public class PersonCreate extends JDialog {
 
-    private PartnerViewModel model;
-    private Partner partner;
+    @Setter
+    private ActionListener onSuccess;
 
-    public PartnerCreate(Window owner, Partner partner) {
+    private final Person person;
+
+    public PersonCreate(Window owner, Person person) {
         super(owner);
         initComponents();
-        this.partner = partner;
-
+        this.person = person;
         init();
-
     }
 
     private void init() {
+        if(person != null) {
+            textFieldName.setText(person.getName());
+            textPartnerNumber.setText(person.getPartnerNumber());
 
-        if(partner != null) {
-            textFieldName.setText(partner.getName());
-            textFieldDocument.setText(partner.getDocument());
+            Document document = person.getDocument();
+            textFieldDocument.setText(document == null ? "" : document.getNumber());
         }
-
     }
 
     private void okButtonActionListener(ActionEvent e) {
+        Integer id = (person == null ? null : person.getId());
+
+        Person person = Person.builder()
+            .id(id)
+            .name(getNamePersonName())
+            .partnerNumber(getPartnerNumber())
+            .document(Document.builder().value(getDocumentNumber()).build())
+            .build();
+
+        if (onSuccess != null) {
+            onSuccess.actionPerformed(new ActionEvent(person, ActionEvent.ACTION_PERFORMED, "OK"));
+        }
+        dispose();
+    }
+
+    private String getNamePersonName(){
+        return textFieldName.getText();
+    }
+
+    private String getDocumentNumber(){
+        return textFieldDocument.getText();
+    }
+
+    private String getPartnerNumber(){
+        return textPartnerNumber.getText();
     }
 
     private void cancelButtonActionListener(ActionEvent e) {
+        dispose();
     }
 
     private void initComponents() {
@@ -49,6 +87,9 @@ public class PartnerCreate extends JDialog {
         panel2 = new JPanel();
         label2 = new JLabel();
         textFieldDocument = new JTextField();
+        panel3 = new JPanel();
+        label3 = new JLabel();
+        textPartnerNumber = new JTextField();
         buttonBar = new JPanel();
         okButton = new JButton();
         cancelButton = new JButton();
@@ -60,6 +101,7 @@ public class PartnerCreate extends JDialog {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
+            dialogPane.setPreferredSize(new Dimension(384, 260));
             dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
@@ -87,6 +129,17 @@ public class PartnerCreate extends JDialog {
                     panel2.add(textFieldDocument);
                 }
                 contentPanel.add(panel2);
+
+                //======== panel3 ========
+                {
+                    panel3.setLayout(new VerticalLayout());
+
+                    //---- label3 ----
+                    label3.setText("N\u00famero de S\u00f3cio");
+                    panel3.add(label3);
+                    panel3.add(textPartnerNumber);
+                }
+                contentPanel.add(panel3);
             }
             dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -129,6 +182,9 @@ public class PartnerCreate extends JDialog {
     private JPanel panel2;
     private JLabel label2;
     private JTextField textFieldDocument;
+    private JPanel panel3;
+    private JLabel label3;
+    private JTextField textPartnerNumber;
     private JPanel buttonBar;
     private JButton okButton;
     private JButton cancelButton;
