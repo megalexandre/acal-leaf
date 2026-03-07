@@ -11,16 +11,21 @@ import java.util.List;
 @Repository
 public class AddressRepositoryImpl implements AddressRepository {
 
-    public final AddressJpaRepository addressJpaRepository;
+    public final AddressJpaRepository repository;
 
-    public AddressRepositoryImpl(AddressJpaRepository addressJpaRepository){
-        this.addressJpaRepository = addressJpaRepository;
+    public AddressRepositoryImpl(AddressJpaRepository repository){
+        this.repository = repository;
     }
 
     @Override
     public List<Address> findAllByOrderByNameAsc() {
-        return addressJpaRepository.findAllByOrderByTypeAscNameAsc()
+        return repository.findAllByOrderByTypeAscNameAsc()
             .stream().map(AddressRepositoryImpl::toEntity).toList();
+    }
+
+    @Override
+    public Address save(Address address) {
+        return toEntity(repository.save( toModel(address)));
     }
 
     public static Address toEntity(AddressEntity item) {
@@ -30,4 +35,13 @@ public class AddressRepositoryImpl implements AddressRepository {
                 .name(item.getName())
                 .build();
     }
+
+    public static AddressEntity toModel(Address item) {
+        return AddressEntity.builder()
+                .id(item.getId())
+                .type(item.getType())
+                .name(item.getName())
+                .build();
+    }
+
 }

@@ -13,9 +13,14 @@ import lombok.NoArgsConstructor;
 public class LinkFilter {
     private String name;
     private Boolean active;
+    private String address;
+    private String person;
 
-    public void reset() {
-        this.name = null;
+    public Boolean getInactive(){
+        if(active == null){
+            return null;
+        }
+
+        return !active;
     }
-
 }

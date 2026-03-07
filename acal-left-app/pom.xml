@@ -22,10 +22,23 @@
 	<dependencies>
 		<!-- UI module (includes core, shared, and persistence transitively) -->
 
-		<dependency>
-			<groupId>acal.com</groupId>
-			<artifactId>acal-left-ui</artifactId>
-		</dependency>
+	<dependency>
+		<groupId>org.hibernate.validator</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>8.0.1.Final</version>
+	</dependency>
+
+	<!-- Jakarta EL API and Implementation for Hibernate Validator -->
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>jakarta.el</artifactId>
+		<version>5.0.0-M1</version>
+	</dependency>
+
+	<dependency>
+		<groupId>acal.com</groupId>
+		<artifactId>acal-left-ui</artifactId>
+	</dependency>
 
 		<!-- Persistence module -->
 		<dependency>

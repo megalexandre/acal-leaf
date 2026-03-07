@@ -14,6 +14,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "buttonCreate"
 						"text": "Adicionar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createActionListener", true ) )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
@@ -47,7 +48,7 @@ new FormModel {
 								"text": "Sócio"
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "textField1"
+								name: "textFieldPartnerName"
 								"preferredSize": new java.awt.Dimension( 200, 25 )
 							} )
 						} )
@@ -60,7 +61,7 @@ new FormModel {
 								"text": "Rua:"
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "textField2"
+								name: "textFieldAddressName"
 								"preferredSize": new java.awt.Dimension( 200, 25 )
 							} )
 						} )

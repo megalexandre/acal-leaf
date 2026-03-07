@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface LinkRepository {
     List<Link> findByFilter(LinkFilter filter);
+    Link save(Link link);
 }

@@ -82,6 +82,7 @@ public class PersonScreen extends JPanel {
 
     private void search(){
         table.setModel(new PersonTableModel());
+        table.setAutoCreateRowSorter(true);
         PersonTableModel model = (PersonTableModel) table.getModel();
 
         createFilter();

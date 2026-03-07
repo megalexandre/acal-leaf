@@ -3,9 +3,7 @@ package acal.com.acal_left.resouces.repository.repository.impl;
 import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.repository.LinkRepository;
-import acal.com.acal_left.resouces.repository.model.CategoryEntity;
 import acal.com.acal_left.resouces.repository.model.LinkEntity;
-import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.LinkJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,24 +20,24 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public List<Link> findByFilter(LinkFilter filter) {
-        Boolean active = filter != null ? filter.getActive() : null;
-        Boolean inactive = active == null ? null : !active;
+        if(filter == null){
+            filter = new LinkFilter();
+        }
 
-        return repository.findAllWithEagerLoading(inactive)
+        return repository.findAllWithEagerLoading(
+                filter.getInactive(),
+                filter.getPerson(),
+                filter.getAddress()
+                )
             .stream()
-            .map(LinkRepositoryImpl::toEntity)
+            .map(LinkEntity::toEntity)
             .toList();
     }
 
-    public static Link toEntity(LinkEntity entity) {
-        return Link.builder()
-                .id(entity.getId())
-                .number(entity.getNumber())
-                .active(!entity.isInactive())
-                .address(AddressRepositoryImpl.toEntity(entity.getAddress()))
-                .category(CategoryEntity.toEntity( entity.getCategory()))
-                .person(PersonEntity.toEntity(entity.getPerson()))
-                .build();
+    @Override
+    public Link save(Link link) {
+        return LinkEntity.toEntity(repository.save(LinkEntity.toEntity(link)));
     }
+
 
 }

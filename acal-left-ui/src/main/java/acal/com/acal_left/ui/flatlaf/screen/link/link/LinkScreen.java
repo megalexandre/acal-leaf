@@ -7,16 +7,28 @@ package acal.com.acal_left.ui.flatlaf.screen.link.link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.usecase.link.LinkFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.screen.link.create.LinkCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableModel;
 import acal.com.acal_left.ui.flatlaf.screen.link.render.LinkTableRenderer;
-import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
 import org.jdesktop.swingx.VerticalLayout;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import static java.lang.Boolean.FALSE;
@@ -25,10 +37,15 @@ import static java.lang.Boolean.TRUE;
 @Component
 @Scope("prototype")
 public class LinkScreen extends JPanel {
+
+    @Autowired
+    private LinkCreateDialog dialog;
+
     public final String name = Screen.LINK.name();
 
     private final LinkFilter filter = new LinkFilter();
     private final LinkFindUseCase find;
+
 
     public LinkScreen(LinkFindUseCase find) {
         this.find = find;
@@ -38,6 +55,11 @@ public class LinkScreen extends JPanel {
 
 
     private void searchActionListener(ActionEvent e) {
+        search();
+    }
+
+    private void search(){
+        table.setAutoCreateRowSorter(true);
         table.setModel(new LinkTableModel());
         createRender();
         LinkTableModel model = (LinkTableModel) table.getModel();
@@ -48,8 +70,9 @@ public class LinkScreen extends JPanel {
     }
 
     private void loadFilter(){
-        filter.reset();
         filter.setActive((Boolean) comboBoxActive.getModel().getSelectedItem());
+        filter.setPerson(textFieldPartnerName.getText());
+        filter.setAddress(textFieldAddressName.getText());
     }
 
     private void createRender(){
@@ -67,6 +90,12 @@ public class LinkScreen extends JPanel {
         comboBoxActive.setRenderer(new YesNoComboBoxRenderer());
     }
 
+    private void createActionListener(ActionEvent e) {
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
@@ -80,10 +109,10 @@ public class LinkScreen extends JPanel {
         panel6 = new JPanel();
         panel8 = new JPanel();
         label2 = new JLabel();
-        textField1 = new JTextField();
+        textFieldPartnerName = new JTextField();
         panel9 = new JPanel();
         label3 = new JLabel();
-        textField2 = new JTextField();
+        textFieldAddressName = new JTextField();
         panel10 = new JPanel();
         label4 = new JLabel();
         comboBoxActive = new JComboBox<>();
@@ -103,6 +132,7 @@ public class LinkScreen extends JPanel {
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
+                buttonCreate.addActionListener(e -> createActionListener(e));
                 panel4.add(buttonCreate);
             }
             panel1.add(panel4);
@@ -140,9 +170,9 @@ public class LinkScreen extends JPanel {
                         label2.setText("S\u00f3cio");
                         panel8.add(label2);
 
-                        //---- textField1 ----
-                        textField1.setPreferredSize(new Dimension(200, 25));
-                        panel8.add(textField1);
+                        //---- textFieldPartnerName ----
+                        textFieldPartnerName.setPreferredSize(new Dimension(200, 25));
+                        panel8.add(textFieldPartnerName);
                     }
                     panel6.add(panel8);
 
@@ -154,9 +184,9 @@ public class LinkScreen extends JPanel {
                         label3.setText("Rua:");
                         panel9.add(label3);
 
-                        //---- textField2 ----
-                        textField2.setPreferredSize(new Dimension(200, 25));
-                        panel9.add(textField2);
+                        //---- textFieldAddressName ----
+                        textFieldAddressName.setPreferredSize(new Dimension(200, 25));
+                        panel9.add(textFieldAddressName);
                     }
                     panel6.add(panel9);
 
@@ -205,10 +235,10 @@ public class LinkScreen extends JPanel {
     private JPanel panel6;
     private JPanel panel8;
     private JLabel label2;
-    private JTextField textField1;
+    private JTextField textFieldPartnerName;
     private JPanel panel9;
     private JLabel label3;
-    private JTextField textField2;
+    private JTextField textFieldAddressName;
     private JPanel panel10;
     private JLabel label4;
     private JComboBox<Boolean> comboBoxActive;

@@ -12,15 +12,22 @@ import java.util.List;
 public interface LinkJpaRepository extends JpaRepository<LinkEntity, Integer> {
 
     @Query("""
-        SELECT DISTINCT l FROM LinkEntity l
+        SELECT l FROM LinkEntity l
             JOIN FETCH l.address a
             JOIN FETCH l.category c
             JOIN FETCH l.person p
         WHERE
-            (:inactive IS NULL OR l.inactive = :inactive)
+           (:inactive IS NULL OR l.inactive = :inactive) AND
+           (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT(:name, '%'))) AND
+           (:address IS NULL OR\s
+               LOWER(CONCAT(COALESCE(a.type, ''), ' ', COALESCE(a.name, '')))\s
+               LIKE LOWER(CONCAT('%', :address))
+           )
         """
     )
     List<LinkEntity> findAllWithEagerLoading(
-        @Param("inactive") Boolean inactive
+        @Param("inactive") Boolean inactive,
+        @Param("name") String name,
+        @Param("address") String address
     );
 }

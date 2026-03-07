@@ -12,8 +12,9 @@ new FormModel {
 				} ) {
 					name: "panel4"
 					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "button1"
+						name: "buttonCreate"
 						"text": "Adicionar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createActionListener", true ) )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
@@ -38,6 +39,7 @@ new FormModel {
 					"selectionMode": 0
 					"showHorizontalLines": true
 					"showVerticalLines": true
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "tableSearchMouseClicked", true ) )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"

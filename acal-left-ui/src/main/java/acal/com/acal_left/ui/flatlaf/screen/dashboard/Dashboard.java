@@ -104,6 +104,7 @@ public abstract class Dashboard extends JFrame {
             if (applicationContext != null) {
                 SpringApplication.exit(applicationContext, () -> 0);
             }
+            System.exit(0);
         } catch (Exception e) {
             System.exit(1);
         }
