@@ -152,7 +152,7 @@ public class LinkCreateDialog extends JDialog {
     }
 
     private void okActionListener(ActionEvent e) {
-        var model = LinkCreateModel.builder()
+        var model = LinkCreateForm.builder()
                 .number(textFieldNumber.getText())
                 .person(selectedPerson)
                 .category(selectedCategory)
@@ -160,10 +160,10 @@ public class LinkCreateDialog extends JDialog {
                 .build();
 
         var fieldMap = Map.of(
-                "number", (JComponent) textFieldNumber,
                 "person", (JComponent) comboBoxPerson,
                 "category", (JComponent) comboBoxCategory,
-                "address", (JComponent) comboBoxAddress
+                "address", (JComponent) comboBoxAddress,
+                "number", (JComponent) textFieldNumber
         );
 
         if (SwingValidator.validate(this, model, fieldMap)) {
@@ -257,7 +257,7 @@ public class LinkCreateDialog extends JDialog {
                     panel4.setLayout(new VerticalLayout());
 
                     //---- label4 ----
-                    label4.setText("Rua:");
+                    label4.setText("N\u00famero:");
                     panel4.add(label4);
                     panel4.add(textFieldNumber);
                 }

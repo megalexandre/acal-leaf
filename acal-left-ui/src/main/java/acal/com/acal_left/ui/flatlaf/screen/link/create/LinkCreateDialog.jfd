@@ -56,7 +56,7 @@ new FormModel {
 						name: "panel4"
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label4"
-							"text": "Rua:"
+							"text": "Número:"
 						} )
 						add( new FormComponent( "javax.swing.JTextField" ) {
 							name: "textFieldNumber"

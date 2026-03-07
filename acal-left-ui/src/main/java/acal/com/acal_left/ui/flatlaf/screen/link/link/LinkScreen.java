@@ -13,7 +13,7 @@ import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableModel;
 import acal.com.acal_left.ui.flatlaf.screen.link.render.LinkTableRenderer;
 import org.jdesktop.swingx.VerticalLayout;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -36,10 +36,10 @@ import static java.lang.Boolean.TRUE;
 
 @Component
 @Scope("prototype")
-public class LinkScreen extends JPanel {
+public abstract class LinkScreen extends JPanel {
 
-    @Autowired
-    private LinkCreateDialog dialog;
+    @Lookup
+    public abstract LinkCreateDialog dialog();
 
     public final String name = Screen.LINK.name();
 
@@ -91,6 +91,7 @@ public class LinkScreen extends JPanel {
     }
 
     private void createActionListener(ActionEvent e) {
+        LinkCreateDialog dialog = dialog();
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);

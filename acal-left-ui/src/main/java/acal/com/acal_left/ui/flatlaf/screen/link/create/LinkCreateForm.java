@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkCreateModel {
+public class LinkCreateForm {
     @NotBlank(message = "O número é obrigatório")
     private String number;
 
