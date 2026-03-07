@@ -13,6 +13,7 @@ import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.link.LinkSaveUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
+import acal.com.acal_left.shared.BigDecimalUtil;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.utils.SwingValidator;
@@ -148,7 +149,16 @@ public class LinkCreateDialog extends JDialog {
             this.categories = findCategories.execute();
         }
 
-        return categories.stream().map(it -> new ComboBoxOption(it.getId(), it.getName())).toList();
+        return categories.stream().map(it ->
+            new ComboBoxOption(it.getId(), getCategoryRender(it))).toList();
+    }
+
+    private void onDispose(ActionEvent e) {
+        this.dispose();
+    }
+
+    private String getCategoryRender(Category category){
+        return "["  +BigDecimalUtil.toBRL(category.getAmount()) + "] "+ category.getFullName();
     }
 
     private void okActionListener(ActionEvent e) {
@@ -179,10 +189,6 @@ public class LinkCreateDialog extends JDialog {
             dispose();
         }
     }
-
-
-
-
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -281,6 +287,7 @@ public class LinkCreateDialog extends JDialog {
 
                 //---- cancelButton ----
                 cancelButton.setText("Cancel");
+                cancelButton.addActionListener(e -> onDispose(e));
                 buttonBar.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 0, 0), 0, 0));

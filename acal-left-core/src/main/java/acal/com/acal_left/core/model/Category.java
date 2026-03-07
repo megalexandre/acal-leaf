@@ -18,7 +18,7 @@ public class Category {
     private Boolean isHydrometer;
 
     public String getFullName() {
-        return  memberGroup.getDescription() + " "+ name;
+        return memberGroup.getDescription() + " "+ name;
     }
 
     public BigDecimal getAmount(){

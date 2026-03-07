@@ -53,7 +53,6 @@ public abstract class LinkScreen extends JPanel {
         init();
     }
 
-
     private void searchActionListener(ActionEvent e) {
         search();
     }
