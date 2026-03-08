@@ -4,14 +4,17 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.link.link;
 
+import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.usecase.link.LinkFindUseCase;
+import acal.com.acal_left.core.usecase.link.LinkSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
 import acal.com.acal_left.ui.flatlaf.screen.link.create.LinkCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableModel;
 import acal.com.acal_left.ui.flatlaf.screen.link.render.LinkTableRenderer;
+import acal.com.acal_left.ui.flatlaf.utils.Toast;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +24,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,6 +35,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -46,9 +53,11 @@ public abstract class LinkScreen extends JPanel {
     private final LinkFilter filter = new LinkFilter();
     private final LinkFindUseCase find;
 
+    private final LinkSaveUseCase save;
 
-    public LinkScreen(LinkFindUseCase find) {
+    public LinkScreen(LinkFindUseCase find, LinkSaveUseCase save) {
         this.find = find;
+        this.save = save;
         initComponents();
         init();
     }
@@ -83,10 +92,24 @@ public abstract class LinkScreen extends JPanel {
     }
 
     private void init(){
-
         comboBoxActive.setModel(new DefaultComboBoxModel<>(new Boolean[]{null, TRUE, FALSE}));
         comboBoxActive.setSelectedItem(null);
         comboBoxActive.setRenderer(new YesNoComboBoxRenderer());
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON3){
+                    int row = table.rowAtPoint(e.getPoint());
+                    if (row != -1) {
+                        table.setRowSelectionInterval(row, row);
+                        LinkTableModel model = (LinkTableModel) table.getModel();
+                        Link selected = model.get(row);
+                        popupMenu1.putClientProperty("selected", selected);
+                        popupMenu1.show(table, e.getX(), e.getY());
+                    }
+                }
+            }
+        });
     }
 
     private void createActionListener(ActionEvent e) {
@@ -95,6 +118,17 @@ public abstract class LinkScreen extends JPanel {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
+
+
+    private void invalidateLinkActionEvent(ActionEvent e) {
+        Link i = (Link) popupMenu1.getClientProperty("selected");
+        i.setActive(false);
+        save.execute(i);
+        Toast.show(this, "Removido com Sucesso");
+        search();
+    }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -118,6 +152,8 @@ public abstract class LinkScreen extends JPanel {
         comboBoxActive = new JComboBox<>();
         panel7 = new JPanel();
         buttonSearch = new JButton();
+        popupMenu1 = new JPopupMenu();
+        menuItemCancel = new JMenuItem();
 
         //======== this ========
         setLayout(new BorderLayout());
@@ -220,6 +256,15 @@ public abstract class LinkScreen extends JPanel {
             panel2.add(panel5);
         }
         add(panel2, BorderLayout.SOUTH);
+
+        //======== popupMenu1 ========
+        {
+
+            //---- menuItemCancel ----
+            menuItemCancel.setText("Cancelar Liga\u00e7\u00e3o");
+            menuItemCancel.addActionListener(e -> invalidateLinkActionEvent(e));
+            popupMenu1.add(menuItemCancel);
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -244,5 +289,7 @@ public abstract class LinkScreen extends JPanel {
     private JComboBox<Boolean> comboBoxActive;
     private JPanel panel7;
     private JButton buttonSearch;
+    private JPopupMenu popupMenu1;
+    private JMenuItem menuItemCancel;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

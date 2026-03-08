@@ -16,6 +16,8 @@ public class AddressFindAllUseCase {
     }
 
     public List<Address> execute() {
+
+
         return repository.findAllByOrderByNameAsc();
     }
 }

@@ -18,7 +18,7 @@ public class LinkTableContent {
     public LinkTableContent(Link item) {
         this.id = item.getId();
         this.name = item.getPerson().getName();
-        this.address = item.getAddress().getName() + " " + item.getNumber();
+        this.address = item.getAddress().getFullAddress()+ " " + item.getNumber();
         this.active = item.getActive() ? "Sim" : "Não";
         this.category = item.getCategory().getFullName();
         this.amount = BigDecimalUtil.toBRL(item.getCategory().getAmount()) ;

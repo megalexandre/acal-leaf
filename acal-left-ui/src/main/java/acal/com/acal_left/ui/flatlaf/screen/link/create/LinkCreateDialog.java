@@ -133,7 +133,7 @@ public class LinkCreateDialog extends JDialog {
             this.addresses = findAddresses.execute();
         }
 
-        return addresses.stream().map(it -> new ComboBoxOption(it.getId(), it.getName())).toList();
+        return addresses.stream().map(it -> new ComboBoxOption(it.getId(), it.getFullAddress())).toList();
     }
 
     private List<ComboBoxOption> getOrLoadPersons() {
