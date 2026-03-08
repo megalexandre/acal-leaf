@@ -16,7 +16,6 @@ spring:
 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
         highlight_sql: true
     packages-to-scan: acal.com.acal_left.resouces.repository.model
@@ -29,3 +28,4 @@ spring:
 logging:
   level:
     org.flywaydb: DEBUG
+    org.springframework.boot.autoconfigure.flyway: DEBUG

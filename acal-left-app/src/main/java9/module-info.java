@@ -15,7 +15,7 @@ module acal.left.app {
     requires spring.boot.autoconfigure;
     requires spring.boot;
     requires spring.context;
-    requires hibernate-validator;
+    requires org.hibernate.validator;
 
     // Opens packages for Spring's reflection and component scanning
     opens acal.com.acal_left to spring.core, spring.beans, spring.context;
