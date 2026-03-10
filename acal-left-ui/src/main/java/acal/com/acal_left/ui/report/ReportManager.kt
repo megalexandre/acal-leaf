@@ -23,17 +23,6 @@ class ReportManager {
         return exportToPdf(jasperPrint)
     }
 
-    fun generatePdfReportFromCompiledReport(
-        compiledReport: InputStream,
-        dataset: Collection<Any>,
-        parameters: Map<String, Any> = emptyMap()
-    ): ByteArray {
-        val jasperReport = JasperCompileManager.compileReport(compiledReport)
-        val dataSource = JRBeanCollectionDataSource(dataset)
-        val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters.toMutableMap(), dataSource)
-        return exportToPdf(jasperPrint)
-    }
-
     private fun exportToPdf(jasperPrint: JasperPrint): ByteArray {
         val outputStream = ByteArrayOutputStream()
         val exporter = JRPdfExporter()

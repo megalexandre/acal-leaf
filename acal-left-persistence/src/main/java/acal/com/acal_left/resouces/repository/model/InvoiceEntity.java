@@ -53,7 +53,6 @@ public class InvoiceEntity {
     @Column(name = "amount_water", nullable = false)
     private BigDecimal amountWater;
 
-
     public static Invoice toDomain(InvoiceEntity entity) {
         return Invoice.builder()
                 .number(entity.getPersonAddress().getNumber())

@@ -46,6 +46,7 @@ public class Invoice {
 
     private BigDecimal amountPartner;
     private BigDecimal amountWater;
+    public WaterAnalysis waterAnalysis;
 
     public boolean isPaid(){
         return paidAt != null;

@@ -1,0 +1,1 @@
+CREATE INDEX idx_parametro_coleta ON parametro_coleta(data);

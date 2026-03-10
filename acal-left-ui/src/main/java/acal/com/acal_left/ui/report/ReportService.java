@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ReportService {
 
@@ -32,6 +33,7 @@ public class ReportService {
         try {
             InputStream titleStream = ReportService.class.getResourceAsStream("/reports/invoice_title.jrxml");
             InputStream detailStream = ReportService.class.getResourceAsStream("/reports/invoice_detail.jrxml");
+            InputStream waterStream = ReportService.class.getResourceAsStream("/reports/invoice_water.jrxml");
 
             if (titleStream != null) {
                 JasperReport titleReport = JasperCompileManager.compileReport(titleStream);
@@ -42,13 +44,18 @@ public class ReportService {
                 JasperReport detailReport = JasperCompileManager.compileReport(detailStream);
                 parameters.put("SUBREPORT_DETAIL", detailReport);
             }
+
+            if (waterStream != null) {
+                JasperReport waterReport = JasperCompileManager.compileReport(waterStream);
+                parameters.put("SUBREPORT_WATER", waterReport);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao compilar subreports", e);
         }
 
         // Tentar carregar o logo
         try {
-            BufferedImage logo = ImageIO.read(ReportService.class.getResourceAsStream("/images/acal.jpg"));
+            BufferedImage logo = ImageIO.read(Objects.requireNonNull(ReportService.class.getResourceAsStream("/images/acal.jpg")));
             parameters.put("logo", logo);
         } catch (IOException | NullPointerException e) {
             // Se não encontrar o logo, continua sem ele
