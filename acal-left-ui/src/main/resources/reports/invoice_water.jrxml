@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NewReport" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="00000000-0000-0000-0000-000000000000">
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="invoice_water" pageWidth="555" pageHeight="842" columnWidth="555"
+              leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<queryString>
-		<![CDATA[]]>
-	</queryString>
+	<queryString><![CDATA[]]></queryString>
 	<field name="name" class="java.lang.String"/>
 	<field name="required" class="java.lang.String"/>
 	<field name="analyzed" class="java.lang.String"/>
@@ -12,7 +14,7 @@
 	<title>
 		<band height="40">
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="0" y="0" width="555" height="30" uuid="ef8eca20-0c5e-418d-9828-c5a6309b1e0b">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="555" height="30">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -23,7 +25,7 @@
 				<text><![CDATA[PADRÃO DA PORTARIA MS 2914/2011]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="0" y="20" width="555" height="20" uuid="4b818438-aa7f-47ad-bfff-6a82a4928ad4">
+				<reportElement stretchType="ContainerHeight" x="0" y="20" width="555" height="20">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -38,7 +40,7 @@
 	<pageHeader>
 		<band height="15">
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="0" y="0" width="255" height="15" uuid="5b1c9699-8415-4146-8f46-df83ea29ec38">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="255" height="15">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -58,7 +60,7 @@
 				<text><![CDATA[Parâmetros:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="255" y="0" width="100" height="15" uuid="ed17a29d-e906-4416-a7c3-49d208f59287">
+				<reportElement stretchType="ContainerHeight" x="255" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -76,7 +78,7 @@
 				<text><![CDATA[Exigidas:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="355" y="0" width="100" height="15" uuid="7f4997ed-153d-446d-a9d9-0fa7094fcd75">
+				<reportElement stretchType="ContainerHeight" x="355" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -93,7 +95,7 @@
 				<text><![CDATA[Analisadas:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="455" y="0" width="100" height="15" uuid="f31e9813-80e0-483a-9af1-052a2b7dda11">
+				<reportElement stretchType="ContainerHeight" x="455" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -117,7 +119,7 @@
 	<detail>
 		<band height="15">
 			<textField>
-				<reportElement x="255" y="0" width="100" height="15" uuid="06fd5268-2c90-49e7-88dc-2733820707b9">
+				<reportElement x="255" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72bc191d-5558-46f9-b2e9-cdc5e98bc1cd"/>
 				</reportElement>
 				<box>
@@ -132,7 +134,7 @@
 				<textFieldExpression><![CDATA[$F{required}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="355" y="0" width="100" height="15" uuid="5baf0600-bc6d-4eae-b24a-aa0d792bda4b">
+				<reportElement x="355" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72bc191d-5558-46f9-b2e9-cdc5e98bc1cd"/>
 				</reportElement>
 				<box>
@@ -147,7 +149,7 @@
 				<textFieldExpression><![CDATA[$F{analyzed}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="0" width="100" height="15" uuid="cdb0e5d5-a98b-426a-ac56-a2d77f92879f">
+				<reportElement x="455" y="0" width="100" height="15">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72bc191d-5558-46f9-b2e9-cdc5e98bc1cd"/>
 				</reportElement>
 				<box>
@@ -162,7 +164,7 @@
 				<textFieldExpression><![CDATA[$F{conformity}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="255" height="15" uuid="533fc284-5cc0-4626-8570-996dbbd51c60">
+				<reportElement x="0" y="0" width="255" height="15">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72bc191d-5558-46f9-b2e9-cdc5e98bc1cd"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -184,7 +186,7 @@
 	<pageFooter>
 		<band height="85">
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="0" y="15" width="555" height="70" uuid="7bda7080-f510-470d-8fa9-6b0d008bace0">
+				<reportElement stretchType="ContainerHeight" x="0" y="15" width="555" height="70">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -201,7 +203,7 @@
  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerHeight" x="0" y="0" width="555" height="15" uuid="8555171f-4a5a-4e32-95ba-f8fbe00e5008">
+				<reportElement stretchType="ContainerHeight" x="0" y="0" width="555" height="15">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
