@@ -2,16 +2,12 @@ package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model;
 
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.shared.BigDecimalUtil;
+import acal.com.acal_left.shared.LocalDateTimeUtil;
+import acal.com.acal_left.shared.LocalDateUtil;
 import lombok.Data;
-
-import java.time.format.DateTimeFormatter;
-
-import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Data
 public class InvoiceTableContent {
-    private static final DateTimeFormatter PERIOD_FORMATTER = ofPattern("MM/yyyy");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = ofPattern("dd/MM/yyyy");
 
     private final Integer id;
     private final String number;
@@ -25,14 +21,13 @@ public class InvoiceTableContent {
     private final String total;
     private final Invoice item;
 
-
     public InvoiceTableContent(Invoice item) {
         this.id = item.getId();
         this.number = item.getId().toString();
         this.partner = item.getPerson().getName();
         this.address = item.getAddress().getFullAddress() + " " + item.getNumber();
-        this.dueDate = item.getDueDate().format(DATE_TIME_FORMATTER);
-        this.period = item.getPeriod().format(PERIOD_FORMATTER);
+        this.dueDate = LocalDateTimeUtil.formatDateTime(item.getDueDate());
+        this.period = LocalDateUtil.formatPeriod(item.getPeriod());
         this.status = item.getStatus();
         this.paid = item.isPaid() ? "Sim" : "Não";
         this.isOverDue = item.isOverDue();

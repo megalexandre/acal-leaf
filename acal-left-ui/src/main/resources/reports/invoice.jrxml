@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Relatório Principal de Fatura -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="false" uuid="67c9e145-7949-4088-8d32-84f00c4d67f5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="logo" class="java.awt.image.BufferedImage"/>
+	<parameter name="SUBREPORT_TITLE" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SUBREPORT_DETAIL" class="net.sf.jasperreports.engine.JasperReport"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id" class="java.lang.String"/>
+	<field name="partner" class="java.lang.String"/>
+	<field name="partnerNumber" class="java.lang.String"/>
+	<field name="excessValue" class="java.lang.String"/>
+	<field name="excessLimit" class="java.lang.String"/>
+	<field name="accountNumber" class="java.lang.String"/>
+	<field name="partnerCategory" class="java.lang.String"/>
+	<field name="dueDate" class="java.lang.String"/>
+	<field name="totalAmount" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="payment" class="java.lang.String"/>
+	<field name="currentDate" class="java.lang.String"/>
+	<detail>
+
+		<!-- title -->
+		<band height="70" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="70" uuid="a1b2c3d4-e5f6-47a8-b9c0-d1e2f3a4b5c6"/>
+				<subreportParameter name="logo">
+					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_TITLE}]]></subreportExpression>
+			</subreport>
+		</band>
+
+		<!-- detail -->
+		<band height="400">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="400" uuid="b2c3d4e5-f6a7-48b9-c0d1-e2f3a4b5c6d7"/>
+				<dataSourceExpression><![CDATA[acal.com.acal_left.ui.report.ReportService.buildInvoiceDetailDataSource(
+					$F{id},
+					$F{partner},
+					$F{partnerNumber},
+					$F{accountNumber},
+					$F{payment},
+					$F{totalAmount},
+					$F{partnerCategory},
+					$F{address},
+					$F{excessLimit},
+					$F{currentDate},
+					$F{excessValue}
+				)]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DETAIL}]]></subreportExpression>
+			</subreport>
+		</band>
+
+		<band height="400">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="400" uuid="b2c3d4e5-f6a7-48b9-c0d1-e2f3a4b5c6d7"/>
+				<dataSourceExpression><![CDATA[acal.com.acal_left.ui.report.ReportService.buildInvoiceDetailDataSource(
+					$F{partner},
+					$F{partnerNumber},
+					$F{id},
+					$F{accountNumber},
+					$F{payment},
+					$F{totalAmount},
+					$F{partnerCategory},
+					$F{address},
+					$F{excessLimit},
+					$F{currentDate},
+					$F{excessValue}
+				)]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DETAIL}]]></subreportExpression>
+			</subreport>
+		</band>
+
+		<band height="1">
+			<break>
+				<reportElement x="0" y="0" width="1" height="1" uuid="d4c1204a-9bc4-4a8a-b4ef-90ec3fcad8c9"/>
+			</break>
+		</band>
+	</detail>
+
+</jasperReport>
+

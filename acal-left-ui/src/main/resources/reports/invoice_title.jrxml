@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="67c9e145-7949-4088-8d32-84f00c4d67f5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="logo" class="java.awt.image.BufferedImage"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<detail>
+		<band height="70">
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="0" y="0" width="70" height="70" uuid="67dccca4-3401-4fec-8069-7d2692ad7067">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="80" y="0" width="400" height="70" uuid="34a7b003-17ab-4d98-a130-bc2717bbfbc3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CNPJ - 13.228.119/0001-68
+Publicação do estatuto no Diário Oficial de 22-06-1983.
+Reconhecido como Órgão de utilidade publica Municipal - conf.lei N 7 de 27-10-1983.
+Reconhecido como Órgão de utilidade publica Estadual - conf.lei N 7049 de 16-04-1997.
+Rua Morro do Chapéu, CEP 44709-000,  S/N - Telefone: (74) 9 8107-4362.
+Lages do Batata - Jacobina, BA.
+Email : acallages@hotmail.com.
+            ]]></text>
+			</staticText>
+		</band>
+		<band height="1">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="3083aa0f-eaad-4747-a3a1-aeb028c6b6fe">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+		<band height="41">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="25" uuid="a8240d46-ce98-4618-b041-e529e7cad9b3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACAL - Associação Comunitária e Assistêncial de Lages]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="555" height="20" uuid="2ef800b1-a909-4bc7-bc73-eaa5a5179859"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[ECONOMIZAR ÁGUA É UM DEVER DE TODO SER HUMANO.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="40" width="555" height="1" uuid="0d6679cd-7800-4667-836e-9ba56f1adda5"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

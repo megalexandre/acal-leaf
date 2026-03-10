@@ -6,6 +6,7 @@ import java.util.Locale;
 
 public class BigDecimalUtil {
 
+
     private static final Locale PT_BR = Locale.of("pt", "BR");
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance(PT_BR);
     private static final NumberFormat DECIMAL_FORMAT = NumberFormat.getNumberInstance(PT_BR);

@@ -17,6 +17,9 @@ module acal.left.app {
     requires spring.context;
     requires org.hibernate.validator;
 
+    requires flyway.core;
+    requires flyway.mysql;
+
     // Opens packages for Spring's reflection and component scanning
     opens acal.com.acal_left to spring.core, spring.beans, spring.context;
 

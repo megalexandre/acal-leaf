@@ -62,6 +62,7 @@ public class InvoiceEntity {
                 .dueDate(entity.getDueDate())
                 .paidAt(entity.getPaidAt())
                 .period(entity.getPeriod())
+                .category(CategoryEntity.toEntity(entity.getPersonAddress().getCategory()))
                 .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
                 .amountWater(getBigDecimalValue(entity.getAmountWater()))
                 .id(entity.getId())
