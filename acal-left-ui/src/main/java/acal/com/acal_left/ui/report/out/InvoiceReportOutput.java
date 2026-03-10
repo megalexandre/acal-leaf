@@ -15,10 +15,22 @@ import java.util.List;
 @Builder
 public class InvoiceReportOutput {
 
+    private String addressNumber;
     private String number;
-    private String partnerName;
-    private String partnerNumber;
     private String reference;
+
+    private String partnerName;
+
+    //Agua
+    private String consumptionStart;
+    private String consumptionEnd;
+    private String consumptionValue;
+    private String freeTier;
+    private String partnerValue;
+
+    private String paidUsageValue;
+
+    private String partnerNumber;
     private String paidAt;
 
     private String excessValue;
@@ -28,9 +40,7 @@ public class InvoiceReportOutput {
     private String dueDate;
     private String total;
     private String categoryValue;
-    private String waterValue;
     private String address;
-    private String addressNumber;
     private String currentDate;
     private String payment;
 
@@ -39,24 +49,21 @@ public class InvoiceReportOutput {
     private Boolean isPartnerExclusive;
     private Boolean isNormalPartner;
 
-    private String consumptionStart = "0";
-    private String consumptionEnd = "0";
-    private String freeTier = "10.000L";
-    private String waterTotalValue = "0.00";
-    private String paidUsageValue  = "0.00";
-
     public static InvoiceReportOutput fromDomain(Invoice invoice) {
         return InvoiceReportOutput.builder()
+                .addressNumber(invoice.getNumber())
                 .number(invoice.getId().toString())
-                .partnerName(invoice.getPerson().getName())
-                .partnerNumber(invoice.getPerson().getPartnerNumber())
                 .reference(LocalDateUtil.formatPeriod(invoice.getPeriod()))
-                .categoryValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountPartner()))
-                .waterValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountWater()))
-
+                .partnerName(invoice.getPerson().getName())
                 .address(invoice.getAddress().getFullAddress())
-                .addressNumber("10")
                 .category(invoice.getCategory().getFullName())
+                .partnerNumber(invoice.getPerson().getPartnerNumber())
+                .categoryValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountPartner()))
+                .partnerValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountWater()))
+                .consumptionStart("Registro anterior:" + "0")
+                .consumptionEnd("Registro atual:" + "0")
+                .consumptionValue("0")
+                .paidAt(invoice.isPaid() ? "Pago em: " + LocalDateTimeUtil.formatDateTime(invoice.getPaidAt()) : "")
                 .total(BigDecimalUtil.toBRL(invoice.totalAmount()))
                 .currentDate(LocalDateTimeUtil.formatDateTime(LocalDateTime.now()))
                 .dueDate(invoice.getDueDate().toString())
@@ -66,7 +73,7 @@ public class InvoiceReportOutput {
                 .payment(invoice.isPaid() ? "Pago" : "Pendente")
                 .isPartnerExclusive(false)
                 .isNormalPartner(false)
-                .build();
+            .build();
     }
 
 }
