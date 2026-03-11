@@ -6,7 +6,6 @@ import acal.com.acal_left.resouces.repository.repository.impl.AddressRepositoryI
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,7 +51,7 @@ public class InvoiceEntity {
     @Column(name = "data_vencimento")
     private LocalDateTime dueDate;
 
-    @OneToOne(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
+    @OneToOne(mappedBy = "entity", cascade = CascadeType.ALL)
     private HydrometerEntity hydrometer;
 
     @Column(name = "amount_partner", precision = 10, scale = 2, nullable = false)

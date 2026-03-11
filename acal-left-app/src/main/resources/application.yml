@@ -10,6 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
+    defer-datasource-initialization: false
     hibernate:
       ddl-auto: validate
     show-sql: true
@@ -21,7 +22,7 @@ spring:
     packages-to-scan: acal.com.acal_left.resouces.repository.model
 
   flyway:
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
     baseline-version: 0
     locations: classpath:db/migration

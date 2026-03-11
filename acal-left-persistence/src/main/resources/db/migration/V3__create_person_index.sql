@@ -1,1 +1,0 @@
-CREATE INDEX idx_pessoa_nome_id ON pessoa(nome, id);
