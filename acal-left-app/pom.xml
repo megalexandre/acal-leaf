@@ -22,7 +22,7 @@
 		<sonar.projectKey>acal-left</sonar.projectKey>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url> <sonar.projectKey>nome-do-seu-projeto</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
