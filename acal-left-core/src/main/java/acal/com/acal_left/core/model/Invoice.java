@@ -47,13 +47,22 @@ public class Invoice {
     private BigDecimal amountPartner;
     private BigDecimal amountWater;
     public WaterAnalysis waterAnalysis;
+    public Hydrometer hydrometer;
+
 
     public boolean isPaid(){
         return paidAt != null;
     }
 
     public BigDecimal totalAmount() {
-        return amountPartner.add(amountWater);
+        return amountPartner.add(amountWater).add(hydrometerAmount());
+    }
+
+    private BigDecimal hydrometerAmount() {
+        if (hydrometer == null) {
+            return BigDecimal.ZERO;
+        }
+        return hydrometer.price();
     }
 
     public boolean isOverDue() {

@@ -20,6 +20,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             JOIN pa.person p
             JOIN pa.address a
             JOIN pa.category c
+            LEFT JOIN i.hydrometer h
             WHERE (:id IS NULL OR i.id = :id)
                 AND (:categoryId IS NULL OR c.id = :categoryId)
                 AND (:period IS NULL OR i.period = :period)
@@ -42,6 +43,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
             JOIN FETCH pa.person p
             JOIN FETCH pa.address a
             JOIN FETCH pa.category c
+            LEFT JOIN FETCH i.hydrometer h
             WHERE (:id IS NULL OR i.id = :id)
                 AND (:categoryId IS NULL OR c.id = :categoryId)
                 AND (:period IS NULL OR i.period = :period)

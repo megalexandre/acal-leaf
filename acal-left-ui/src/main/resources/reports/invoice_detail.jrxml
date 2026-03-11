@@ -21,6 +21,7 @@
 	<field name="categoryValue" class="java.lang.String"/>
 	<field name="partnerValue" class="java.lang.String"/>
 	<field name="paidUsageValue" class="java.lang.String"/>
+
 	<detail>
 		<band height="46">
 			<textField textAdjust="StretchHeight">
@@ -154,7 +155,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{consumptionValue}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{freeTier}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement x="185" y="10" width="180" height="150" uuid="0f3f16b1-ce6f-44a7-b6c4-e91ddac8a3a3"/>

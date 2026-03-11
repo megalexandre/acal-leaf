@@ -1,6 +1,14 @@
 package acal.com.acal_left.resouces.repository.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,8 +24,15 @@ public class HydrometerEntity implements Serializable {
     @Column(name = "idhidrometro")
     private Integer id;
 
-    @Column(name = "Consumo")
-    private Double usage;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idconta", referencedColumnName = "id")
+    private InvoiceEntity entity;
+
+    @Column(name = "consumo_inicial")
+    private Double consumptionStart;
+
+    @Column(name = "consumo_final")
+    private Double consumptionEnd;
 
     @Override
     public String toString() {

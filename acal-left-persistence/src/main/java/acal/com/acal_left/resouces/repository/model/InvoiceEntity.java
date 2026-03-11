@@ -1,9 +1,12 @@
 package acal.com.acal_left.resouces.repository.model;
 
+import acal.com.acal_left.core.model.Hydrometer;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.resouces.repository.repository.impl.AddressRepositoryImpl;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -24,7 +28,8 @@ import java.time.LocalDateTime;
 @NamedEntityGraph(
     name = "InvoiceEntity.withAllRelationships",
     attributeNodes = {
-        @NamedAttributeNode("personAddress")
+        @NamedAttributeNode("personAddress"),
+        @NamedAttributeNode("hydrometer")
     }
 )
 public class InvoiceEntity {
@@ -47,6 +52,9 @@ public class InvoiceEntity {
     @Column(name = "data_vencimento")
     private LocalDateTime dueDate;
 
+    @OneToOne(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
+    private HydrometerEntity hydrometer;
+
     @Column(name = "amount_partner", precision = 10, scale = 2, nullable = false)
     private BigDecimal amountPartner;
 
@@ -65,6 +73,12 @@ public class InvoiceEntity {
                 .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
                 .amountWater(getBigDecimalValue(entity.getAmountWater()))
                 .id(entity.getId())
+                .hydrometer(
+                    Hydrometer.builder()
+                        .consumptionStart(entity.getHydrometer() != null ? entity.getHydrometer().getConsumptionStart() : 0D)
+                        .consumptionEnd(entity.getHydrometer() != null ? entity.getHydrometer().getConsumptionEnd() : 0D)
+                    .build()
+                )
                 .build();
     }
 

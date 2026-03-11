@@ -1,8 +1,10 @@
 package acal.com.acal_left.ui.report.out;
 
 
+import acal.com.acal_left.core.model.Hydrometer;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.shared.BigDecimalUtil;
+import acal.com.acal_left.shared.DoubleUtil;
 import acal.com.acal_left.shared.LocalDateTimeUtil;
 import acal.com.acal_left.shared.LocalDateUtil;
 import lombok.Builder;
@@ -60,21 +62,47 @@ public class InvoiceReportOutput {
                 .partnerNumber(invoice.getPerson().getPartnerNumber())
                 .categoryValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountPartner()))
                 .partnerValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountWater()))
-                .consumptionStart("Registro anterior:" + "0")
-                .consumptionEnd("Registro atual:" + "0")
-                .consumptionValue("0")
+
+                .consumptionStart(getConsumptionStartLabel(invoice))
+                .consumptionEnd(getConsumptionEndLabel(invoice))
+                .freeTier(getFreeTierLabel())
+                .consumptionValue(getConsumptionValueLabel(invoice))
+                .paidUsageValue(paidUsageValue(invoice))
+
+
                 .paidAt(invoice.isPaid() ? "Pago em: " + LocalDateTimeUtil.formatDateTime(invoice.getPaidAt()) : "")
                 .total(BigDecimalUtil.toBRL(invoice.totalAmount()))
                 .currentDate(LocalDateTimeUtil.formatDateTime(LocalDateTime.now()))
                 .dueDate(invoice.getDueDate().toString())
                 .waterParams(invoice.getWaterAnalysis().getAnalysis().stream().map(InvoiceReportWaterParamOutput::new).toList())
                 .excessValue(invoice.getAmountWater().subtract(invoice.getAmountPartner()).toString())
-                .excessLimit("100L")
                 .payment(invoice.isPaid() ? "Pago" : "Pendente")
                 .isPartnerExclusive(false)
                 .isNormalPartner(false)
             .build();
     }
+
+    private static String paidUsageValue(Invoice invoice) {
+        return BigDecimalUtil.toBRL(invoice.hydrometer.price());
+    }
+
+    private static String getConsumptionValueLabel(Invoice invoice) {
+        Double consumption = invoice.hydrometer.getConsumption().doubleValue();
+        return "Consumo Considerado: " +  DoubleUtil.format( consumption)+ " L";
+    }
+
+    private static String getFreeTierLabel(){
+        return "Isenção: " + DoubleUtil.format(Hydrometer.FREE_TIER) + " L";
+    }
+
+    private static String getConsumptionStartLabel(Invoice invoice){
+        return "Registro anterior: " + DoubleUtil.format(invoice.hydrometer.getConsumptionStart());
+    }
+
+    private static String getConsumptionEndLabel(Invoice invoice){
+        return "Registro atual: " + DoubleUtil.format(invoice.hydrometer.getConsumptionEnd());
+    }
+
 
 }
 
