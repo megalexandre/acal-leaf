@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface InvoiceRepository {
 
+    Invoice pay(Invoice invoice);
     List<Invoice> listInvoices(InvoiceQuery invoiceQuery);
     Page<Invoice> paginateInvoices(InvoiceQuery invoiceQuery);
+
     void delete(Invoice invoice);
 }

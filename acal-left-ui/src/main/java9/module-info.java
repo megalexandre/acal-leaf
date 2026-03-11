@@ -18,6 +18,7 @@ module acal.left.ui {
     requires org.jspecify;
     requires swingx.all;
     requires spring.boot;
+    requires miglayout-swing;
 
     // Export UI packages
     exports acal.com.acal_left.ui;

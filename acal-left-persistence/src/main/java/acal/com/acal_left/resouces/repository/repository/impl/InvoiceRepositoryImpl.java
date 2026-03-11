@@ -73,6 +73,12 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
+    public Invoice pay(Invoice invoice) {
+        invoiceJpaRepository.updatePayedAt(invoice.getId(), invoice.getPaidAt());
+        return invoice;
+    }
+
+    @Override
     public Page<Invoice> paginateInvoices(InvoiceQuery invoiceQuery) {
         long total = invoiceJpaRepository.countInvoices(
                 invoiceQuery.getId(),

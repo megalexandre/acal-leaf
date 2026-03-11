@@ -20,6 +20,15 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- Source: https://mvnrepository.com/artifact/com.miglayout/miglayout-swing -->
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-swing</artifactId>
+			<version>11.4.3</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- Core module for business logic -->
 		<dependency>
 			<groupId>acal.com</groupId>

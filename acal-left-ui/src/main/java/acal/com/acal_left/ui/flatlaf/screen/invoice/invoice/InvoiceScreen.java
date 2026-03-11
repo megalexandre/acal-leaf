@@ -7,6 +7,7 @@ import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceDeleteUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoicePaginateUseCase;
+import acal.com.acal_left.core.usecase.invoice.InvoicePayUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
@@ -17,6 +18,7 @@ import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
+import acal.com.acal_left.ui.flatlaf.utils.Toast;
 import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.ReportService;
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
@@ -78,6 +80,9 @@ public class InvoiceScreen extends JPanel {
     @Autowired
     private InvoiceDeleteUseCase delete;
 
+    @Autowired
+    private InvoicePayUseCase pay;
+
     private final InvoiceScreenData screenData = new InvoiceScreenData();
 
     private int currentPage = 0;
@@ -124,6 +129,19 @@ public class InvoiceScreen extends JPanel {
         new PdfViewerService().openPdf(
             new ReportService().createReport(List.of(InvoiceReportOutput.fromDomain(i)))
         );
+    }
+
+    private void payActionListener(ActionEvent e) {
+        Invoice i = (Invoice) popupMenu.getClientProperty("selected");
+        if(i.isPaid()){
+            Toast.show(this, "Esse isso já foi recebido, ignorando a solicitação.");
+            return;
+        }
+
+        i.setPaidAt(LocalDateTime.now());
+        pay.execute(i);
+        Toast.show(this, "Recebido");
+        search(0);
     }
 
     private void deleteActionListener(ActionEvent e) {
@@ -312,6 +330,8 @@ public class InvoiceScreen extends JPanel {
 
 
 
+
+
     @SuppressWarnings("Convert2MethodRef")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -347,6 +367,7 @@ public class InvoiceScreen extends JPanel {
         buttonSearch = new JButton();
         popupMenu = new JPopupMenu();
         menuItemDelete = new JMenuItem();
+        menuItemPay = new JMenuItem();
         menuItemInvoicePrint = new JMenuItem();
 
         //======== this ========
@@ -493,6 +514,11 @@ public class InvoiceScreen extends JPanel {
             menuItemDelete.setText("Deletar");
             menuItemDelete.addActionListener(e -> deleteActionListener(e));
             popupMenu.add(menuItemDelete);
+
+            //---- menuItemPay ----
+            menuItemPay.setText("Receber");
+            menuItemPay.addActionListener(e -> payActionListener(e));
+            popupMenu.add(menuItemPay);
             popupMenu.addSeparator();
 
             //---- menuItemInvoicePrint ----
@@ -536,6 +562,7 @@ public class InvoiceScreen extends JPanel {
     private JButton buttonSearch;
     private JPopupMenu popupMenu;
     private JMenuItem menuItemDelete;
+    private JMenuItem menuItemPay;
     private JMenuItem menuItemInvoicePrint;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

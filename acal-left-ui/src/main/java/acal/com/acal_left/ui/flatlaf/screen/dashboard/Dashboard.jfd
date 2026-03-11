@@ -52,6 +52,14 @@ new FormModel {
 						name: "menuItemOverdue"
 						"text": "Cobranças"
 					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator1"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemReceiver"
+						"text": "Receber "
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "receiverActionListener", true ) )
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu3"
