@@ -28,7 +28,7 @@ public class InvoiceReportOutput {
     private String consumptionEnd;
     private String consumptionValue;
     private String freeTier;
-    private String partnerValue;
+    private String amountWater;
 
     private String paidUsageValue;
 
@@ -41,7 +41,7 @@ public class InvoiceReportOutput {
     private String category;
     private String dueDate;
     private String total;
-    private String categoryValue;
+    private String amountPartner;
     private String address;
     private String currentDate;
     private String payment;
@@ -60,8 +60,9 @@ public class InvoiceReportOutput {
                 .address(invoice.getAddress().getFullAddress())
                 .category(invoice.getCategory().getFullName())
                 .partnerNumber(invoice.getPerson().getPartnerNumber())
-                .categoryValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountPartner()))
-                .partnerValue(BigDecimalUtil.toBRL(invoice.getCategory().getAmountWater()))
+
+                .amountPartner(BigDecimalUtil.toBRL(invoice.getAmountPartner()))
+                .amountWater(BigDecimalUtil.toBRL(invoice.getAmountWater()))
 
                 .consumptionStart(getConsumptionStartLabel(invoice))
                 .consumptionEnd(getConsumptionEndLabel(invoice))

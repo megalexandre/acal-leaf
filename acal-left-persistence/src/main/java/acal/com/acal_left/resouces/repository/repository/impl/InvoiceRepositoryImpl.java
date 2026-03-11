@@ -12,6 +12,7 @@ import acal.com.acal_left.resouces.repository.repository.jpa.WaterAnalysisJpaRep
 import acal.com.acal_left.shared.model.WaterParameterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,7 +33,47 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public Page<Invoice> findInvoices(InvoiceQuery invoiceQuery) {
+    public void delete(Invoice invoice) {
+        invoiceJpaRepository.deleteById(invoice.getId());
+    }
+
+    @Override
+    public List<Invoice> listInvoices(InvoiceQuery invoiceQuery) {
+        var invoices = invoiceJpaRepository.findInvoicesWithPagination(
+                        invoiceQuery.getId(),
+                        invoiceQuery.getPeriod(),
+                        invoiceQuery.getDueDate(),
+                        invoiceQuery.getCategoryId(),
+                        invoiceQuery.getAddressId(),
+                        invoiceQuery.getPersonId(),
+                        Pageable.unpaged()
+                ).stream()
+                .map(InvoiceEntity::toDomain)
+                .toList();
+
+        var periods = invoices.stream().map(Invoice::getPeriod).distinct().toList();
+        var items = waterAnalysisJpaRepository.findByPeriodIn(periods);
+
+        var waterAnalysisByPeriod = items.stream()
+                .collect(Collectors.groupingBy(
+                        WaterAnalysisItemEntity::getPeriod,
+                        Collectors.mapping(this::toWaterAnalysisItem, Collectors.toList())
+                ));
+
+        invoices.forEach(invoice -> {
+            var analysisItems = waterAnalysisByPeriod.getOrDefault(invoice.getPeriod(), List.of());
+            invoice.setWaterAnalysis(
+                    WaterAnalysis.builder()
+                            .analysis(analysisItems)
+                            .build()
+            );
+        });
+
+        return invoices;
+    }
+
+    @Override
+    public Page<Invoice> paginateInvoices(InvoiceQuery invoiceQuery) {
         long total = invoiceJpaRepository.countInvoices(
                 invoiceQuery.getId(),
                 invoiceQuery.getPeriod(),
@@ -54,7 +95,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
          .map(InvoiceEntity::toDomain)
          .toList();
 
-        var periods = invoices.stream().map(Invoice::getPeriod).toList();
+        var periods = invoices.stream().map(Invoice::getPeriod).distinct().toList();
         var items = waterAnalysisJpaRepository.findByPeriodIn(periods);
 
         var waterAnalysisByPeriod = items.stream()
@@ -78,6 +119,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             total
         );
     }
+
+
 
     private WaterAnalysisItem toWaterAnalysisItem(WaterAnalysisItemEntity entity) {
         return WaterAnalysisItem.builder()

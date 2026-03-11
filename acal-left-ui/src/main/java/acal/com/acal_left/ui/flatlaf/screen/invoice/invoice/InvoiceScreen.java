@@ -4,7 +4,9 @@ import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.model.filter.PersonFilter;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
-import acal.com.acal_left.core.usecase.invoice.InvoiceFindUseCase;
+import acal.com.acal_left.core.usecase.invoice.InvoiceDeleteUseCase;
+import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
+import acal.com.acal_left.core.usecase.invoice.InvoicePaginateUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
@@ -68,7 +70,13 @@ public class InvoiceScreen extends JPanel {
     private AddressFindAllUseCase addressFind;
 
     @Autowired
-    private InvoiceFindUseCase find;
+    private InvoicePaginateUseCase paginate;
+
+    @Autowired
+    private InvoiceListUseCase list;
+
+    @Autowired
+    private InvoiceDeleteUseCase delete;
 
     private final InvoiceScreenData screenData = new InvoiceScreenData();
 
@@ -76,7 +84,6 @@ public class InvoiceScreen extends JPanel {
     private final int pageSize = 100;
     private boolean hasMorePages = false;
     private int totalPages = 0;
-
 
     public InvoiceScreen() {
         initComponents();
@@ -119,17 +126,26 @@ public class InvoiceScreen extends JPanel {
         );
     }
 
+    private void deleteActionListener(ActionEvent e) {
+        Invoice i = (Invoice) popupMenu.getClientProperty("selected");
+        delete.execute(i);
+        search(0);
+    }
+
+    private void printActionListener(ActionEvent e) {
+        List<Invoice> invoices = list.execute(buildQuery());
+        List<InvoiceReportOutput> invoicesToReport = invoices.stream().map(InvoiceReportOutput::fromDomain).toList();
+
+        new PdfViewerService().openPdf(
+            new ReportService().createReport(invoicesToReport)
+        );
+    }
+
     private void createDialog(Invoice invoice) {
         Window window = SwingUtilities.getWindowAncestor(this);
         InvoiceCreateDialog createDialog = new InvoiceCreateDialog(window, invoice);
         createDialog.pack();
         createDialog.setLocationRelativeTo(window);
-        /*
-        categoryEdit.setOnSuccess(e -> {
-            save.execute((Category) e.getSource());
-            searchActionListener(null);
-        });
-         */
         createDialog.setVisible(true);
     }
 
@@ -212,7 +228,7 @@ public class InvoiceScreen extends JPanel {
 
     private void fetchPageData() {
         Page<InvoiceTableContent> page =
-            find.execute(buildQuery())
+            paginate.execute(buildQuery())
             .map(InvoiceTableContent::new);
 
         hasMorePages = page.hasNext();
@@ -295,6 +311,7 @@ public class InvoiceScreen extends JPanel {
     }
 
 
+
     @SuppressWarnings("Convert2MethodRef")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -326,11 +343,10 @@ public class InvoiceScreen extends JPanel {
         formattedDueDate = new JFormattedTextField();
         panel2 = new JPanel();
         buttonClear = new JButton();
+        buttonPrint = new JButton();
         buttonSearch = new JButton();
         popupMenu = new JPopupMenu();
-        menuItemInvoiceView = new JMenuItem();
-        menuItem3 = new JMenuItem();
-        menuItem4 = new JMenuItem();
+        menuItemDelete = new JMenuItem();
         menuItemInvoicePrint = new JMenuItem();
 
         //======== this ========
@@ -456,6 +472,11 @@ public class InvoiceScreen extends JPanel {
                 buttonClear.addActionListener(e -> clearActionListener(e));
                 panel2.add(buttonClear);
 
+                //---- buttonPrint ----
+                buttonPrint.setText("Imprimir");
+                buttonPrint.addActionListener(e -> printActionListener(e));
+                panel2.add(buttonPrint);
+
                 //---- buttonSearch ----
                 buttonSearch.setText("Consultas");
                 buttonSearch.addActionListener(e -> searchActionListener(e));
@@ -468,18 +489,10 @@ public class InvoiceScreen extends JPanel {
         //======== popupMenu ========
         {
 
-            //---- menuItemInvoiceView ----
-            menuItemInvoiceView.setText("Visualizar");
-            menuItemInvoiceView.addActionListener(e -> invoiceViewActionListener(e));
-            popupMenu.add(menuItemInvoiceView);
-
-            //---- menuItem3 ----
-            menuItem3.setText("Editar");
-            popupMenu.add(menuItem3);
-
-            //---- menuItem4 ----
-            menuItem4.setText("Deletar");
-            popupMenu.add(menuItem4);
+            //---- menuItemDelete ----
+            menuItemDelete.setText("Deletar");
+            menuItemDelete.addActionListener(e -> deleteActionListener(e));
+            popupMenu.add(menuItemDelete);
             popupMenu.addSeparator();
 
             //---- menuItemInvoicePrint ----
@@ -519,11 +532,10 @@ public class InvoiceScreen extends JPanel {
     private JFormattedTextField formattedDueDate;
     private JPanel panel2;
     private JButton buttonClear;
+    private JButton buttonPrint;
     private JButton buttonSearch;
     private JPopupMenu popupMenu;
-    private JMenuItem menuItemInvoiceView;
-    private JMenuItem menuItem3;
-    private JMenuItem menuItem4;
+    private JMenuItem menuItemDelete;
     private JMenuItem menuItemInvoicePrint;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

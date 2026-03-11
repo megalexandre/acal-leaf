@@ -18,8 +18,8 @@
 	<field name="consumptionValue" class="java.lang.String"/>
 	<field name="addressNumber" class="java.lang.String"/>
 	<field name="currentDate" class="java.lang.String"/>
-	<field name="categoryValue" class="java.lang.String"/>
-	<field name="partnerValue" class="java.lang.String"/>
+	<field name="amountPartner" class="java.lang.String"/>
+	<field name="amountWater" class="java.lang.String"/>
 	<field name="paidUsageValue" class="java.lang.String"/>
 
 	<detail>
@@ -230,14 +230,14 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{categoryValue}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amountPartner}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="420" y="50" width="135" height="20" uuid="6888c97e-5fd1-4e56-bdc2-7d7c85a41a79"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{partnerValue}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amountWater}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="420" y="70" width="135" height="20" uuid="50ac5641-9067-4179-88ed-024a46124e96"/>

@@ -124,6 +124,11 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearActionListener", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonPrint"
+						"text": "Imprimir"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "printActionListener", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "buttonSearch"
 						"text": "Consultas"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
@@ -139,17 +144,9 @@ new FormModel {
 		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
 			name: "popupMenu"
 			add( new FormComponent( "javax.swing.JMenuItem" ) {
-				name: "menuItemInvoiceView"
-				"text": "Visualizar"
-				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "invoiceViewActionListener", true ) )
-			} )
-			add( new FormComponent( "javax.swing.JMenuItem" ) {
-				name: "menuItem3"
-				"text": "Editar"
-			} )
-			add( new FormComponent( "javax.swing.JMenuItem" ) {
-				name: "menuItem4"
+				name: "menuItemDelete"
 				"text": "Deletar"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteActionListener", true ) )
 			} )
 			add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 				name: "separator1"
