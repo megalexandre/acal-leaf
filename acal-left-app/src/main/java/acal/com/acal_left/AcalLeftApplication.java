@@ -29,6 +29,7 @@ public class AcalLeftApplication {
 				.run(args);
 	}
 
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationReady(ApplicationReadyEvent event) {
 		SplashScreenBootstrap.closeSplash();
