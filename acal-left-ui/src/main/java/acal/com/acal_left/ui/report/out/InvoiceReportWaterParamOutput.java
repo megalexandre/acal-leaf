@@ -13,18 +13,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InvoiceReportWaterParamOutput {
 
-    private String type;
+    private String name;
     private String required;
     private String analyzed;
     private String conformity;
 
     public InvoiceReportWaterParamOutput(WaterAnalysisItem waterAnalysisItem){
-        this.type = waterAnalysisItem.getType().getDescription();
+        this.name = waterAnalysisItem.getType().getDescription();
         this.required = waterAnalysisItem.getRequired();
         this.analyzed = waterAnalysisItem.getAnalyzed();
         this.conformity = waterAnalysisItem.getConformity();
     }
-
 
 }
 

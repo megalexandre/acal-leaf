@@ -44,7 +44,7 @@ public class InvoiceReportOutput {
     private String currentDate;
     private String payment;
 
-    public List<InvoiceReportWaterParamOutput> waterAnalysis;
+    public List<InvoiceReportWaterParamOutput> waterParams;
 
     private Boolean isPartnerExclusive;
     private Boolean isNormalPartner;
@@ -67,7 +67,7 @@ public class InvoiceReportOutput {
                 .total(BigDecimalUtil.toBRL(invoice.totalAmount()))
                 .currentDate(LocalDateTimeUtil.formatDateTime(LocalDateTime.now()))
                 .dueDate(invoice.getDueDate().toString())
-                .waterAnalysis(invoice.getWaterAnalysis().getAnalysis().stream().map(InvoiceReportWaterParamOutput::new).toList())
+                .waterParams(invoice.getWaterAnalysis().getAnalysis().stream().map(InvoiceReportWaterParamOutput::new).toList())
                 .excessValue(invoice.getAmountWater().subtract(invoice.getAmountPartner()).toString())
                 .excessLimit("100L")
                 .payment(invoice.isPaid() ? "Pago" : "Pendente")

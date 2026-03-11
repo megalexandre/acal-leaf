@@ -10,4 +10,8 @@ public class InvoiceReportDataSource {
     public static JRDataSource build(InvoiceReportOutput data) {
         return new JRBeanCollectionDataSource(List.of(data));
     }
+
+    public static JRDataSource buildWaterParams(InvoiceReportOutput invoiceReportOutput) {
+        return new JRBeanCollectionDataSource(invoiceReportOutput.getWaterParams());
+    }
 }

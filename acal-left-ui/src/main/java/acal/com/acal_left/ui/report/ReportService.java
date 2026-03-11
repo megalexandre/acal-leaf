@@ -1,6 +1,7 @@
 package acal.com.acal_left.ui.report;
 
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 
@@ -19,48 +20,20 @@ public class ReportService {
 
         String templatePath = "/reports/invoice.jrxml";
         var templateStream = ReportService.class.getResourceAsStream(templatePath);
-
-        if (templateStream == null) {
-            throw new IllegalStateException("Template de relatório não encontrado no classpath: " + templatePath);
+        if(templateStream == null) {
+            throw new RuntimeException("invalid path");
         }
 
         Map<String, Object> parameters = new HashMap<>();
+        parameters.put("logo", getLogo());
 
-        // Compilar e adicionar os subreports
         try {
-            InputStream titleStream = ReportService.class.getResourceAsStream("/reports/invoice_title.jrxml");
-            if (titleStream != null) {
-                JasperReport titleReport = JasperCompileManager.compileReport(titleStream);
-                parameters.put("SUBREPORT_TITLE", titleReport);
-            }
+            createReport("/reports/invoice_title.jrxml", parameters, "SUBREPORT_TITLE");
+            createReport("/reports/invoice_detail.jrxml", parameters, "SUBREPORT_DETAIL");
+            createReport("/reports/invoice_water.jrxml", parameters, "SUBREPORT_WATER");
 
-            InputStream detailStream = ReportService.class.getResourceAsStream("/reports/invoice_detail.jrxml");
-            if (detailStream != null) {
-                JasperReport detailReport = JasperCompileManager.compileReport(detailStream);
-                parameters.put("SUBREPORT_DETAIL", detailReport);
-            }
-
-            /*
-
-            InputStream waterStream = ReportService.class.getResourceAsStream("/reports/invoice_water.jrxml");
-
-
-
-
-            if (waterStream != null) {
-                JasperReport waterReport = JasperCompileManager.compileReport(waterStream);
-                parameters.put("SUBREPORT_WATER", waterReport);
-            }
-            */
         } catch (Exception e) {
             throw new RuntimeException("Erro ao compilar subreports", e);
-        }
-
-        try {
-            BufferedImage logo = ImageIO.read(Objects.requireNonNull(ReportService.class.getResourceAsStream("/images/acal.jpg")));
-            parameters.put("logo", logo);
-        } catch (IOException | NullPointerException e) {
-            parameters.put("logo", null);
         }
 
         return new ReportManager().generatePdfReport(
@@ -68,6 +41,22 @@ public class ReportService {
                 invoices,
                 parameters
         );
+    }
+
+    private static void createReport(String name, Map<String, Object> parameters, String SUBREPORT_TITLE) throws JRException {
+        InputStream titleStream = ReportService.class.getResourceAsStream(name);
+        if (titleStream != null) {
+            JasperReport titleReport = JasperCompileManager.compileReport(titleStream);
+            parameters.put(SUBREPORT_TITLE, titleReport);
+        }
+    }
+
+    private BufferedImage getLogo() {
+        try {
+            return ImageIO.read(Objects.requireNonNull(ReportService.class.getResourceAsStream("/images/acal.jpg")));
+        } catch (IOException | NullPointerException e) {
+            return null;
+        }
     }
 
 }
