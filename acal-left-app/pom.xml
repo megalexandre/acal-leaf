@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>acal.com</groupId>
 		<artifactId>acal-left</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>acal-left-app</artifactId>
-	<name>acal-left-app</name>
+	<name>acal-left</name>
 	<description>Main Spring Boot application bootstrap</description>
 	<packaging>jar</packaging>
 
