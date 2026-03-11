@@ -20,7 +20,6 @@
 
 		<sonar.organization>megalexandre</sonar.organization>
 		<sonar.projectKey>acal-left</sonar.projectKey>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
