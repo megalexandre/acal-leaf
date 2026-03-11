@@ -18,7 +18,10 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<sonar.organization>seu-usuario-ou-org</sonar.organization>
+		<sonar.organization>megalexandre</sonar.organization>
+		<sonar.projectKey>acal-left</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url> <sonar.projectKey>nome-do-seu-projeto</sonar.projectKey>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
