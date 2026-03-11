@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="invoice" pageWidth="595" pageHeight="842" columnWidth="555"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="logo" class="java.awt.image.BufferedImage"/>
+	<parameter name="SUBREPORT_TITLE" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SUBREPORT_DETAIL" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="SUBREPORT_WATER" class="net.sf.jasperreports.engine.JasperReport"/>
+	<queryString><![CDATA[]]></queryString>
+	<field name="self" class="acal.com.acal_left.ui.report.out.InvoiceReportOutput"/>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement x="0" y="0" width="555" height="50">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="logo">
+					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_TITLE}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="51">
+			<subreport isUsingCache="false">
+				<reportElement x="0" y="1" width="555" height="50">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[acal.com.acal_left.ui.report.out.InvoiceReportDataSource.build($F{self})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DETAIL}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport isUsingCache="false">
+				<reportElement x="0" y="0" width="555" height="50">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[acal.com.acal_left.ui.report.out.InvoiceReportDataSource.buildWaterParams($F{self})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_WATER}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport isUsingCache="false">
+				<reportElement x="0" y="0" width="555" height="50">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[acal.com.acal_left.ui.report.out.InvoiceReportDataSource.build($F{self})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DETAIL}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="2">
+			<break>
+				<reportElement x="0" y="1" width="555" height="1">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+	</detail>
+</jasperReport>

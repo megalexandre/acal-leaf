@@ -6,7 +6,9 @@ import lombok.Getter;
 public enum LinkColumns {
     PARTNER("Sócio:"),
     ADDRESS("Endereço:"),
-    ACTIVE("Ativo:")
+    ACTIVE("Ativo:"),
+    CATEGORY("Category:"),
+    AMOUNT("Valor:")
     ;
 
     private final String name;

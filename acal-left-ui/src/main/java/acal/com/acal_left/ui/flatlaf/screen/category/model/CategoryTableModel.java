@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CategoryTableModel extends AbstractTableModel {
 
-    private final String[] columns = {"Categoria:", "Nome:",  "Valor Água:", "Valor Sócio:", "Total:"};
+    private final String[] columns = {"Categoria:", "Nome:", "Hidrômetro?",  "Valor Água:", "Valor Sócio:", "Total:"};
     private List<CategoryTableContent> categories = new ArrayList<>();
 
     public void setList(List<CategoryTableContent> categories) {
@@ -39,6 +39,7 @@ public class CategoryTableModel extends AbstractTableModel {
 
         return switch (column) {
             case CATEGORY -> c.getMemberGroup();
+            case HYDROMETER -> c.getCategory().getIsHydrometer() ? "Sim" : "Não";
             case NAME -> c.getName();
             case WATER -> c.getAmountWater();
             case PARTNER -> c.getAmountPartner();

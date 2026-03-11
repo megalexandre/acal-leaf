@@ -13,6 +13,7 @@ public class CategoryViewModel {
 
     private Integer id;
     private String name;
+    private boolean isHydrometer;
     private BigDecimal amountWater;
     private BigDecimal amountPartner;
     private MemberGroup memberGroup;
@@ -20,6 +21,7 @@ public class CategoryViewModel {
     public static CategoryViewModel buildFromEntity(Category category) {
         return CategoryViewModel.builder()
                 .id(category.getId())
+                .isHydrometer(category.getIsHydrometer())
                 .name(category.getName())
                 .amountPartner(category.getAmountPartner())
                 .amountWater(category.getAmountWater())

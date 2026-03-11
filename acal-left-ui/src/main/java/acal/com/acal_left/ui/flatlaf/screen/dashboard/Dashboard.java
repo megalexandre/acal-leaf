@@ -7,57 +7,74 @@ import acal.com.acal_left.ui.flatlaf.screen.address.address.AddressScreen;
 import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
-import acal.com.acal_left.ui.flatlaf.screen.partner.partner.PartnerScreen;
+import acal.com.acal_left.ui.flatlaf.screen.person.partner.PersonScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import static acal.com.acal_left.ui.event.Screen.*;
+import static acal.com.acal_left.ui.event.Screen.ADDRESS;
+import static acal.com.acal_left.ui.event.Screen.CATEGORY;
+import static acal.com.acal_left.ui.event.Screen.INVOICE;
+import static acal.com.acal_left.ui.event.Screen.LINK;
+import static acal.com.acal_left.ui.event.Screen.PARTNER;
 
 
 @Component
-public class Dashboard extends JFrame {
+public abstract class Dashboard extends JFrame {
 
     private final ScreenManager screenManager;
+    private final ApplicationContext applicationContext;
 
-    private final CategoryScreen categoryScreen;
-    private final PartnerScreen partnerScreen;
-    private final AddressScreen addressScreen;
-    public final LinkScreen linkScreen;
-    private final InvoiceScreen invoiceScreen;
+    @Lookup
+    public abstract CategoryScreen getCategoryScreen();
 
+    @Lookup
+    public abstract PersonScreen getPartnerScreen();
+
+    @Lookup
+    public abstract AddressScreen getAddressScreen();
+
+    @Lookup
+    public abstract LinkScreen getLinkScreen();
+
+    @Lookup
+    public abstract InvoiceScreen getInvoiceScreen();
 
     public Dashboard(
             ScreenManager screenManager,
-            CategoryScreen categoryScreen,
-            PartnerScreen partnerScreen,
-            AddressScreen addressScreen,
-            LinkScreen linkScreen,
-            InvoiceScreen invoiceScreen
+            ApplicationContext applicationContext
             ) {
         this.screenManager = screenManager;
-        this.categoryScreen = categoryScreen;
-        this.partnerScreen = partnerScreen;
-        this.addressScreen = addressScreen;
-        this.linkScreen = linkScreen;
-        this.invoiceScreen = invoiceScreen;
+        this.applicationContext = applicationContext;
 
         initComponents();
         addScreens();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                shutdownApplication();
+            }
+        });
     }
 
     private void addScreens() {
         mainPanel.add(new JPanel(), "empty");
-        mainPanel.add(categoryScreen, categoryScreen.name);
-        mainPanel.add(partnerScreen, partnerScreen.name);
-        mainPanel.add(addressScreen, addressScreen.name);
-        mainPanel.add(linkScreen, linkScreen.name);
-        mainPanel.add(invoiceScreen, invoiceScreen.name);
-
         CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
         cardLayout.show(mainPanel, "empty");
     }
@@ -69,12 +86,39 @@ public class Dashboard extends JFrame {
 
     @EventListener
     public void onAreaChange(ChangeScreenEvent event) {
-        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
         Screen newScreen = event.getScreen();
-        cardLayout.show(mainPanel, newScreen.name());
-        this.setTitle(newScreen.getTitle());
+        JPanel screenInstance = createScreenInstance(newScreen);
+        if (screenInstance != null) {
+            mainPanel.removeAll();
+            mainPanel.add(screenInstance, newScreen.name());
+            CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+            cardLayout.show(mainPanel, newScreen.name());
+            this.setTitle(newScreen.getTitle());
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        }
     }
 
+    private void shutdownApplication() {
+        try {
+            if (applicationContext != null) {
+                SpringApplication.exit(applicationContext, () -> 0);
+            }
+            System.exit(0);
+        } catch (Exception e) {
+            System.exit(1);
+        }
+    }
+
+    private JPanel createScreenInstance(Screen screen) {
+        return switch (screen) {
+            case CATEGORY -> getCategoryScreen();
+            case PARTNER -> getPartnerScreen();
+            case ADDRESS -> getAddressScreen();
+            case LINK -> getLinkScreen();
+            case INVOICE -> getInvoiceScreen();
+        };
+    }
     private void categoryActionListener(ActionEvent e) {
         screenManager.changeScreen(CATEGORY);
     }

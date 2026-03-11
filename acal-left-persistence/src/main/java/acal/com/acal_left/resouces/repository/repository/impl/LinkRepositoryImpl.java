@@ -20,24 +20,24 @@ public class LinkRepositoryImpl implements LinkRepository {
 
     @Override
     public List<Link> findByFilter(LinkFilter filter) {
-        Boolean active = filter != null ? filter.getActive() : null;
-        Boolean inactive = active == null ? null : !active;
+        if(filter == null){
+            filter = new LinkFilter();
+        }
 
-        return repository.findAllWithEagerLoading(inactive)
+        return repository.findAllWithEagerLoading(
+                filter.getInactive(),
+                filter.getPerson(),
+                filter.getAddress()
+                )
             .stream()
-            .map(LinkRepositoryImpl::toEntity)
+            .map(LinkEntity::toEntity)
             .toList();
     }
 
-    public static Link toEntity(LinkEntity entity) {
-        return Link.builder()
-                .id(entity.getId())
-                .number(entity.getNumber())
-                .active(!entity.isInactive())
-                .address(AddressRepositoryImpl.toEntity(entity.getAddress()))
-                .category(CategoryRepositoryImpl.toEntity( entity.getCategory()))
-                .person(PersonRepositoryImpl.toEntity(entity.getPerson()))
-                .build();
+    @Override
+    public Link save(Link link) {
+        return LinkEntity.toEntity(repository.save(LinkEntity.toEntity(link)));
     }
+
 
 }

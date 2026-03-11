@@ -5,11 +5,23 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
+			"minimumSize": new java.awt.Dimension( 1024, 768 )
+			"preferredSize": new java.awt.Dimension( 1024, 768 )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table"
+					"selectionMode": 0
+					"showHorizontalLines": true
+					"showVerticalLines": true
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "panel1"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 					name: "panel4"
-					"border": new javax.swing.border.CompoundBorder( new javax.swing.border.TitledBorder( "Paginação" ), &EmptyBorder0 new javax.swing.border.EmptyBorder( 5, 5, 5, 5 ) )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "buttonFirstPage"
 						"text": "<<"
@@ -34,14 +46,88 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onLastPage", true ) )
 					} )
 				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+					"hgap": 10
+					"vgap": 10
+				} ) {
 					name: "panel3"
-					"border": new javax.swing.border.CompoundBorder( new javax.swing.border.TitledBorder( "Filtros" ), #EmptyBorder0 )
+					"border": new javax.swing.border.EtchedBorder( 1, null, null )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel5"
+						"preferredSize": new java.awt.Dimension( 150, 44 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Número:"
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textFieldId"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel6"
+						"preferredSize": new java.awt.Dimension( 150, 44 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label2"
+							"text": "Sócio:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxPartner"
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel7"
+						"preferredSize": new java.awt.Dimension( 150, 44 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label3"
+							"text": "Endereço:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxAddress"
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel8"
+						"preferredSize": new java.awt.Dimension( 150, 44 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label4"
+							"text": "Competência:"
+						} )
+						add( new FormComponent( "javax.swing.JFormattedTextField" ) {
+							name: "formattedPeriod"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel9"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label5"
+							"text": "Vencimento:"
+							"preferredSize": new java.awt.Dimension( 150, 19 )
+						} )
+						add( new FormComponent( "javax.swing.JFormattedTextField" ) {
+							name: "formattedDueDate"
+						} )
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 					"alignment": 2
 				} ) {
 					name: "panel2"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonClear"
+						"text": "Limpar"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearActionListener", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonPrint"
+						"text": "Imprimir"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "printActionListener", true ) )
+					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "buttonSearch"
 						"text": "Consultas"
@@ -51,20 +137,27 @@ new FormModel {
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane1"
-				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table"
-					"selectionMode": 0
-					"showHorizontalLines": true
-					"showVerticalLines": true
-				} )
-			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "Center"
-			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 405, 300 )
+			"size": new java.awt.Dimension( 970, 745 )
+		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenu"
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItemDelete"
+				"text": "Deletar"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteActionListener", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+				name: "separator1"
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItemInvoicePrint"
+				"text": "Imprimir"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "invoicePrintActionListener", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 1070, 180 )
 		} )
 	}
 }

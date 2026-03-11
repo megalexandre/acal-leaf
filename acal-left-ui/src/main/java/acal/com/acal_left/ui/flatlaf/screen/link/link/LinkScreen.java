@@ -4,40 +4,70 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.link.link;
 
+import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.usecase.link.LinkFindUseCase;
+import acal.com.acal_left.core.usecase.link.LinkSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.screen.link.create.LinkCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.link.model.LinkTableModel;
 import acal.com.acal_left.ui.flatlaf.screen.link.render.LinkTableRenderer;
-import acal.com.acal_left.ui.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.utils.Toast;
 import org.jdesktop.swingx.VerticalLayout;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Component
 @Scope("prototype")
-public class LinkScreen extends JPanel {
+public abstract class LinkScreen extends JPanel {
+
+    @Lookup
+    public abstract LinkCreateDialog dialog();
+
     public final String name = Screen.LINK.name();
 
     private final LinkFilter filter = new LinkFilter();
     private final LinkFindUseCase find;
 
-    public LinkScreen(LinkFindUseCase find) {
+    private final LinkSaveUseCase save;
+
+    public LinkScreen(LinkFindUseCase find, LinkSaveUseCase save) {
         this.find = find;
+        this.save = save;
         initComponents();
         init();
     }
 
-
     private void searchActionListener(ActionEvent e) {
+        search();
+    }
+
+    private void search(){
+        table.setAutoCreateRowSorter(true);
         table.setModel(new LinkTableModel());
         createRender();
         LinkTableModel model = (LinkTableModel) table.getModel();
@@ -48,8 +78,9 @@ public class LinkScreen extends JPanel {
     }
 
     private void loadFilter(){
-        filter.reset();
         filter.setActive((Boolean) comboBoxActive.getModel().getSelectedItem());
+        filter.setPerson(textFieldPartnerName.getText());
+        filter.setAddress(textFieldAddressName.getText());
     }
 
     private void createRender(){
@@ -61,11 +92,43 @@ public class LinkScreen extends JPanel {
     }
 
     private void init(){
-
         comboBoxActive.setModel(new DefaultComboBoxModel<>(new Boolean[]{null, TRUE, FALSE}));
         comboBoxActive.setSelectedItem(null);
         comboBoxActive.setRenderer(new YesNoComboBoxRenderer());
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON3){
+                    int row = table.rowAtPoint(e.getPoint());
+                    if (row != -1) {
+                        table.setRowSelectionInterval(row, row);
+                        LinkTableModel model = (LinkTableModel) table.getModel();
+                        Link selected = model.get(row);
+                        popupMenu1.putClientProperty("selected", selected);
+                        popupMenu1.show(table, e.getX(), e.getY());
+                    }
+                }
+            }
+        });
     }
+
+    private void createActionListener(ActionEvent e) {
+        LinkCreateDialog dialog = dialog();
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
+
+    private void invalidateLinkActionEvent(ActionEvent e) {
+        Link i = (Link) popupMenu1.getClientProperty("selected");
+        i.setActive(false);
+        save.execute(i);
+        Toast.show(this, "Removido com Sucesso");
+        search();
+    }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -80,15 +143,17 @@ public class LinkScreen extends JPanel {
         panel6 = new JPanel();
         panel8 = new JPanel();
         label2 = new JLabel();
-        textField1 = new JTextField();
+        textFieldPartnerName = new JTextField();
         panel9 = new JPanel();
         label3 = new JLabel();
-        textField2 = new JTextField();
+        textFieldAddressName = new JTextField();
         panel10 = new JPanel();
         label4 = new JLabel();
         comboBoxActive = new JComboBox<>();
         panel7 = new JPanel();
         buttonSearch = new JButton();
+        popupMenu1 = new JPopupMenu();
+        menuItemCancel = new JMenuItem();
 
         //======== this ========
         setLayout(new BorderLayout());
@@ -103,6 +168,7 @@ public class LinkScreen extends JPanel {
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
+                buttonCreate.addActionListener(e -> createActionListener(e));
                 panel4.add(buttonCreate);
             }
             panel1.add(panel4);
@@ -140,9 +206,9 @@ public class LinkScreen extends JPanel {
                         label2.setText("S\u00f3cio");
                         panel8.add(label2);
 
-                        //---- textField1 ----
-                        textField1.setPreferredSize(new Dimension(200, 25));
-                        panel8.add(textField1);
+                        //---- textFieldPartnerName ----
+                        textFieldPartnerName.setPreferredSize(new Dimension(200, 25));
+                        panel8.add(textFieldPartnerName);
                     }
                     panel6.add(panel8);
 
@@ -154,9 +220,9 @@ public class LinkScreen extends JPanel {
                         label3.setText("Rua:");
                         panel9.add(label3);
 
-                        //---- textField2 ----
-                        textField2.setPreferredSize(new Dimension(200, 25));
-                        panel9.add(textField2);
+                        //---- textFieldAddressName ----
+                        textFieldAddressName.setPreferredSize(new Dimension(200, 25));
+                        panel9.add(textFieldAddressName);
                     }
                     panel6.add(panel9);
 
@@ -190,6 +256,15 @@ public class LinkScreen extends JPanel {
             panel2.add(panel5);
         }
         add(panel2, BorderLayout.SOUTH);
+
+        //======== popupMenu1 ========
+        {
+
+            //---- menuItemCancel ----
+            menuItemCancel.setText("Cancelar Liga\u00e7\u00e3o");
+            menuItemCancel.addActionListener(e -> invalidateLinkActionEvent(e));
+            popupMenu1.add(menuItemCancel);
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -205,14 +280,16 @@ public class LinkScreen extends JPanel {
     private JPanel panel6;
     private JPanel panel8;
     private JLabel label2;
-    private JTextField textField1;
+    private JTextField textFieldPartnerName;
     private JPanel panel9;
     private JLabel label3;
-    private JTextField textField2;
+    private JTextField textFieldAddressName;
     private JPanel panel10;
     private JLabel label4;
     private JComboBox<Boolean> comboBoxActive;
     private JPanel panel7;
     private JButton buttonSearch;
+    private JPopupMenu popupMenu1;
+    private JMenuItem menuItemCancel;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

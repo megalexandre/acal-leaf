@@ -15,5 +15,14 @@ public class Category {
     private BigDecimal amountWater;
     private BigDecimal amountPartner;
     private MemberGroup memberGroup;
+    private Boolean isHydrometer;
+
+    public String getFullName() {
+        return memberGroup.getDescription() + " "+ name;
+    }
+
+    public BigDecimal getAmount(){
+        return amountWater.add(amountPartner);
+    }
 
 }

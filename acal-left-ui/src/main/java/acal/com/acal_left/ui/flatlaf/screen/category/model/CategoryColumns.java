@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum CategoryColumns {
     CATEGORY("Categoria"),
     NAME("Nome"),
+    HYDROMETER("Hidrômetro?"),
     WATER("Valor Água"),
     PARTNER("Valor Sócio"),
     TOTAL("Total");

@@ -1,9 +1,13 @@
 package acal.com.acal_left;
 
+import acal.com.acal_left.ui.boostrap.SplashScreenBootstrap;
 import com.formdev.flatlaf.FlatLightLaf;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.event.ApplicationFailedEvent;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
@@ -17,18 +21,22 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class AcalLeftApplication {
 
 	public static void main(String[] args) {
-		//SplashScreenBootstrap.showSplash();
-
+		SplashScreenBootstrap.showSplash();
 		FlatLightLaf.setup();
+
 		new SpringApplicationBuilder(AcalLeftApplication.class)
 				.headless(false)
 				.run(args);
 	}
 
-	/*
 	@EventListener(ApplicationReadyEvent.class)
-	public void onApplicationReady() {
+	public void onApplicationReady(ApplicationReadyEvent event) {
 		SplashScreenBootstrap.closeSplash();
-	}*/
+	}
+
+	@EventListener(ApplicationFailedEvent.class)
+	public void onApplicationFailed() {
+		SplashScreenBootstrap.closeSplash();
+	}
 
 }

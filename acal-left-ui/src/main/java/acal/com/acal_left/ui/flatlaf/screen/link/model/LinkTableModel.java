@@ -42,6 +42,8 @@ public class LinkTableModel extends AbstractTableModel {
         return switch (column) {
             case LinkColumns.PARTNER -> c.getName();
             case LinkColumns.ADDRESS -> c.getAddress();
+            case LinkColumns.AMOUNT ->  c.getAmount();
+            case LinkColumns.CATEGORY -> c.getCategory();
             case LinkColumns.ACTIVE -> c.getActive();
         };
     }

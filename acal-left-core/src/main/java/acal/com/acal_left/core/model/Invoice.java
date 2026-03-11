@@ -3,25 +3,98 @@ package acal.com.acal_left.core.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+import static acal.com.acal_left.core.model.Invoice.Status.PAID;
+import static java.time.Duration.between;
+import static java.time.LocalDateTime.now;
+
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Invoice {
 
+    private static final int OVERDUE_DAYS_THRESHOLD = 30;
+    private static final int AT_RISK_DAYS_THRESHOLD = 60;
+
+    @Getter
+    public enum Status {
+
+        OPEN("Aberta"),
+        OVERDUE("Atrasada"),
+        AT_RISK("Passível de corte"),
+        PAID("Paga");
+
+        private final String name;
+        Status(String name) { this.name = name; }
+    }
+
     private Integer id;
     private Person person;
     private Address address;
+    private Category category;
+    private String number;
     private LocalDate period;
     private LocalDateTime paidAt;
+    private LocalDateTime dueDate;
+
+    private BigDecimal amountPartner;
+    private BigDecimal amountWater;
+    public WaterAnalysis waterAnalysis;
+    public Hydrometer hydrometer;
+
 
     public boolean isPaid(){
         return paidAt != null;
     }
 
+    public BigDecimal totalAmount() {
+        return amountPartner.add(amountWater).add(hydrometerAmount());
+    }
+
+    private BigDecimal hydrometerAmount() {
+        if (hydrometer == null) {
+            return BigDecimal.ZERO;
+        }
+        return hydrometer.price();
+    }
+
+    public boolean isOverDue() {
+        return !isPaid() && now().isAfter(dueDate);
+    }
+
+    private long getDaysOverdue() {
+        if (!isOverDue()) {
+            return 0;
+        }
+        return between(dueDate, now()).toDays();
+    }
+
+    public Status getStatus() {
+        if (isPaid()) {
+            return PAID;
+        }
+
+        if (!isOverDue()) {
+            return Status.OPEN;
+        }
+
+        long daysOverdue = getDaysOverdue();
+
+        if (daysOverdue >= AT_RISK_DAYS_THRESHOLD) {
+            return Status.AT_RISK;
+        }
+
+        if (daysOverdue >= OVERDUE_DAYS_THRESHOLD) {
+            return Status.OVERDUE;
+        }
+
+        return Status.OPEN;
+    }
 }

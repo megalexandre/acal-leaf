@@ -12,6 +12,7 @@ public class PdfViewerService {
 
     public void openPdf(byte[] pdfBytes) {
         try {
+
             File tempFile = File.createTempFile("relatorio_contas_", ".pdf");
             tempFile.deleteOnExit();
 
@@ -21,14 +22,8 @@ public class PdfViewerService {
 
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().open(tempFile);
-            } else {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "PDF gerado mas não foi possível abrir automaticamente.\nArquivo salvo em: " + tempFile.getAbsolutePath(),
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-                );
             }
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(
                 null,
