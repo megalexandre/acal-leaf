@@ -9,6 +9,7 @@ import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.receiver.ReceiverInvoicePayment;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
 import acal.com.acal_left.ui.flatlaf.screen.person.partner.PersonScreen;
+import acal.com.acal_left.ui.flatlaf.screen.register.RegisterScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.boot.SpringApplication;
@@ -34,6 +35,7 @@ import static acal.com.acal_left.ui.event.Screen.CATEGORY;
 import static acal.com.acal_left.ui.event.Screen.INVOICE;
 import static acal.com.acal_left.ui.event.Screen.LINK;
 import static acal.com.acal_left.ui.event.Screen.PARTNER;
+import static acal.com.acal_left.ui.event.Screen.REGISTER;
 
 
 @Component
@@ -56,6 +58,10 @@ public abstract class Dashboard extends JFrame {
 
     @Lookup
     public abstract InvoiceScreen getInvoiceScreen();
+
+    @Lookup
+    public abstract RegisterScreen getRegisterScreen();
+
 
     @Lookup
     public abstract ReceiverInvoicePayment receiverInvoicePayment(Window owner);
@@ -123,8 +129,10 @@ public abstract class Dashboard extends JFrame {
             case ADDRESS -> getAddressScreen();
             case LINK -> getLinkScreen();
             case INVOICE -> getInvoiceScreen();
+            case REGISTER -> getRegisterScreen();
         };
     }
+
     private void categoryActionListener(ActionEvent e) {
         screenManager.changeScreen(CATEGORY);
     }
@@ -145,12 +153,18 @@ public abstract class Dashboard extends JFrame {
         screenManager.changeScreen(INVOICE);
     }
 
+    private void menuItemRegister(ActionEvent e) {
+        screenManager.changeScreen(REGISTER);
+    }
+
     private void receiverActionListener(ActionEvent e) {
         ReceiverInvoicePayment dialog = receiverInvoicePayment(this);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -242,6 +256,7 @@ public abstract class Dashboard extends JFrame {
 
                 //---- menuItem3 ----
                 menuItem3.setText("Resumo");
+                menuItem3.addActionListener(e -> menuItemRegister(e));
                 menu3.add(menuItem3);
             }
             menuBar1.add(menu3);
