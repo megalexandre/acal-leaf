@@ -19,8 +19,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsernameAndPassword(LoginAttempt attempt) {
-        return userJpaRepository.findByUsernameAndPassword(attempt.getUsername(), attempt.getPassword())
+    public Optional<User> findByUsername(LoginAttempt attempt) {
+        return userJpaRepository.findByUsername(attempt.getUsername())
                 .map(UserRepositoryImpl::toEntity);
     }
 

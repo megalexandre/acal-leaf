@@ -21,4 +21,8 @@ public class InvoiceQuery {
     private LocalDate period;
     private LocalDateTime dueDate;
     private Pageable pageable;
+
+    private LocalDateTime periodStart;
+    private LocalDateTime periodEnd;
+
 }

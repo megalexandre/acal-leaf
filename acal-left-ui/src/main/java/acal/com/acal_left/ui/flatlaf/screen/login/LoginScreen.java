@@ -1,7 +1,3 @@
-/*
- * Created by JFormDesigner on Mon Mar 02 22:39:33 BRT 2026
- */
-
 package acal.com.acal_left.ui.flatlaf.screen.login;
 
 import acal.com.acal_left.core.model.LoginAttempt;
@@ -31,6 +27,7 @@ import java.awt.event.KeyEvent;
 
 @Component
 public class LoginScreen extends JPanel {
+
     private final LoginUseCase loginUseCase;
     private final ApplicationEventPublisher eventPublisher;
 

@@ -21,6 +21,11 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 		<!-- Source: https://mvnrepository.com/artifact/com.miglayout/miglayout-swing -->
 		<dependency>
 			<groupId>com.miglayout</groupId>

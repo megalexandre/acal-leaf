@@ -3,10 +3,10 @@ package acal.com.acal_left.ui.event;
 import lombok.Getter;
 
 public enum Screen {
-    CATEGORY("Categoria"),
-    PARTNER("Sócio"),
-    REGISTER("Lançamento"),
-    ADDRESS("Endereço"),
+    CATEGORY("Categorias"),
+    PARTNER("Sócios"),
+    REGISTER("Lançamentos"),
+    ADDRESS("Endereços"),
     LINK("Ligações"),
     INVOICE("Faturas")
     ;

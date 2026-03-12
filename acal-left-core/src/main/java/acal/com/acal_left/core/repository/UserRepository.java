@@ -6,5 +6,5 @@ import acal.com.acal_left.core.model.User;
 import java.util.Optional;
 
 public interface UserRepository {
-    Optional<User> findByUsernameAndPassword(LoginAttempt attempt);
+    Optional<User> findByUsername(LoginAttempt attempt);
 }
