@@ -163,7 +163,6 @@ public class LoginScreen extends JPanel {
                 panel3.add(label1);
 
                 //---- textFieldUsername ----
-                textFieldUsername.setText("alexandre");
                 textFieldUsername.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -183,7 +182,6 @@ public class LoginScreen extends JPanel {
                 panel4.add(label2);
 
                 //---- passwordFieldPassword ----
-                passwordFieldPassword.setText("senha");
                 passwordFieldPassword.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
