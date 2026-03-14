@@ -4,14 +4,19 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.charge;
 
+import acal.com.acal_left.core.model.Charge;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.charge.ChargeListUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
+import acal.com.acal_left.ui.flatlaf.component.render.ChargeLevelRenderer;
 import acal.com.acal_left.ui.flatlaf.screen.charge.model.ChargeTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.charge.model.ChargeTableModel;
+import acal.com.acal_left.ui.report.ChargeReportService;
+import acal.com.acal_left.ui.report.PdfViewerService;
+import acal.com.acal_left.ui.report.out.ChargeReportOutput;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -41,12 +47,13 @@ public class ChargeScreen extends JPanel {
     @Autowired
     private AddressFindAllUseCase addressFind;
 
+    private List<Charge> lastCharges = new ArrayList<>();
+
     public ChargeScreen() {
         initComponents();
 
-        buttonSearch.addActionListener(e -> {
-            fetchPageData();
-        });
+        buttonSearch.addActionListener(e -> fetchPageData());
+        buttonPrint.addActionListener(e -> printActionListener());
 
         ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
     }
@@ -58,24 +65,47 @@ public class ChargeScreen extends JPanel {
     }
 
     private void fetchPageData() {
-        var query = InvoiceQuery.builder()
+        var query = buildQuery();
+        lastCharges = list.execute(query);
+
+        var charges = lastCharges.stream().map(ChargeTableContent::new).toList();
+        var model = new ChargeTableModel();
+        if (charges.isEmpty()) {
+            return;
+        }
+        model.setList(charges);
+        table.setAutoCreateRowSorter(true);
+        table.setModel(model);
+
+        var renderer = new ChargeLevelRenderer();
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
+    }
+
+    private void printActionListener() {
+        if (lastCharges.isEmpty()) {
+            return;
+        }
+        List<ChargeReportOutput> output = lastCharges.stream()
+                .map(ChargeReportOutput::new)
+                .toList();
+
+        new PdfViewerService().openPdf(
+            new ChargeReportService().createReport(output)
+        );
+    }
+
+    private InvoiceQuery buildQuery() {
+        return InvoiceQuery.builder()
                 .paid(false)
                 .dueDateStart(LocalDateTime.MIN)
                 .dueDateEnd(LocalDateTime.now().minusDays(59))
                 .addressId(getAddressId())
                 .build();
-
-        var charges = list.execute(query).stream().map(ChargeTableContent::new).toList();
-        var model = new ChargeTableModel();
-        if(charges.isEmpty()) {
-           return;
-        }
-        model.setList(charges);
-        table.setAutoCreateRowSorter(true);
-        table.setModel(model);
     }
 
-    private Integer getAddressId(){
+    private Integer getAddressId() {
         return ComboBoxOption.getSelectedId(comboBoxAddress);
     }
 
@@ -88,6 +118,7 @@ public class ChargeScreen extends JPanel {
         label1 = new JLabel();
         comboBoxAddress = new JComboBox<>();
         panel3 = new JPanel();
+        buttonPrint = new JButton();
         buttonSearch = new JButton();
         scrollPane1 = new JScrollPane();
         table = new JTable();
@@ -120,6 +151,10 @@ public class ChargeScreen extends JPanel {
             {
                 panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+                //---- buttonPrint ----
+                buttonPrint.setText("Imprimir");
+                panel3.add(buttonPrint);
+
                 //---- buttonSearch ----
                 buttonSearch.setText("Buscar");
                 panel3.add(buttonSearch);
@@ -149,6 +184,7 @@ public class ChargeScreen extends JPanel {
     private JLabel label1;
     private JComboBox<ComboBoxOption> comboBoxAddress;
     private JPanel panel3;
+    private JButton buttonPrint;
     private JButton buttonSearch;
     private JScrollPane scrollPane1;
     private JTable table;
