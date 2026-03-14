@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="register" pageWidth="842" pageHeight="595" orientation="Landscape"
+              columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <parameter name="logo"        class="java.awt.image.BufferedImage"/>
+    <parameter name="periodStart" class="java.lang.String"/>
+    <parameter name="periodEnd"   class="java.lang.String"/>
+    <parameter name="totalCount"  class="java.lang.String"/>
+    <parameter name="grandTotal"  class="java.lang.String"/>
+
+    <queryString><![CDATA[]]></queryString>
+
+    <field name="number"           class="java.lang.String"/>
+    <field name="partner"          class="java.lang.String"/>
+    <field name="period"           class="java.lang.String"/>
+    <field name="paymentDate"      class="java.lang.String"/>
+    <field name="amountPartner"    class="java.lang.String"/>
+    <field name="amountWater"      class="java.lang.String"/>
+    <field name="amountHydrometer" class="java.lang.String"/>
+    <field name="total"            class="java.lang.String"/>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <pageHeader>
+        <band height="80">
+            <!-- Logo -->
+            <image>
+                <reportElement x="0" y="0" width="80" height="60"/>
+                <imageExpression><![CDATA[$P{logo}]]></imageExpression>
+            </image>
+            <!-- Título -->
+            <staticText>
+                <reportElement x="0" y="0" width="802" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[RELATÓRIO DE CAIXA]]></text>
+            </staticText>
+            <!-- Período -->
+            <textField>
+                <reportElement x="0" y="30" width="802" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Período: " + $P{periodStart} + " a " + $P{periodEnd} + "   |   Total de registros: " + $P{totalCount}]]></textFieldExpression>
+            </textField>
+            <!-- Linha separadora -->
+            <line>
+                <reportElement x="0" y="55" width="802" height="1"/>
+            </line>
+            <!-- Cabeçalho das colunas -->
+            <staticText>
+                <reportElement x="0"   y="60" width="50"  height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Número]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="50"  y="60" width="180" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Sócio]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="230" y="60" width="60"  height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Período]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="290" y="60" width="110" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Dt. Pagamento]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="400" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Vl. Sócio]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="500" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Vl. Água]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="600" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Hidrômetro]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="700" y="60" width="102" height="18" backcolor="#CCCCCC" mode="Opaque"/>
+                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
+                <text><![CDATA[Total]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+
+    <!-- ===== DETAIL ===== -->
+    <detail>
+        <band height="18" splitType="Stretch">
+            <textField isStretchWithOverflow="true">
+                <reportElement x="0"   y="0" width="50"  height="18"/>
+                <textElement><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="50"  y="0" width="180" height="18"/>
+                <textElement><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="230" y="0" width="60"  height="18"/>
+                <textElement><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{period}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="290" y="0" width="110" height="18"/>
+                <textElement><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{paymentDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="100" height="18"/>
+                <textElement textAlignment="Right"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{amountPartner}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="500" y="0" width="100" height="18"/>
+                <textElement textAlignment="Right"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{amountWater}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="600" y="0" width="100" height="18"/>
+                <textElement textAlignment="Right"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA[$F{amountHydrometer}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="700" y="0" width="102" height="18"/>
+                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- ===== SUMMARY (totais) ===== -->
+    <summary>
+        <band height="30">
+            <line>
+                <reportElement x="0" y="0" width="802" height="1"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="5" width="400" height="20"/>
+                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
+                <text><![CDATA[TOTAL GERAL:]]></text>
+            </staticText>
+            <textField evaluationTime="Report">
+                <reportElement x="700" y="5" width="102" height="20"/>
+                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{grandTotal}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>
+

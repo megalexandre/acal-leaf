@@ -60,8 +60,22 @@ new FormModel {
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "West"
 					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
+						"gap": 5
+					} ) {
 						name: "panel7"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+							name: "panel10"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label2"
+								"text": "Imprimir"
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "Imprimir"
+								"text": "Imprimir"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "printActionListener", true ) )
+							} )
+						} )
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 							name: "panel4"
 							add( new FormComponent( "javax.swing.JLabel" ) {
@@ -76,6 +90,11 @@ new FormModel {
 						} )
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "East"
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel9"
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "Center"
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {

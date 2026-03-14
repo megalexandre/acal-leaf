@@ -1,0 +1,35 @@
+package acal.com.acal_left.ui.report.out;
+
+import acal.com.acal_left.core.model.Invoice;
+import acal.com.acal_left.shared.BigDecimalUtil;
+import acal.com.acal_left.shared.LocalDateTimeUtil;
+import acal.com.acal_left.shared.LocalDateUtil;
+import lombok.Getter;
+
+import java.math.BigDecimal;
+
+@Getter
+public class RegisterReportOutput {
+
+    private final String number;
+    private final String partner;
+    private final String period;
+    private final String paymentDate;
+    private final String amountPartner;
+    private final String amountWater;
+    private final String amountHydrometer;
+    private final String total;
+
+    public RegisterReportOutput(Invoice invoice) {
+        this.number          = invoice.getNumber() != null ? invoice.getNumber() : invoice.getId().toString();
+        this.partner         = invoice.getPerson().getName();
+        this.period          = LocalDateUtil.formatPeriod(invoice.getPeriod());
+        this.paymentDate     = LocalDateTimeUtil.formatDateTime(invoice.getPaidAt());
+        this.amountPartner   = BigDecimalUtil.toBRL(invoice.getAmountPartner());
+        this.amountWater     = BigDecimalUtil.toBRL(invoice.getAmountWater());
+        this.amountHydrometer = BigDecimalUtil.toBRL(
+                invoice.getHydrometer() != null ? invoice.getHydrometer().price() : BigDecimal.ZERO);
+        this.total           = BigDecimalUtil.toBRL(invoice.totalAmount());
+    }
+}
+

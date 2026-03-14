@@ -13,6 +13,8 @@ import acal.com.acal_left.shared.LocalDateUtil;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableModel;
+import acal.com.acal_left.ui.report.PdfViewerService;
+import acal.com.acal_left.ui.report.RegisterReportService;
 import lombok.val;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
@@ -47,6 +49,13 @@ public class RegisterScreen extends JPanel {
     @Autowired
     private InvoiceListUseCase list;
 
+    @Autowired
+    private PdfViewerService pdfViewerService;
+
+    private final RegisterReportService reportService = new RegisterReportService();
+
+    private List<Invoice> lastInvoices = List.of();
+
     public RegisterScreen() {
         initComponents();
         init();
@@ -69,6 +78,7 @@ public class RegisterScreen extends JPanel {
         RegisterTableModel model = (RegisterTableModel) table.getModel();
 
         var invoices = list.execute(filter);
+        lastInvoices = invoices;
         var itens = invoices.stream().map(RegisterTableContent::new).toList();
         model.setList(itens);
         table.setModel(model);
@@ -122,6 +132,21 @@ public class RegisterScreen extends JPanel {
         return isStart ? date.atStartOfDay() : date.atTime(LocalTime.MAX);
     }
 
+    private void printActionListener(ActionEvent e) {
+        if (lastInvoices.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Nenhum dado para imprimir. Realize uma consulta primeiro.",
+                    "Relatório de Caixa",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        byte[] pdf = reportService.createReport(
+                lastInvoices,
+                formattedTextFieldStart.getText(),
+                formattedTextFieldEnd.getText());
+        pdfViewerService.openPdf(pdf);
+    }
+
 
 
     private void initComponents() {
@@ -141,9 +166,13 @@ public class RegisterScreen extends JPanel {
         Inicio2 = new JLabel();
         formattedTextFieldEnd = new JFormattedTextField();
         panel7 = new JPanel();
+        panel10 = new JPanel();
+        label2 = new JLabel();
+        Imprimir = new JButton();
         panel4 = new JPanel();
         label1 = new JLabel();
         button = new JButton();
+        panel9 = new JPanel();
 
         //======== this ========
         setLayout(new BorderLayout());
@@ -212,7 +241,22 @@ public class RegisterScreen extends JPanel {
 
                 //======== panel7 ========
                 {
-                    panel7.setLayout(new VerticalLayout());
+                    panel7.setLayout(new HorizontalLayout(5));
+
+                    //======== panel10 ========
+                    {
+                        panel10.setLayout(new VerticalLayout());
+
+                        //---- label2 ----
+                        label2.setText("Imprimir");
+                        panel10.add(label2);
+
+                        //---- Imprimir ----
+                        Imprimir.setText("Imprimir");
+                        Imprimir.addActionListener(e -> printActionListener(e));
+                        panel10.add(Imprimir);
+                    }
+                    panel7.add(panel10);
 
                     //======== panel4 ========
                     {
@@ -230,6 +274,12 @@ public class RegisterScreen extends JPanel {
                     panel7.add(panel4);
                 }
                 panel5.add(panel7, BorderLayout.EAST);
+
+                //======== panel9 ========
+                {
+                    panel9.setLayout(new VerticalLayout());
+                }
+                panel5.add(panel9, BorderLayout.CENTER);
             }
             panel1.add(panel5);
         }
@@ -253,8 +303,12 @@ public class RegisterScreen extends JPanel {
     private JLabel Inicio2;
     private JFormattedTextField formattedTextFieldEnd;
     private JPanel panel7;
+    private JPanel panel10;
+    private JLabel label2;
+    private JButton Imprimir;
     private JPanel panel4;
     private JLabel label1;
     private JButton button;
+    private JPanel panel9;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
