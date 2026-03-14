@@ -30,4 +30,21 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Integer> {
         @Param("name") String name,
         @Param("address") String address
     );
+
+    @Query("""
+        SELECT l FROM LinkEntity l
+            JOIN FETCH l.address a
+            JOIN FETCH l.category c
+            JOIN FETCH l.person p
+        WHERE l.inactive = false
+            AND l.id NOT IN (
+                SELECT i.personAddress.id FROM InvoiceEntity i
+                WHERE i.period = :period
+            )
+            AND (:hasHydrometer IS NULL OR c.isHydrometer = :hasHydrometer)
+        """)
+    List<LinkEntity> findLinksWithoutInvoiceForPeriod(
+            @Param("period") java.time.LocalDate period,
+            @Param("hasHydrometer") Boolean hasHydrometer
+    );
 }

@@ -15,7 +15,6 @@ import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.component.render.StatusBadgeRenderer;
 import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
 import acal.com.acal_left.ui.flatlaf.component.utils.SwingUtils;
-import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
@@ -42,13 +41,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -146,10 +143,6 @@ public class InvoiceScreen extends JPanel {
         comboBoxStatus.setRenderer(new YesNoComboBoxRenderer());
     }
 
-    private void invoiceViewActionListener(ActionEvent e) {
-        createDialog((Invoice) popupMenu.getClientProperty("selected"));
-    }
-
     private void invoicePrintActionListener(ActionEvent e) {
         Invoice i = (Invoice) popupMenu.getClientProperty("selected");
 
@@ -185,15 +178,6 @@ public class InvoiceScreen extends JPanel {
             new ReportService().createReport(invoicesToReport)
         );
     }
-
-    private void createDialog(Invoice invoice) {
-        Window window = SwingUtilities.getWindowAncestor(this);
-        InvoiceCreateDialog createDialog = new InvoiceCreateDialog(window, invoice);
-        createDialog.pack();
-        createDialog.setLocationRelativeTo(window);
-        createDialog.setVisible(true);
-    }
-
 
     private List<ComboBoxOption> getOrLoadPersons() {
         if (screenData.getPersons().isEmpty()) {

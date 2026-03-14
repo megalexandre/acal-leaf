@@ -9,6 +9,7 @@ public enum Screen {
     ADDRESS("Endereços"),
     LINK("Ligações"),
     INVOICE("Faturas"),
+    INVOICE_CREATE("Gerar Faturas"),
     CHARGE("Cobranças")
     ;
 

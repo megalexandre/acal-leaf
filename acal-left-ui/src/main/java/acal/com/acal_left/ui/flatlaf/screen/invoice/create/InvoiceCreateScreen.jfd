@@ -1,0 +1,102 @@
+JFDML JFormDesigner: "8.3" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+			"hgap": 10
+			"vgap": 10
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table"
+					"selectionMode": 0
+					"showVerticalLines": true
+					"showHorizontalLines": true
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+				"hgap": 10
+				"vgap": 10
+			} ) {
+				name: "panel1"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
+					"gap": 10
+				} ) {
+					name: "panel3"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel4"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Tipo Hidrômetro:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxType"
+							"preferredSize": new java.awt.Dimension( 150, 25 )
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel6"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label2"
+							"text": "Refêrencia:"
+						} )
+						add( new FormComponent( "javax.swing.JFormattedTextField" ) {
+							name: "formattedPeriod"
+							"preferredSize": new java.awt.Dimension( 150, 25 )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel7"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label3"
+							"text": "Buscar"
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonSearch"
+							"text": "Buscar"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "searchActionListener", true ) )
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "First"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
+					"gap": 10
+				} ) {
+					name: "panel2"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonToggleAll"
+						"text": "Marcar/Desmarcar"
+						"preferredSize": &Dimension0 new java.awt.Dimension( 150, 25 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "toggleAllActionListener", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "buttonConfirm"
+						"text": "Confirmar"
+						"preferredSize": #Dimension0
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "After"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
+					name: "panel5"
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Last"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 800, 430 )
+		} )
+	}
+}

@@ -1,0 +1,1 @@
+UPDATE conta SET data_referente = DATE_FORMAT(data_referente, '%Y-%m-01');

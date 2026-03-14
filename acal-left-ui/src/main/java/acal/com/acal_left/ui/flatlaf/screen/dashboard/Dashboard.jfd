@@ -53,6 +53,12 @@ new FormModel {
 						"text": "Cobranças"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "chargeActionListener", true ) )
 					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuItemCreateInvoice"
+						"text": "Gerar Faturas"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createInvoiceActionListener", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createInvoiceActionListener", true ) )
+					} )
 					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
 						name: "separator1"
 					} )

@@ -3,11 +3,15 @@ package acal.com.acal_left.resouces.repository.repository.impl;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.WaterAnalysis;
 import acal.com.acal_left.core.model.WaterAnalysisItem;
+import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.repository.InvoiceRepository;
+import acal.com.acal_left.resouces.repository.model.CategoryEntity;
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
+import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.model.WaterAnalysisItemEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.InvoiceJpaRepository;
+import acal.com.acal_left.resouces.repository.repository.jpa.LinkJpaRepository;
 import acal.com.acal_left.resouces.repository.repository.jpa.WaterAnalysisJpaRepository;
 import acal.com.acal_left.shared.model.WaterParameterType;
 import org.springframework.data.domain.Page;
@@ -23,13 +27,16 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     private final InvoiceJpaRepository invoiceJpaRepository;
     private final WaterAnalysisJpaRepository waterAnalysisJpaRepository;
+    private final LinkJpaRepository linkJpaRepository;
 
     public InvoiceRepositoryImpl(
             InvoiceJpaRepository invoiceJpaRepository,
-            WaterAnalysisJpaRepository waterAnalysisJpaRepository
+            WaterAnalysisJpaRepository waterAnalysisJpaRepository,
+            LinkJpaRepository linkJpaRepository
         ) {
         this.invoiceJpaRepository = invoiceJpaRepository;
         this.waterAnalysisJpaRepository = waterAnalysisJpaRepository;
+        this.linkJpaRepository = linkJpaRepository;
     }
 
     @Override
@@ -73,6 +80,31 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         });
 
         return invoices;
+    }
+
+    @Override
+    public List<Invoice> listInvoicesToGenerate(InvoiceGenerateFilter filter) {
+        var period = filter.getReference().atDay(1);
+
+        Boolean hasHydrometer = switch (filter.getType()) {
+            case WITH_HYDROMETER    -> true;
+            case WITHOUT_HYDROMETER -> false;
+            case ALL                -> null;
+        };
+
+        return linkJpaRepository.findLinksWithoutInvoiceForPeriod(period, hasHydrometer)
+                .stream()
+                .map(link -> Invoice.builder()
+                        .number(link.getNumber())
+                        .person(PersonEntity.toEntity(link.getPerson()))
+                        .address(AddressRepositoryImpl.toEntity(link.getAddress()))
+                        .category(CategoryEntity.toEntity(link.getCategory()))
+                        .period(period)
+                        .amountPartner(link.getCategory().getAmountPartner())
+                        .amountWater(link.getCategory().getAmountWater())
+                        .build()
+                )
+                .toList();
     }
 
     @Override
@@ -134,8 +166,6 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             total
         );
     }
-
-
 
     private WaterAnalysisItem toWaterAnalysisItem(WaterAnalysisItemEntity entity) {
         return WaterAnalysisItem.builder()

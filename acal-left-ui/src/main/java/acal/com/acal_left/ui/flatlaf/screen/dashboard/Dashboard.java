@@ -6,6 +6,7 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.address.address.AddressScreen;
 import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
 import acal.com.acal_left.ui.flatlaf.screen.charge.ChargeScreen;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.receiver.ReceiverInvoicePayment;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
@@ -35,6 +36,7 @@ import static acal.com.acal_left.ui.event.Screen.ADDRESS;
 import static acal.com.acal_left.ui.event.Screen.CATEGORY;
 import static acal.com.acal_left.ui.event.Screen.CHARGE;
 import static acal.com.acal_left.ui.event.Screen.INVOICE;
+import static acal.com.acal_left.ui.event.Screen.INVOICE_CREATE;
 import static acal.com.acal_left.ui.event.Screen.LINK;
 import static acal.com.acal_left.ui.event.Screen.PARTNER;
 import static acal.com.acal_left.ui.event.Screen.REGISTER;
@@ -60,6 +62,9 @@ public abstract class Dashboard extends JFrame {
 
     @Lookup
     public abstract InvoiceScreen getInvoiceScreen();
+
+    @Lookup
+    public abstract InvoiceCreateScreen getInvoiceCreateScreen();
 
     @Lookup
     public abstract RegisterScreen getRegisterScreen();
@@ -134,6 +139,7 @@ public abstract class Dashboard extends JFrame {
             case ADDRESS -> getAddressScreen();
             case LINK -> getLinkScreen();
             case INVOICE -> getInvoiceScreen();
+            case INVOICE_CREATE -> getInvoiceCreateScreen();
             case REGISTER -> getRegisterScreen();
             case CHARGE ->  getChargeScreen();
         };
@@ -159,6 +165,10 @@ public abstract class Dashboard extends JFrame {
         screenManager.changeScreen(INVOICE);
     }
 
+    private void createInvoiceActionListener(ActionEvent e) {
+        screenManager.changeScreen(INVOICE_CREATE);
+    }
+
     private void menuItemRegister(ActionEvent e) {
         screenManager.changeScreen(REGISTER);
     }
@@ -175,7 +185,6 @@ public abstract class Dashboard extends JFrame {
     }
 
 
-
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
@@ -190,6 +199,7 @@ public abstract class Dashboard extends JFrame {
         menu2 = new JMenu();
         menuItemInvoice = new JMenuItem();
         menuItemCharge = new JMenuItem();
+        menuItemCreateInvoice = new JMenuItem();
         menuItemReceiver = new JMenuItem();
         menu3 = new JMenu();
         menuItem3 = new JMenuItem();
@@ -252,6 +262,14 @@ public abstract class Dashboard extends JFrame {
                 menuItemCharge.setText("Cobran\u00e7as");
                 menuItemCharge.addActionListener(e -> chargeActionListener(e));
                 menu2.add(menuItemCharge);
+
+                //---- menuItemCreateInvoice ----
+                menuItemCreateInvoice.setText("Gerar Faturas");
+                menuItemCreateInvoice.addActionListener(e -> {
+			createInvoiceActionListener(e);
+			createInvoiceActionListener(e);
+		});
+                menu2.add(menuItemCreateInvoice);
                 menu2.addSeparator();
 
                 //---- menuItemReceiver ----
@@ -298,6 +316,7 @@ public abstract class Dashboard extends JFrame {
     private JMenu menu2;
     private JMenuItem menuItemInvoice;
     private JMenuItem menuItemCharge;
+    private JMenuItem menuItemCreateInvoice;
     private JMenuItem menuItemReceiver;
     private JMenu menu3;
     private JMenuItem menuItem3;
