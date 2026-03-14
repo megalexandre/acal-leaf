@@ -16,44 +16,39 @@ import java.util.Objects;
 
 public class ReportService {
 
+    private static final JasperReport REPORT_MAIN   = compile("/reports/invoice.jrxml");
+    private static final JasperReport REPORT_TITLE  = compile("/reports/invoice_title.jrxml");
+    private static final JasperReport REPORT_DETAIL = compile("/reports/invoice_detail.jrxml");
+    private static final JasperReport REPORT_WATER  = compile("/reports/invoice_water.jrxml");
+    private static final BufferedImage LOGO          = loadLogo();
+
     public byte[] createReport(List<InvoiceReportOutput> invoices) {
-
-        String templatePath = "/reports/invoice.jrxml";
-        var templateStream = ReportService.class.getResourceAsStream(templatePath);
-        if(templateStream == null) {
-            throw new RuntimeException("invalid path");
-        }
-
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("logo", getLogo());
-
-        try {
-            createReport("/reports/invoice_title.jrxml", parameters, "SUBREPORT_TITLE");
-            createReport("/reports/invoice_detail.jrxml", parameters, "SUBREPORT_DETAIL");
-            createReport("/reports/invoice_water.jrxml", parameters, "SUBREPORT_WATER");
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao compilar subreports", e);
-        }
+        parameters.put("logo",             LOGO);
+        parameters.put("SUBREPORT_TITLE",  REPORT_TITLE);
+        parameters.put("SUBREPORT_DETAIL", REPORT_DETAIL);
+        parameters.put("SUBREPORT_WATER",  REPORT_WATER);
 
         return new ReportManager().generatePdfReport(
-                templateStream,
+                REPORT_MAIN,
                 invoices,
                 parameters
         );
     }
 
-    private static void createReport(String name, Map<String, Object> parameters, String SUBREPORT_TITLE) throws JRException {
-        InputStream titleStream = ReportService.class.getResourceAsStream(name);
-        if (titleStream != null) {
-            JasperReport titleReport = JasperCompileManager.compileReport(titleStream);
-            parameters.put(SUBREPORT_TITLE, titleReport);
+    private static JasperReport compile(String path) {
+        try (InputStream stream = ReportService.class.getResourceAsStream(path)) {
+            if (stream == null) throw new RuntimeException("Template não encontrado: " + path);
+            return JasperCompileManager.compileReport(stream);
+        } catch (JRException | IOException e) {
+            throw new RuntimeException("Erro ao compilar template: " + path, e);
         }
     }
 
-    private BufferedImage getLogo() {
+    private static BufferedImage loadLogo() {
         try {
-            return ImageIO.read(Objects.requireNonNull(ReportService.class.getResourceAsStream("/images/acal.jpg")));
+            return ImageIO.read(Objects.requireNonNull(
+                ReportService.class.getResourceAsStream("/images/acal.jpg")));
         } catch (IOException | NullPointerException e) {
             return null;
         }

@@ -19,46 +19,41 @@ import java.util.Objects;
 
 public class ChargeReportService {
 
+    private static final JasperReport REPORT_MAIN    = compile("/reports/charge.jrxml");
+    private static final JasperReport REPORT_TITLE   = compile("/reports/charge_title.jrxml");
+    private static final JasperReport REPORT_DETAIL  = compile("/reports/charge_detail.jrxml");
+    private static final JasperReport REPORT_INVOICES = compile("/reports/charge_invoices.jrxml");
+    private static final BufferedImage LOGO           = loadLogo();
+
     public byte[] createReport(List<ChargeReportOutput> charges) {
-
-        String templatePath = "/reports/charge.jrxml";
-        InputStream templateStream = ChargeReportService.class.getResourceAsStream(templatePath);
-        if (templateStream == null) {
-            throw new RuntimeException("Template não encontrado: " + templatePath);
-        }
-
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("logo", getLogo());
+        parameters.put("logo",               LOGO);
+        parameters.put("SUBREPORT_TITLE",    REPORT_TITLE);
+        parameters.put("SUBREPORT_DETAIL",   REPORT_DETAIL);
+        parameters.put("SUBREPORT_INVOICES", REPORT_INVOICES);
 
         try {
-            compile("/reports/charge_title.jrxml",    parameters, "SUBREPORT_TITLE");
-            compile("/reports/charge_detail.jrxml",   parameters, "SUBREPORT_DETAIL");
-            compile("/reports/charge_invoices.jrxml", parameters, "SUBREPORT_INVOICES");
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao compilar subreports de cobrança", e);
-        }
-
-        try {
-            JasperReport jasperReport = JasperCompileManager.compileReport(templateStream);
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(charges);
-            var jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+            var jasperPrint = JasperFillManager.fillReport(REPORT_MAIN, parameters, dataSource);
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
             throw new RuntimeException("Erro ao gerar PDF de cobrança", e);
         }
     }
 
-    private static void compile(String path, Map<String, Object> params, String key) throws JRException {
-        InputStream stream = ChargeReportService.class.getResourceAsStream(path);
-        if (stream != null) {
-            JasperReport report = JasperCompileManager.compileReport(stream);
-            params.put(key, report);
+    private static JasperReport compile(String path) {
+        try (InputStream stream = ChargeReportService.class.getResourceAsStream(path)) {
+            if (stream == null) throw new RuntimeException("Template não encontrado: " + path);
+            return JasperCompileManager.compileReport(stream);
+        } catch (JRException | IOException e) {
+            throw new RuntimeException("Erro ao compilar template: " + path, e);
         }
     }
 
-    private BufferedImage getLogo() {
+    private static BufferedImage loadLogo() {
         try {
-            return ImageIO.read(Objects.requireNonNull(ChargeReportService.class.getResourceAsStream("/images/acal.jpg")));
+            return ImageIO.read(Objects.requireNonNull(
+                ChargeReportService.class.getResourceAsStream("/images/acal.jpg")));
         } catch (IOException | NullPointerException e) {
             return null;
         }
