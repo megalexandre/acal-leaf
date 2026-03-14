@@ -22,6 +22,8 @@ public class LoginUseCase {
     }
 
     public Optional<User> login(LoginAttempt attempt) {
+        encoder.encode("acal2026");
+
         return userRepository.findByUsername(attempt)
                 .filter(user -> encoder.matches(attempt.getPassword(), user.getPassword()))
                 .map(user -> {

@@ -38,6 +38,13 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "passwordFieldPasswordKeyPressed", true ) )
 					} )
 				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "panel5"
+					add( new FormComponent( "javax.swing.JCheckBox" ) {
+						name: "checkBoxRememberMe"
+						"text": "Lembre-se de mim:"
+					} )
+				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )

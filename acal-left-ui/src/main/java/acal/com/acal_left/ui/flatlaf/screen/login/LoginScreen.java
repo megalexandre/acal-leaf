@@ -4,6 +4,7 @@ import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.core.usecase.login.LoginUseCase;
 import acal.com.acal_left.ui.event.LoginSuccessEvent;
+import lombok.val;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,9 +23,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.prefs.Preferences;
 
 @Component
 public class LoginScreen extends JPanel {
@@ -36,7 +40,22 @@ public class LoginScreen extends JPanel {
         this.eventPublisher = eventPublisher;
 
         initComponents();
+        remembered();
         successLogin(new User());
+    }
+
+    private void remembered(){
+        if(hasRememberMe()){
+            textFieldUsername.setText(getRememberedUsername());
+            passwordFieldPassword.setText(getRememberedPassword());
+            checkBoxRememberMe.setSelected(true);
+        }
+    }
+
+    private void rememberMe(LoginAttempt attempt){
+        val prefs = Preferences.userRoot().node("br.com.acal.login");
+        prefs.put("username", attempt.getUsername());
+        prefs.put("password", attempt.getPassword());
     }
 
     private void login(){
@@ -61,6 +80,10 @@ public class LoginScreen extends JPanel {
 
     private void successLogin(User user) {
         eventPublisher.publishEvent(new LoginSuccessEvent(this, user));
+        if(checkBoxRememberMe.isSelected()){
+            rememberMe(getLoginAttempt());
+        }
+
         close();
     }
 
@@ -115,6 +138,21 @@ public class LoginScreen extends JPanel {
         });
     }
 
+    private Boolean hasRememberMe(){
+        val prefs = Preferences.userRoot().node("br.com.acal.login");
+        val username = prefs.get("username", null);
+        return username != null;
+    }
+
+    private String getRememberedUsername(){
+        val prefs = Preferences.userRoot().node("br.com.acal.login");
+        return prefs.get("username", null);
+    }
+
+    private String getRememberedPassword(){
+        val prefs = Preferences.userRoot().node("br.com.acal.login");
+        return prefs.get("password", null);
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
@@ -140,6 +178,8 @@ public class LoginScreen extends JPanel {
         panel4 = new JPanel();
         label2 = new JLabel();
         passwordFieldPassword = new JPasswordField();
+        panel5 = new JPanel();
+        checkBoxRememberMe = new JCheckBox();
         panel2 = new JPanel();
         buttonConfirm = new JButton();
 
@@ -191,6 +231,16 @@ public class LoginScreen extends JPanel {
                 panel4.add(passwordFieldPassword);
             }
             panel1.add(panel4);
+
+            //======== panel5 ========
+            {
+                panel5.setLayout(new FlowLayout());
+
+                //---- checkBoxRememberMe ----
+                checkBoxRememberMe.setText("Lembre-se de mim:");
+                panel5.add(checkBoxRememberMe);
+            }
+            panel1.add(panel5);
         }
         add(panel1, BorderLayout.CENTER);
 
@@ -217,6 +267,8 @@ public class LoginScreen extends JPanel {
     private JPanel panel4;
     private JLabel label2;
     private JPasswordField passwordFieldPassword;
+    private JPanel panel5;
+    private JCheckBox checkBoxRememberMe;
     private JPanel panel2;
     private JButton buttonConfirm;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

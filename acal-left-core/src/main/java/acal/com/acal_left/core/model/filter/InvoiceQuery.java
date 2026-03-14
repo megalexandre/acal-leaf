@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class InvoiceQuery {
     private Integer id;
+    private Boolean paid;
     private Integer categoryId;
     private Integer addressId;
     private Integer personId;
@@ -22,7 +23,9 @@ public class InvoiceQuery {
     private LocalDateTime dueDate;
     private Pageable pageable;
 
+    private LocalDateTime dueDateStart;
+    private LocalDateTime dueDateEnd;
+
     private LocalDateTime periodStart;
     private LocalDateTime periodEnd;
-
 }

@@ -8,7 +8,8 @@ public enum Screen {
     REGISTER("Lançamentos"),
     ADDRESS("Endereços"),
     LINK("Ligações"),
-    INVOICE("Faturas")
+    INVOICE("Faturas"),
+    CHARGE("Cobranças")
     ;
 
     @Getter

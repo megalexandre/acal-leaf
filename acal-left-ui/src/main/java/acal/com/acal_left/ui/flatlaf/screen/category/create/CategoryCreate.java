@@ -30,6 +30,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 public class CategoryCreate extends JDialog {
+
     @Setter
     private ActionListener onSuccess;
 

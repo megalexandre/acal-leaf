@@ -1,0 +1,1 @@
+UPDATE pessoa SET nome = CONCAT(TRIM(nome), ' ', TRIM(sobrenome));

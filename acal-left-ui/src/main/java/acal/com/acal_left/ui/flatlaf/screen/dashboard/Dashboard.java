@@ -5,6 +5,7 @@ import acal.com.acal_left.ui.event.LoginSuccessEvent;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.address.address.AddressScreen;
 import acal.com.acal_left.ui.flatlaf.screen.category.category.CategoryScreen;
+import acal.com.acal_left.ui.flatlaf.screen.charge.ChargeScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.InvoiceScreen;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.receiver.ReceiverInvoicePayment;
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
@@ -32,6 +33,7 @@ import java.awt.event.WindowEvent;
 
 import static acal.com.acal_left.ui.event.Screen.ADDRESS;
 import static acal.com.acal_left.ui.event.Screen.CATEGORY;
+import static acal.com.acal_left.ui.event.Screen.CHARGE;
 import static acal.com.acal_left.ui.event.Screen.INVOICE;
 import static acal.com.acal_left.ui.event.Screen.LINK;
 import static acal.com.acal_left.ui.event.Screen.PARTNER;
@@ -61,6 +63,9 @@ public abstract class Dashboard extends JFrame {
 
     @Lookup
     public abstract RegisterScreen getRegisterScreen();
+
+    @Lookup
+    public abstract ChargeScreen getChargeScreen();
 
 
     @Lookup
@@ -130,6 +135,7 @@ public abstract class Dashboard extends JFrame {
             case LINK -> getLinkScreen();
             case INVOICE -> getInvoiceScreen();
             case REGISTER -> getRegisterScreen();
+            case CHARGE ->  getChargeScreen();
         };
     }
 
@@ -157,6 +163,10 @@ public abstract class Dashboard extends JFrame {
         screenManager.changeScreen(REGISTER);
     }
 
+    private void chargeActionListener(ActionEvent e) {
+        screenManager.changeScreen(CHARGE);
+    }
+
     private void receiverActionListener(ActionEvent e) {
         ReceiverInvoicePayment dialog = receiverInvoicePayment(this);
         dialog.pack();
@@ -179,7 +189,7 @@ public abstract class Dashboard extends JFrame {
         menuItem5 = new JMenuItem();
         menu2 = new JMenu();
         menuItemInvoice = new JMenuItem();
-        menuItemOverdue = new JMenuItem();
+        menuItemCharge = new JMenuItem();
         menuItemReceiver = new JMenuItem();
         menu3 = new JMenu();
         menuItem3 = new JMenuItem();
@@ -238,9 +248,10 @@ public abstract class Dashboard extends JFrame {
                 menuItemInvoice.addActionListener(e -> invoiceActionListener(e));
                 menu2.add(menuItemInvoice);
 
-                //---- menuItemOverdue ----
-                menuItemOverdue.setText("Cobran\u00e7as");
-                menu2.add(menuItemOverdue);
+                //---- menuItemCharge ----
+                menuItemCharge.setText("Cobran\u00e7as");
+                menuItemCharge.addActionListener(e -> chargeActionListener(e));
+                menu2.add(menuItemCharge);
                 menu2.addSeparator();
 
                 //---- menuItemReceiver ----
@@ -286,7 +297,7 @@ public abstract class Dashboard extends JFrame {
     private JMenuItem menuItem5;
     private JMenu menu2;
     private JMenuItem menuItemInvoice;
-    private JMenuItem menuItemOverdue;
+    private JMenuItem menuItemCharge;
     private JMenuItem menuItemReceiver;
     private JMenu menu3;
     private JMenuItem menuItem3;

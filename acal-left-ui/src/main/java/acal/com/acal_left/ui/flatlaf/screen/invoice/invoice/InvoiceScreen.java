@@ -13,6 +13,7 @@ import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.component.render.StatusBadgeRenderer;
+import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
 import acal.com.acal_left.ui.flatlaf.component.utils.SwingUtils;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.create.InvoiceCreateDialog;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
@@ -29,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -58,6 +60,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @Component
 @Scope("prototype")
@@ -102,7 +107,6 @@ public class InvoiceScreen extends JPanel {
 
         ComboBoxLoader.setupLazyLoad(comboBoxPartner, this::getOrLoadPersons);
         ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
-
         table.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
@@ -117,6 +121,29 @@ public class InvoiceScreen extends JPanel {
             }
             }
         });
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+                    int row = table.rowAtPoint(e.getPoint());
+                    if (row != -1) {
+                        Invoice invoice = ((InvoiceTableModel) table.getModel()).get(row);
+
+                        new PdfViewerService().openPdf(
+                            new ReportService().createReport(
+                                    List.of(InvoiceReportOutput.fromDomain(invoice))
+                            )
+                        );
+
+                    }
+                }
+            }
+        });
+
+        comboBoxStatus.setModel(new DefaultComboBoxModel<>(new Boolean[]{null, TRUE, FALSE}));
+        comboBoxStatus.setSelectedItem(null);
+        comboBoxStatus.setRenderer(new YesNoComboBoxRenderer());
     }
 
     private void invoiceViewActionListener(ActionEvent e) {
@@ -267,6 +294,7 @@ public class InvoiceScreen extends JPanel {
         return InvoiceQuery.builder()
                 .id(getId())
                 .personId(getPersonId())
+                .paid(getPaid())
                 .period(getPeriod())
                 .dueDate(getDueDate())
                 .addressId(getAddressId())
@@ -283,6 +311,10 @@ public class InvoiceScreen extends JPanel {
 
     private Integer getAddressId(){
         return ComboBoxOption.getSelectedId(comboBoxAddress);
+    }
+
+    private Boolean getPaid(){
+        return (Boolean) comboBoxStatus.getSelectedItem();
     }
 
     private LocalDateTime getDueDate(){
@@ -352,6 +384,9 @@ public class InvoiceScreen extends JPanel {
         panel6 = new JPanel();
         label2 = new JLabel();
         comboBoxPartner = new JComboBox<>();
+        panel10 = new JPanel();
+        label6 = new JLabel();
+        comboBoxStatus = new JComboBox<>();
         panel7 = new JPanel();
         label3 = new JLabel();
         comboBoxAddress = new JComboBox<>();
@@ -445,6 +480,18 @@ public class InvoiceScreen extends JPanel {
                     panel6.add(comboBoxPartner);
                 }
                 panel3.add(panel6);
+
+                //======== panel10 ========
+                {
+                    panel10.setPreferredSize(new Dimension(150, 44));
+                    panel10.setLayout(new VerticalLayout());
+
+                    //---- label6 ----
+                    label6.setText("Pago:");
+                    panel10.add(label6);
+                    panel10.add(comboBoxStatus);
+                }
+                panel3.add(panel10);
 
                 //======== panel7 ========
                 {
@@ -547,6 +594,9 @@ public class InvoiceScreen extends JPanel {
     private JPanel panel6;
     private JLabel label2;
     private JComboBox<ComboBoxOption> comboBoxPartner;
+    private JPanel panel10;
+    private JLabel label6;
+    private JComboBox<Boolean> comboBoxStatus;
     private JPanel panel7;
     private JLabel label3;
     private JComboBox<ComboBoxOption> comboBoxAddress;

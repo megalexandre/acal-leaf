@@ -48,6 +48,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                         invoiceQuery.getPersonId(),
                         invoiceQuery.getPeriodStart(),
                         invoiceQuery.getPeriodEnd(),
+                        invoiceQuery.getPaid(),
                         Pageable.unpaged()
                 ).stream()
                 .map(InvoiceEntity::toDomain)
@@ -90,7 +91,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                 invoiceQuery.getAddressId(),
                 invoiceQuery.getPersonId(),
                 invoiceQuery.getPeriodStart(),
-                invoiceQuery.getPeriodEnd()
+                invoiceQuery.getPeriodEnd(),
+                invoiceQuery.getPaid()
         );
 
         var invoices = invoiceJpaRepository.findInvoicesWithPagination(
@@ -102,6 +104,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                 invoiceQuery.getPersonId(),
                 invoiceQuery.getPeriodStart(),
                 invoiceQuery.getPeriodEnd(),
+                invoiceQuery.getPaid(),
                 invoiceQuery.getPageable()
         ).stream()
          .map(InvoiceEntity::toDomain)

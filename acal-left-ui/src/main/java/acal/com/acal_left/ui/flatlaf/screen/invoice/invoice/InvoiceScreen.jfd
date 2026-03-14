@@ -65,7 +65,7 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "panel6"
-						"preferredSize": new java.awt.Dimension( 150, 44 )
+						"preferredSize": &Dimension0 new java.awt.Dimension( 150, 44 )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label2"
 							"text": "Sócio:"
@@ -74,6 +74,20 @@ new FormModel {
 							name: "comboBoxPartner"
 							auxiliary() {
 								"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel10"
+						"preferredSize": #Dimension0
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label6"
+							"text": "Pago:"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxStatus"
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "Boolean"
 							}
 						} )
 					} )

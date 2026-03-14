@@ -35,6 +35,10 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
                 AND (:addressId IS NULL OR a.id = :addressId)
                 AND (:personId IS NULL OR p.id = :personId)
                 AND (:periodStart is NULL AND :periodEnd IS NULL OR i.paidAt BETWEEN :periodStart AND :periodEnd)
+                AND (:paid IS NULL
+                    OR (:paid = true AND i.paidAt IS NOT NULL)
+                    OR (:paid = false AND i.paidAt IS NULL)
+                )
             """)
     long countInvoices(
         @Param("id") Integer id,
@@ -44,7 +48,8 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
         @Param("addressId") Integer addressId,
         @Param("personId") Integer personId,
         @Param("periodStart") LocalDateTime periodStart,
-        @Param("periodEnd") LocalDateTime periodEnd
+        @Param("periodEnd") LocalDateTime periodEnd,
+        @Param("paid") Boolean paid
     );
 
     @Query("""
@@ -61,6 +66,10 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
                 AND (:addressId IS NULL OR a.id = :addressId)
                 AND (:personId IS NULL OR p.id = :personId)
                 AND (:periodStart is NULL AND :periodEnd IS NULL OR i.paidAt BETWEEN :periodStart AND :periodEnd)
+                AND (:paid IS NULL
+                    OR (:paid = true AND i.paidAt IS NOT NULL)
+                    OR (:paid = false AND i.paidAt IS NULL)
+                )
             ORDER BY i.period DESC, a.type ASC, a.name ASC
             """)
     List<InvoiceEntity> findInvoicesWithPagination(
@@ -72,6 +81,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
         @Param("personId") Integer personId,
         @Param("periodStart") LocalDateTime periodStart,
         @Param("periodEnd") LocalDateTime periodEnd,
+        @Param("paid") Boolean paid,
         Pageable pageable
     );
 

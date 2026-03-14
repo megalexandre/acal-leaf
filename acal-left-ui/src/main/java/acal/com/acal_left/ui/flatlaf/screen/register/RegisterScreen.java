@@ -6,10 +6,12 @@ package acal.com.acal_left.ui.flatlaf.screen.register;
 
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
+import acal.com.acal_left.shared.LocalDateTimeUtil;
 import acal.com.acal_left.shared.LocalDateUtil;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableModel;
+import lombok.val;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,23 +79,29 @@ public class RegisterScreen extends JPanel {
         }
     }
 
-    private LocalDateTime getStart(){
-        var date = LocalDateUtil.fromString(formattedTextFieldStart.getText());
-        if(date == null){
-            return null;
-        }
-
-        return date.atStartOfDay();
+    private LocalDateTime getStart() {
+        return processDateTime(formattedTextFieldStart, true);
     }
 
-    private LocalDateTime getEnd(){
-        var date = LocalDateUtil.fromString(formattedTextFieldEnd.getText());
-        if(date == null){
-            return null;
+    private LocalDateTime getEnd() {
+        return processDateTime(formattedTextFieldEnd, false);
+    }
+
+    private LocalDateTime processDateTime(JFormattedTextField field, boolean isStart) {
+        val rawText = field.getText();
+
+        if (rawText.replaceAll("[^a-zA-Z0-9]", "").isEmpty()) {
+            val now = LocalDateTime.now();
+            field.setValue(LocalDateTimeUtil.formatDateTime(now));
+            return now;
         }
 
-        return date.atTime(LocalTime.MAX);
+        val date = LocalDateUtil.fromString(rawText);
+
+        return isStart ? date.atStartOfDay() : date.atTime(LocalTime.MAX);
     }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
