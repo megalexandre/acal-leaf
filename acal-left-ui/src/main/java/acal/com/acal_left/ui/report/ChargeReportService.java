@@ -2,7 +2,6 @@ package acal.com.acal_left.ui.report;
 
 import acal.com.acal_left.ui.report.out.ChargeReportOutput;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -11,7 +10,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +17,11 @@ import java.util.Objects;
 
 public class ChargeReportService {
 
-    private static final JasperReport REPORT_MAIN    = compile("/reports/charge.jrxml");
-    private static final JasperReport REPORT_TITLE   = compile("/reports/charge_title.jrxml");
-    private static final JasperReport REPORT_DETAIL  = compile("/reports/charge_detail.jrxml");
-    private static final JasperReport REPORT_INVOICES = compile("/reports/charge_invoices.jrxml");
-    private static final BufferedImage LOGO           = loadLogo();
+    private static final JasperReport REPORT_MAIN     = ReportLoader.load("/reports/charge.jrxml");
+    private static final JasperReport REPORT_TITLE    = ReportLoader.load("/reports/charge_title.jrxml");
+    private static final JasperReport REPORT_DETAIL   = ReportLoader.load("/reports/charge_detail.jrxml");
+    private static final JasperReport REPORT_INVOICES = ReportLoader.load("/reports/charge_invoices.jrxml");
+    private static final BufferedImage LOGO            = loadLogo();
 
     public byte[] createReport(List<ChargeReportOutput> charges) {
         Map<String, Object> parameters = new HashMap<>();
@@ -41,15 +39,6 @@ public class ChargeReportService {
         }
     }
 
-    private static JasperReport compile(String path) {
-        try (InputStream stream = ChargeReportService.class.getResourceAsStream(path)) {
-            if (stream == null) throw new RuntimeException("Template não encontrado: " + path);
-            return JasperCompileManager.compileReport(stream);
-        } catch (JRException | IOException e) {
-            throw new RuntimeException("Erro ao compilar template: " + path, e);
-        }
-    }
-
     private static BufferedImage loadLogo() {
         try {
             return ImageIO.read(Objects.requireNonNull(
@@ -59,3 +48,4 @@ public class ChargeReportService {
         }
     }
 }
+

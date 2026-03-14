@@ -122,6 +122,36 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>compile-jasper-reports</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>acal.com.acal_left.ui.report.JasperReportCompiler</mainClass>
+					<includeProjectDependencies>true</includeProjectDependencies>
+					<includePluginDependencies>false</includePluginDependencies>
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
+					<systemProperties>
+						<systemProperty>
+							<key>jasperreports.compiler.xml.validation</key>
+							<value>false</value>
+						</systemProperty>
+					</systemProperties>
+					<arguments>
+						<argument>${project.basedir}/src/main/resources/reports</argument>
+						<argument>${project.build.outputDirectory}/reports</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

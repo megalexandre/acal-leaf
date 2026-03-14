@@ -1,14 +1,11 @@
 package acal.com.acal_left.ui.report;
 
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +13,10 @@ import java.util.Objects;
 
 public class ReportService {
 
-    private static final JasperReport REPORT_MAIN   = compile("/reports/invoice.jrxml");
-    private static final JasperReport REPORT_TITLE  = compile("/reports/invoice_title.jrxml");
-    private static final JasperReport REPORT_DETAIL = compile("/reports/invoice_detail.jrxml");
-    private static final JasperReport REPORT_WATER  = compile("/reports/invoice_water.jrxml");
+    private static final JasperReport REPORT_MAIN   = ReportLoader.load("/reports/invoice.jrxml");
+    private static final JasperReport REPORT_TITLE  = ReportLoader.load("/reports/invoice_title.jrxml");
+    private static final JasperReport REPORT_DETAIL = ReportLoader.load("/reports/invoice_detail.jrxml");
+    private static final JasperReport REPORT_WATER  = ReportLoader.load("/reports/invoice_water.jrxml");
     private static final BufferedImage LOGO          = loadLogo();
 
     public byte[] createReport(List<InvoiceReportOutput> invoices) {
@@ -34,15 +31,6 @@ public class ReportService {
                 invoices,
                 parameters
         );
-    }
-
-    private static JasperReport compile(String path) {
-        try (InputStream stream = ReportService.class.getResourceAsStream(path)) {
-            if (stream == null) throw new RuntimeException("Template não encontrado: " + path);
-            return JasperCompileManager.compileReport(stream);
-        } catch (JRException | IOException e) {
-            throw new RuntimeException("Erro ao compilar template: " + path, e);
-        }
     }
 
     private static BufferedImage loadLogo() {
