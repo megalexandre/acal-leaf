@@ -68,6 +68,7 @@ public class InvoiceCreateScreen extends JPanel {
         buttonSearch.setEnabled(false);
         comboBoxType.addActionListener(e -> updateSearchButton());
         monthYearField.addChangeListener(this::updateSearchButton);
+        buttonSearch.addActionListener(e -> search());
     }
 
     private void updateSearchButton() {
@@ -75,9 +76,6 @@ public class InvoiceCreateScreen extends JPanel {
         buttonSearch.setEnabled(id != null && monthYearField.isComplete());
     }
 
-    private void typeActionListener(ActionEvent e) {
-
-    }
 
     private void toggleAllActionListener(ActionEvent e) {
         InvoiceGenerateTableModel model = (InvoiceGenerateTableModel) table.getModel();
@@ -86,10 +84,6 @@ public class InvoiceCreateScreen extends JPanel {
         boolean allSelected = model.getItems().stream().allMatch(InvoiceGenerateTableContent::isGenerate);
         model.getItems().forEach(item -> item.setGenerate(!allSelected));
         model.fireTableDataChanged();
-    }
-
-    private void searchActionListener(ActionEvent e) {
-        search();
     }
 
     private void search(){
@@ -201,7 +195,6 @@ public class InvoiceCreateScreen extends JPanel {
 
                     //---- buttonSearch ----
                     buttonSearch.setText("Buscar");
-                    buttonSearch.addActionListener(e -> searchActionListener(e));
                     panel7.add(buttonSearch);
                 }
                 panel3.add(panel7);
