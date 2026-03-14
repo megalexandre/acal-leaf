@@ -1,0 +1,1 @@
+CREATE INDEX idx_conta_id_data ON conta (id_endereco_pessoa, data_referente);
