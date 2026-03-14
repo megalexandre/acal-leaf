@@ -17,8 +17,14 @@ new FormModel {
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "panel1"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "panel8"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label"
+					} )
+				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
 					"hgap": 10
 					"vgap": 10

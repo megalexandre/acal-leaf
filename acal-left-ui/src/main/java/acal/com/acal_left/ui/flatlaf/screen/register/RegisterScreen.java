@@ -4,8 +4,10 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.register;
 
+import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
+import acal.com.acal_left.shared.BigDecimalUtil;
 import acal.com.acal_left.shared.LocalDateTimeUtil;
 import acal.com.acal_left.shared.LocalDateUtil;
 import acal.com.acal_left.ui.event.Screen;
@@ -18,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -30,10 +31,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Component
 @Scope("prototype")
@@ -64,9 +68,26 @@ public class RegisterScreen extends JPanel {
 
         RegisterTableModel model = (RegisterTableModel) table.getModel();
 
-        var itens = list.execute(filter).stream().map(RegisterTableContent::new).toList();
+        var invoices = list.execute(filter);
+        var itens = invoices.stream().map(RegisterTableContent::new).toList();
         model.setList(itens);
         table.setModel(model);
+
+        updateLabel(invoices);
+    }
+
+    private void updateLabel(List<Invoice> invoices) {
+        if (invoices.isEmpty()) {
+            label.setText("Nenhuma nota fiscal encontrada para o período.");
+        } else {
+            var total = invoices.stream()
+                    .map(Invoice::totalAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            label.setText(String.format("%d registro(s) com um total de %s",
+                    invoices.size(),
+                    BigDecimalUtil.toBRL(total)));
+        }
     }
 
     private void createMask(JFormattedTextField field, String mask){
@@ -109,6 +130,8 @@ public class RegisterScreen extends JPanel {
         scrollPane1 = new JScrollPane();
         table = new JTable();
         panel1 = new JPanel();
+        panel8 = new JPanel();
+        label = new JLabel();
         panel5 = new JPanel();
         panel6 = new JPanel();
         panel2 = new JPanel();
@@ -139,7 +162,14 @@ public class RegisterScreen extends JPanel {
 
         //======== panel1 ========
         {
-            panel1.setLayout(new BoxLayout(panel1, BoxLayout.X_AXIS));
+            panel1.setLayout(new VerticalLayout());
+
+            //======== panel8 ========
+            {
+                panel8.setLayout(new FlowLayout());
+                panel8.add(label);
+            }
+            panel1.add(panel8);
 
             //======== panel5 ========
             {
@@ -212,6 +242,8 @@ public class RegisterScreen extends JPanel {
     private JScrollPane scrollPane1;
     private JTable table;
     private JPanel panel1;
+    private JPanel panel8;
+    private JLabel label;
     private JPanel panel5;
     private JPanel panel6;
     private JPanel panel2;
