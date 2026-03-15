@@ -23,6 +23,7 @@ public class MonthYearField extends JFormattedTextField {
     public MonthYearField() {
         super(createFormatter());
         setColumns(7);
+        setFocusLostBehavior(JFormattedTextField.COMMIT);
 
         getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e)  { notifyListeners(); }

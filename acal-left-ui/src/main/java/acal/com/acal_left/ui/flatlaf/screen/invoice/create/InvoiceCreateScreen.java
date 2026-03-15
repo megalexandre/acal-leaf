@@ -43,7 +43,6 @@ import static acal.com.acal_left.shared.model.GenerateInvoiceType.WITH_HYDROMETE
 public class InvoiceCreateScreen extends JPanel {
     public final String name = Screen.INVOICE_CREATE.name();
 
-    // Campo fora do bloco gerado — o JFormDesigner nunca sobrescreve
     private final MonthYearField monthYearField = new MonthYearField();
     private final LocalDateField dueDateField = new LocalDateField();
 
@@ -83,6 +82,13 @@ public class InvoiceCreateScreen extends JPanel {
         buttonSearch.setEnabled(false);
         comboBoxType.addActionListener(e -> updateSearchButton());
         monthYearField.addChangeListener(this::updateSearchButton);
+        monthYearField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                try { monthYearField.commitEdit(); } catch (java.text.ParseException ignored) {}
+                updateSearchButton();
+            }
+        });
         buttonSearch.addActionListener(e -> search());
         buttonConfirm.addActionListener(e -> confirm());
     }
@@ -127,6 +133,7 @@ public class InvoiceCreateScreen extends JPanel {
     }
 
     private void search(){
+        try { monthYearField.commitEdit(); } catch (java.text.ParseException ignored) {}
         Integer id = ComboBoxOption.getSelectedId(comboBoxType);
         if (id == null) return;
 
