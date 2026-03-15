@@ -4,7 +4,7 @@ spring:
     headless: false
 
   datasource:
-    url: jdbc:mysql://85.31.230.47:54321/default?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo&characterEncoding=UTF-8
+    url: jdbc:mysql://85.31.230.47:54321/default?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo&characterEncoding=UTF-8&rewriteBatchedStatements=true
     username: root
     password: 0rpeV9cPx80zUqUJs7UALZh9BpUbAMwfLVgGf0SNGUf1vJ1a0HvBbbY67wjegm2b
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,10 +23,11 @@ spring:
           batch_size: 50
         order_inserts: true
         order_updates: true
+        generate_statistics: true
     packages-to-scan: acal.com.acal_left.resouces.repository.model
 
   flyway:
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
     baseline-version: 0
     locations: classpath:db/migration
