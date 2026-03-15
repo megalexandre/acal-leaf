@@ -72,6 +72,7 @@ public class InvoiceEntity {
                 .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
                 .amountWater(getBigDecimalValue(entity.getAmountWater()))
                 .id(entity.getId())
+                .linkId(entity.getPersonAddress().getId())
                 .hydrometer(
                     Hydrometer.builder()
                         .consumptionStart(entity.getHydrometer() != null ? entity.getHydrometer().getConsumptionStart() : 0D)
@@ -80,6 +81,32 @@ public class InvoiceEntity {
                 )
                 .build();
     }
+
+    public static InvoiceEntity toEntity(Invoice invoice) {
+        InvoiceEntity entity = new InvoiceEntity();
+        entity.setId(invoice.getId());
+        entity.setPeriod(invoice.getPeriod());
+        entity.setPaidAt(invoice.getPaidAt());
+        entity.setDueDate(invoice.getDueDate());
+        entity.setAmountPartner(invoice.getAmountPartner());
+        entity.setAmountWater(invoice.getAmountWater());
+
+        LinkEntity linkEntity = new LinkEntity();
+        linkEntity.setId(invoice.getLinkId());
+        entity.setPersonAddress(linkEntity);
+
+        if (invoice.getHydrometer() != null) {
+            HydrometerEntity hydrometerEntity = new HydrometerEntity();
+            hydrometerEntity.setConsumptionStart(invoice.getHydrometer().getConsumptionStart());
+            hydrometerEntity.setConsumptionEnd(invoice.getHydrometer().getConsumptionEnd());
+            hydrometerEntity.setEntity(entity);
+            entity.setHydrometer(hydrometerEntity);
+        }
+
+        return entity;
+    }
+
+
 
     private static BigDecimal getBigDecimalValue(BigDecimal value) {
         return value != null ? value : BigDecimal.ZERO;

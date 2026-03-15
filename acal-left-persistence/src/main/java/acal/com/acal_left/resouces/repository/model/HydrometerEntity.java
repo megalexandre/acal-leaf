@@ -24,7 +24,7 @@ public class HydrometerEntity implements Serializable {
     @Column(name = "idhidrometro")
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "idconta", referencedColumnName = "id")
     private InvoiceEntity entity;
 

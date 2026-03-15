@@ -36,6 +36,7 @@ public class Invoice {
     }
 
     private Integer id;
+    private Integer linkId;
     private Person person;
     private Address address;
     private Category category;
@@ -48,7 +49,6 @@ public class Invoice {
     private BigDecimal amountWater;
     public WaterAnalysis waterAnalysis;
     public Hydrometer hydrometer;
-
 
     public boolean isPaid(){
         return paidAt != null;

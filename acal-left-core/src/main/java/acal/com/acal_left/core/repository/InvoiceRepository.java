@@ -14,4 +14,5 @@ public interface InvoiceRepository {
     List<Invoice> listInvoicesToGenerate(InvoiceGenerateFilter filter);
     Page<Invoice> paginateInvoices(InvoiceQuery invoiceQuery);
     void delete(Invoice invoice);
+    List<Invoice> save(List<Invoice> invoices);
 }

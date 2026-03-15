@@ -7,13 +7,17 @@ import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.repository.InvoiceRepository;
 import acal.com.acal_left.resouces.repository.model.CategoryEntity;
+import acal.com.acal_left.resouces.repository.model.HydrometerEntity;
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
+import acal.com.acal_left.resouces.repository.model.LinkEntity;
 import acal.com.acal_left.resouces.repository.model.PersonEntity;
 import acal.com.acal_left.resouces.repository.model.WaterAnalysisItemEntity;
 import acal.com.acal_left.resouces.repository.repository.jpa.InvoiceJpaRepository;
 import acal.com.acal_left.resouces.repository.repository.jpa.LinkJpaRepository;
 import acal.com.acal_left.resouces.repository.repository.jpa.WaterAnalysisJpaRepository;
 import acal.com.acal_left.shared.model.WaterParameterType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +28,9 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InvoiceRepositoryImpl implements InvoiceRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final InvoiceJpaRepository invoiceJpaRepository;
     private final WaterAnalysisJpaRepository waterAnalysisJpaRepository;
@@ -42,6 +49,33 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     @Override
     public void delete(Invoice invoice) {
         invoiceJpaRepository.deleteById(invoice.getId());
+    }
+
+    @Override
+    public List<Invoice> save(List<Invoice> invoices) {
+        List<InvoiceEntity> entities = invoices.stream().map(invoice -> {
+            InvoiceEntity e = InvoiceEntity.toEntity(invoice);
+            // usa getReference para obter um proxy gerenciado — sem ir ao banco
+            e.setPersonAddress(entityManager.getReference(LinkEntity.class, invoice.getLinkId()));
+            return e;
+        }).toList();
+
+        // 1º passo: salva sem o hydrometer para gerar o id do InvoiceEntity
+        entities.forEach(e -> {
+            HydrometerEntity hydrometer = e.getHydrometer();
+            e.setHydrometer(null);
+            invoiceJpaRepository.save(e);
+            // 2º passo: seta o back-reference com o id gerado e salva novamente
+            if (hydrometer != null) {
+                hydrometer.setEntity(e);
+                e.setHydrometer(hydrometer);
+                invoiceJpaRepository.save(e);
+            }
+        });
+
+        // retorna os invoices originais já em memória — evita LazyInitializationException
+        // ao tentar acessar proxy do LinkEntity fora da sessão JPA
+        return invoices;
     }
 
     @Override
@@ -95,6 +129,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         return linkJpaRepository.findLinksWithoutInvoiceForPeriod(period, hasHydrometer)
                 .stream()
                 .map(link -> Invoice.builder()
+                        .linkId(link.getId())
                         .number(link.getNumber())
                         .person(PersonEntity.toEntity(link.getPerson()))
                         .address(AddressRepositoryImpl.toEntity(link.getAddress()))

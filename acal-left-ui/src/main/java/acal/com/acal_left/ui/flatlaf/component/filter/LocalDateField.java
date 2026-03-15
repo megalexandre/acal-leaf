@@ -5,24 +5,24 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
-import java.time.YearMonth;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Campo de texto com máscara MM/AAAA.
+ * Campo de texto com máscara DD/MM/AAAA.
  * Notifica listeners quando o valor se torna válido ou inválido.
  */
-public class MonthYearField extends JFormattedTextField {
+public class LocalDateField extends JFormattedTextField {
 
-    private static final String MASK       = "##/####";
-    private static final char PLACEHOLDER = '_';
+    private static final String MASK        = "##/##/####";
+    private static final char   PLACEHOLDER = '_';
 
     private final List<Runnable> changeListeners = new ArrayList<>();
 
-    public MonthYearField() {
+    public LocalDateField() {
         super(createFormatter());
-        setColumns(7);
+        setColumns(10);
 
         getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e)  { notifyListeners(); }
@@ -44,33 +44,46 @@ public class MonthYearField extends JFormattedTextField {
         }
     }
 
-    /** Retorna true somente quando MM/AAAA está completamente preenchido e é uma data válida. */
+    /** Retorna true somente quando DD/MM/AAAA está completamente preenchido e é uma data válida. */
     public boolean isComplete() {
         String raw = getText();
         if (raw == null || raw.contains(String.valueOf(PLACEHOLDER))) return false;
-        return parseYearMonth() != null;
+        return parseLocalDate() != null;
     }
 
     /**
-     * Retorna o {@link YearMonth} digitado, ou {@code null} se inválido/incompleto.
+     * Retorna o {@link LocalDate} digitado, ou {@code null} se inválido/incompleto.
      */
-    public YearMonth getYearMonth() {
-        return parseYearMonth();
+    public LocalDate getLocalDate() {
+        return parseLocalDate();
     }
 
-    private YearMonth parseYearMonth() {
+    /**
+     * Define o valor do campo a partir de um {@link LocalDate}.
+     */
+    public void setLocalDate(LocalDate date) {
+        if (date == null) {
+            setValue(null);
+            return;
+        }
+        String formatted = String.format("%02d/%02d/%04d",
+                date.getDayOfMonth(), date.getMonthValue(), date.getYear());
+        setText(formatted);
+    }
+
+    private LocalDate parseLocalDate() {
         String raw = getText();
         if (raw == null) return null;
         raw = raw.replace(String.valueOf(PLACEHOLDER), "").trim();
-        // esperado MM/YYYY
+        // esperado DD/MM/YYYY
         String[] parts = raw.split("/");
-        if (parts.length != 2) return null;
+        if (parts.length != 3) return null;
         try {
-            int month = Integer.parseInt(parts[0]);
-            int year  = Integer.parseInt(parts[1]);
-            if (month < 1 || month > 12 || year < 1) return null;
-            return YearMonth.of(year, month);
-        } catch (NumberFormatException e) {
+            int day   = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int year  = Integer.parseInt(parts[2]);
+            return LocalDate.of(year, month, day);
+        } catch (Exception e) {
             return null;
         }
     }

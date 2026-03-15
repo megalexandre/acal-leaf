@@ -24,6 +24,7 @@ new FormModel {
 				"vgap": 10
 			} ) {
 				name: "panel1"
+				"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
 					"gap": 10
 				} ) {
@@ -65,30 +66,35 @@ new FormModel {
 						} )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "First"
+					"value": "Center"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
 					"gap": 10
 				} ) {
-					name: "panel2"
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "buttonToggleAll"
-						"text": "Marcar/Desmarcar"
-						"preferredSize": &Dimension0 new java.awt.Dimension( 150, 25 )
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "toggleAllActionListener", true ) )
-					} )
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "buttonConfirm"
-						"text": "Confirmar"
-						"preferredSize": #Dimension0
-					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "After"
-				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) ) {
 					name: "panel5"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+						"gap": 10
+					} ) {
+						name: "panelDueDate"
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+						"gap": 10
+					} ) {
+						name: "panel8"
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonToggleAll2"
+							"text": "Marcar/Desmarcar"
+							"preferredSize": &Dimension0 new java.awt.Dimension( 150, 25 )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "toggleAllActionListener", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonConfirm"
+							"text": "Confirmar"
+							"preferredSize": #Dimension0
+						} )
+					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "Last"
+					"value": "East"
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"
