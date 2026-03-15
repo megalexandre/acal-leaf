@@ -15,6 +15,7 @@ import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.TableGenerator;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -34,7 +35,9 @@ import java.time.LocalDateTime;
 public class InvoiceEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice-gen")
+    @TableGenerator(name = "invoice-gen", table = "id_sequences", pkColumnName = "seq_name",
+            valueColumnName = "seq_value", pkColumnValue = "conta_id", allocationSize = 50)
     @Column(name = "id")
     private Integer id;
 

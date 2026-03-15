@@ -7,7 +7,6 @@ import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.repository.InvoiceRepository;
 import acal.com.acal_left.resouces.repository.model.CategoryEntity;
-import acal.com.acal_left.resouces.repository.model.HydrometerEntity;
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
 import acal.com.acal_left.resouces.repository.model.LinkEntity;
 import acal.com.acal_left.resouces.repository.model.PersonEntity;
@@ -55,26 +54,12 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     public List<Invoice> save(List<Invoice> invoices) {
         List<InvoiceEntity> entities = invoices.stream().map(invoice -> {
             InvoiceEntity e = InvoiceEntity.toEntity(invoice);
-            // usa getReference para obter um proxy gerenciado — sem ir ao banco
             e.setPersonAddress(entityManager.getReference(LinkEntity.class, invoice.getLinkId()));
             return e;
         }).toList();
 
-        // 1º passo: salva sem o hydrometer para gerar o id do InvoiceEntity
-        entities.forEach(e -> {
-            HydrometerEntity hydrometer = e.getHydrometer();
-            e.setHydrometer(null);
-            invoiceJpaRepository.save(e);
-            // 2º passo: seta o back-reference com o id gerado e salva novamente
-            if (hydrometer != null) {
-                hydrometer.setEntity(e);
-                e.setHydrometer(hydrometer);
-                invoiceJpaRepository.save(e);
-            }
-        });
+        invoiceJpaRepository.saveAll(entities);
 
-        // retorna os invoices originais já em memória — evita LazyInitializationException
-        // ao tentar acessar proxy do LinkEntity fora da sessão JPA
         return invoices;
     }
 
