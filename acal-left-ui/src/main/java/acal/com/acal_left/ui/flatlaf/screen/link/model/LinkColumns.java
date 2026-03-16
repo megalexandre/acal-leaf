@@ -7,7 +7,7 @@ public enum LinkColumns {
     PARTNER("Sócio:"),
     ADDRESS("Endereço:"),
     ACTIVE("Ativo:"),
-    CATEGORY("Category:"),
+    CATEGORY("Categoria:"),
     AMOUNT("Valor:")
     ;
 

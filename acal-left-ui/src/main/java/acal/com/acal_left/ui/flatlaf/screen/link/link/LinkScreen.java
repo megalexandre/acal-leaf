@@ -31,9 +31,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -46,7 +48,7 @@ import static java.lang.Boolean.TRUE;
 public abstract class LinkScreen extends JPanel {
 
     @Lookup
-    public abstract LinkCreateDialog dialog();
+    public abstract LinkCreateDialog dialog(Window owner);
 
     public final String name = Screen.LINK.name();
 
@@ -113,7 +115,8 @@ public abstract class LinkScreen extends JPanel {
     }
 
     private void createActionListener(ActionEvent e) {
-        LinkCreateDialog dialog = dialog();
+        Window owner = SwingUtilities.getWindowAncestor(this);
+        LinkCreateDialog dialog = dialog(owner);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);

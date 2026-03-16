@@ -43,11 +43,14 @@ public class SwingValidator {
             }
         });
 
-        // 4. Mostra a primeira mensagem de erro
-        String firstMessage = violations.iterator().next().getMessage();
-        JOptionPane.showMessageDialog(parent, 
-            firstMessage, 
-            "Aviso", 
+        // 4. Mostra todas as mensagens de erro separadas por quebra de linha
+        String allMessages = violations.stream()
+            .map(ConstraintViolation::getMessage)
+            .collect(java.util.stream.Collectors.joining("\n"));
+
+        JOptionPane.showMessageDialog(parent,
+            allMessages,
+            "Aviso",
             JOptionPane.WARNING_MESSAGE);
 
         if (parent != null) parent.repaint();
