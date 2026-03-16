@@ -55,6 +55,20 @@ new FormModel {
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel9"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label4"
+							"text": "Endereço"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "comboBoxAddress"
+							"preferredSize": new java.awt.Dimension( 150, 25 )
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+							}
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "panel7"
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label3"

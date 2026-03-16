@@ -17,8 +17,33 @@ public class InvoiceGenerateUseCase {
     }
 
     public List<Invoice> execute(InvoiceGenerateFilter filter) {
-        return invoiceRepository.listInvoicesToGenerate(filter);
+        var actual = invoiceRepository.listInvoicesToGenerate(filter);
+        if (actual == null || actual.isEmpty()) {
+            return List.of();
+        }
+
+        var hydrometerInvoices = actual.stream()
+            .filter(it -> it.getCategory() != null && Boolean.TRUE.equals(it.getCategory().getIsHydrometer()))
+            .toList();
+
+        if (!hydrometerInvoices.isEmpty()) {
+            var previous = invoiceRepository.listInvoicesToGenerate(filter.previousReference());
+
+            hydrometerInvoices.forEach(invoice -> {
+                if (invoice.getHydrometer() == null) return;
+
+                previous.stream()
+                    .filter(it -> it.getLinkId().equals(invoice.getLinkId()))
+                    .findFirst()
+                    .ifPresent(i -> {
+                        if (i.getHydrometer() != null) {
+                            invoice.getHydrometer().setConsumptionStart(i.getHydrometer().getConsumptionEnd());
+                        }
+                    });
+            });
+        }
+
+        return actual;
     }
 
 }
-

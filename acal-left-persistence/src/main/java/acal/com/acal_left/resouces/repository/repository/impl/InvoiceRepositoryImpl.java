@@ -111,7 +111,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
             case ALL                -> null;
         };
 
-        return linkJpaRepository.findLinksWithoutInvoiceForPeriod(period, hasHydrometer)
+        return linkJpaRepository.findLinksWithoutInvoiceForPeriod(period, hasHydrometer, filter.getAddressId())
                 .stream()
                 .map(link -> Invoice.builder()
                         .linkId(link.getId())

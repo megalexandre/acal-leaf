@@ -9,10 +9,16 @@ import lombok.NoArgsConstructor;
 import java.time.YearMonth;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceGenerateFilter {
     private YearMonth reference;
     private GenerateInvoiceType type;
+    private Integer addressId;
+
+    public InvoiceGenerateFilter previousReference() {
+        return this.toBuilder().reference(this.reference.minusMonths(1)).build();
+    }
+
 }

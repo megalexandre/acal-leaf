@@ -3,12 +3,14 @@ package acal.com.acal_left.ui.flatlaf.screen.invoice.create;
 import acal.com.acal_left.core.model.Hydrometer;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
+import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceCreateUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceGenerateUseCase;
 import acal.com.acal_left.shared.model.GenerateInvoiceType;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.filter.LocalDateField;
 import acal.com.acal_left.ui.flatlaf.component.filter.MonthYearField;
+import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.create.model.InvoiceGenerateTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.create.model.InvoiceGenerateTableModel;
@@ -52,6 +54,8 @@ public class InvoiceCreateScreen extends JPanel {
     @Autowired
     private InvoiceCreateUseCase create;
 
+    @Autowired
+    private AddressFindAllUseCase addressFind;
 
     public InvoiceCreateScreen() {
         initComponents();
@@ -91,6 +95,7 @@ public class InvoiceCreateScreen extends JPanel {
         });
         buttonSearch.addActionListener(e -> search());
         buttonConfirm.addActionListener(e -> confirm());
+        ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
     }
 
     private void confirm(){
@@ -142,6 +147,7 @@ public class InvoiceCreateScreen extends JPanel {
         InvoiceGenerateFilter filter = InvoiceGenerateFilter.builder()
                 .type(type)
                 .reference(monthYearField.getYearMonth())
+                .addressId(getAddressId())
                 .build();
 
         val invoices = generate.execute(filter);
@@ -154,12 +160,20 @@ public class InvoiceCreateScreen extends JPanel {
         table.setModel(model);
 
         int startCol = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_STARTS.ordinal();
-        int endCol   = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_ENDS.ordinal();
+        int endCol = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_ENDS.ordinal();
         table.getColumnModel().getColumn(startCol).setCellEditor(InvoiceGenerateTableModel.numericCellEditor());
         table.getColumnModel().getColumn(endCol).setCellEditor(InvoiceGenerateTableModel.numericCellEditor());
     }
 
+    private Integer getAddressId(){
+        return ComboBoxOption.getSelectedId(comboBoxAddress);
+    }
 
+    private List<ComboBoxOption> getOrLoadAddresses() {
+        return addressFind.execute().stream()
+                .map(it -> new ComboBoxOption(it.getId(), it.getFullAddress()))
+                .toList();
+    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -174,6 +188,9 @@ public class InvoiceCreateScreen extends JPanel {
         panel6 = new JPanel();
         label2 = new JLabel();
         formattedPeriod = new JFormattedTextField();
+        panel9 = new JPanel();
+        label4 = new JLabel();
+        comboBoxAddress = new JComboBox<>();
         panel7 = new JPanel();
         label3 = new JLabel();
         buttonSearch = new JButton();
@@ -233,6 +250,20 @@ public class InvoiceCreateScreen extends JPanel {
                     panel6.add(formattedPeriod);
                 }
                 panel3.add(panel6);
+
+                //======== panel9 ========
+                {
+                    panel9.setLayout(new VerticalLayout());
+
+                    //---- label4 ----
+                    label4.setText("Endere\u00e7o");
+                    panel9.add(label4);
+
+                    //---- comboBoxAddress ----
+                    comboBoxAddress.setPreferredSize(new Dimension(150, 25));
+                    panel9.add(comboBoxAddress);
+                }
+                panel3.add(panel9);
 
                 //======== panel7 ========
                 {
@@ -295,6 +326,9 @@ public class InvoiceCreateScreen extends JPanel {
     private JPanel panel6;
     private JLabel label2;
     private JFormattedTextField formattedPeriod;
+    private JPanel panel9;
+    private JLabel label4;
+    private JComboBox<ComboBoxOption> comboBoxAddress;
     private JPanel panel7;
     private JLabel label3;
     private JButton buttonSearch;

@@ -40,10 +40,12 @@ public interface LinkJpaRepository extends JpaRepository<LinkEntity, Integer> {
         WHERE l.inactive = false
             AND i.id IS NULL
             AND (:hasHydrometer IS NULL OR c.isHydrometer = :hasHydrometer)
-        ORDER BY p.name ASC, a.name ASC
+            AND (:addressId IS NULL OR a.id = :addressId)
+        ORDER BY a.type ASC, a.name ASC, l.number ASC
         """)
     List<LinkEntity> findLinksWithoutInvoiceForPeriod(
         @Param("period") java.time.LocalDate period,
-        @Param("hasHydrometer") Boolean hasHydrometer
+        @Param("hasHydrometer") Boolean hasHydrometer,
+        @Param("addressId") Integer addressId
     );
 }

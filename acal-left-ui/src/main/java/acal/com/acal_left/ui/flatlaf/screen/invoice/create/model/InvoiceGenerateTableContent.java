@@ -19,14 +19,25 @@ public class InvoiceGenerateTableContent {
 
     public InvoiceGenerateTableContent(Invoice item) {
         this.partner = item.getPerson().getName();
-        this.address = item.getAddress().getFullAddress() + " " + item.getNumber();
+        this.address = item.getNumber() + ", "+ item.getAddress().getFullAddress();
         this.category = item.getCategory().getFullName();
         this.total = BigDecimalUtil.toBRL(item.totalAmount());
         this.hasHydrometer = item.getCategory().getIsHydrometer();
-        this.hydrometerStart = !item.getCategory().getIsHydrometer() ? 0L : null;
+        this.hydrometerStart = getHydrometerStart(item);
         this.hydrometerEnd =  !item.getCategory().getIsHydrometer() ? 0L : null;
         this.generate = true;
         this.item = item;
     }
 
+    private Long getHydrometerStart(Invoice item) {
+        if(!item.getCategory().getIsHydrometer()){
+            return 0L;
+        }
+
+        if(item.getHydrometer() == null || item.getHydrometer().getConsumptionStart() == null){
+            return null;
+        }
+
+        return item.getHydrometer().getConsumptionStart().longValue();
+    }
 }
