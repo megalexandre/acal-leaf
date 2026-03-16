@@ -30,6 +30,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Build and analyze
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Gerado automaticamente pelo GitHub
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
