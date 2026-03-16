@@ -4,6 +4,7 @@ import acal.com.acal_left.shared.model.ChargeLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ public class Charge {
     private Category category;
     private String number;
 
+    @Getter
     @Builder.Default
     private List<Invoice> invoices = new ArrayList<>();
 

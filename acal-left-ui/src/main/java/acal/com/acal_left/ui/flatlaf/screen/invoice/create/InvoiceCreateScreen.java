@@ -14,6 +14,7 @@ import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.create.model.InvoiceGenerateTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.create.model.InvoiceGenerateTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.create.model.InvoicesLabel;
 import lombok.val;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
@@ -33,6 +34,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -151,6 +153,7 @@ public class InvoiceCreateScreen extends JPanel {
                 .build();
 
         val invoices = generate.execute(filter);
+        updateLabel(invoices);
         val invoiceItems = invoices.stream()
                 .map(InvoiceGenerateTableContent::new)
                 .toList();
@@ -163,6 +166,10 @@ public class InvoiceCreateScreen extends JPanel {
         int endCol = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_ENDS.ordinal();
         table.getColumnModel().getColumn(startCol).setCellEditor(InvoiceGenerateTableModel.numericCellEditor());
         table.getColumnModel().getColumn(endCol).setCellEditor(InvoiceGenerateTableModel.numericCellEditor());
+    }
+
+    private void updateLabel(List<Invoice> invoices) {
+        label.setText(InvoicesLabel.builder().invoices(invoices).build().getLabel());
     }
 
     private Integer getAddressId(){
@@ -181,6 +188,8 @@ public class InvoiceCreateScreen extends JPanel {
         scrollPane1 = new JScrollPane();
         table = new JTable();
         panel1 = new JPanel();
+        panel2 = new JPanel();
+        label = new JLabel();
         panel3 = new JPanel();
         panel4 = new JPanel();
         label1 = new JLabel();
@@ -218,6 +227,16 @@ public class InvoiceCreateScreen extends JPanel {
         {
             panel1.setBorder(new EmptyBorder(5, 5, 5, 5));
             panel1.setLayout(new BorderLayout(10, 10));
+
+            //======== panel2 ========
+            {
+                panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                //---- label ----
+                label.setText("Detalhamento:");
+                panel2.add(label);
+            }
+            panel1.add(panel2, BorderLayout.NORTH);
 
             //======== panel3 ========
             {
@@ -319,6 +338,8 @@ public class InvoiceCreateScreen extends JPanel {
     private JScrollPane scrollPane1;
     private JTable table;
     private JPanel panel1;
+    private JPanel panel2;
+    private JLabel label;
     private JPanel panel3;
     private JPanel panel4;
     private JLabel label1;

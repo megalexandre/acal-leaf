@@ -4,6 +4,7 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.charge;
 
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.Charge;
 import acal.com.acal_left.core.model.filter.InvoiceQuery;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
@@ -14,6 +15,7 @@ import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
 import acal.com.acal_left.ui.flatlaf.component.render.ChargeLevelRenderer;
 import acal.com.acal_left.ui.flatlaf.screen.charge.model.ChargeTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.charge.model.ChargeTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.charge.model.ChargesDetails;
 import acal.com.acal_left.ui.report.ChargeReportService;
 import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.out.ChargeReportOutput;
@@ -31,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,6 +84,8 @@ public class ChargeScreen extends JPanel {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
+
+        label.setText(ChargesDetails.builder().charges(lastCharges).build().getLabel());
     }
 
     private void printActionListener() {
@@ -112,7 +117,11 @@ public class ChargeScreen extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
+        scrollPane1 = new JScrollPane();
+        table = new JTable();
         panel1 = new JPanel();
+        panel5 = new JPanel();
+        label = new JLabel();
         panel2 = new JPanel();
         panel4 = new JPanel();
         label1 = new JLabel();
@@ -120,19 +129,39 @@ public class ChargeScreen extends JPanel {
         panel3 = new JPanel();
         buttonPrint = new JButton();
         buttonSearch = new JButton();
-        scrollPane1 = new JScrollPane();
-        table = new JTable();
 
         //======== this ========
         setLayout(new BorderLayout());
+
+        //======== scrollPane1 ========
+        {
+
+            //---- table ----
+            table.setShowHorizontalLines(true);
+            table.setShowVerticalLines(true);
+            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            scrollPane1.setViewportView(table);
+        }
+        add(scrollPane1, BorderLayout.CENTER);
 
         //======== panel1 ========
         {
             panel1.setLayout(new VerticalLayout());
 
+            //======== panel5 ========
+            {
+                panel5.setBorder(new EtchedBorder());
+                panel5.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                //---- label ----
+                label.setText("Detalhamento:");
+                panel5.add(label);
+            }
+            panel1.add(panel5);
+
             //======== panel2 ========
             {
-                panel2.setLayout(new FlowLayout());
+                panel2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 //======== panel4 ========
                 {
@@ -141,6 +170,9 @@ public class ChargeScreen extends JPanel {
                     //---- label1 ----
                     label1.setText("Endere\u00e7o:");
                     panel4.add(label1);
+
+                    //---- comboBoxAddress ----
+                    comboBoxAddress.setPreferredSize(new Dimension(200, 25));
                     panel4.add(comboBoxAddress);
                 }
                 panel2.add(panel4);
@@ -162,23 +194,16 @@ public class ChargeScreen extends JPanel {
             panel1.add(panel3);
         }
         add(panel1, BorderLayout.SOUTH);
-
-        //======== scrollPane1 ========
-        {
-
-            //---- table ----
-            table.setShowHorizontalLines(true);
-            table.setShowVerticalLines(true);
-            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            scrollPane1.setViewportView(table);
-        }
-        add(scrollPane1, BorderLayout.CENTER);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
+    private JScrollPane scrollPane1;
+    private JTable table;
     private JPanel panel1;
+    private JPanel panel5;
+    private JLabel label;
     private JPanel panel2;
     private JPanel panel4;
     private JLabel label1;
@@ -186,7 +211,5 @@ public class ChargeScreen extends JPanel {
     private JPanel panel3;
     private JButton buttonPrint;
     private JButton buttonSearch;
-    private JScrollPane scrollPane1;
-    private JTable table;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
