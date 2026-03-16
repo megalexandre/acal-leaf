@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 
 @Data
@@ -20,5 +21,10 @@ public class InvoiceGenerateFilter {
     public InvoiceGenerateFilter previousReference() {
         return this.toBuilder().reference(this.reference.minusMonths(1)).build();
     }
+
+    public LocalDate getPeriod() {
+        return this.reference.atDay(1);
+    }
+
 
 }

@@ -28,4 +28,5 @@ public class InvoiceQuery {
 
     private LocalDateTime periodStart;
     private LocalDateTime periodEnd;
+
 }

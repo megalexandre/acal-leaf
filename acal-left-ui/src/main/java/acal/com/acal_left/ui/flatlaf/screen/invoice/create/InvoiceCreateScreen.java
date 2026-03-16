@@ -205,6 +205,7 @@ public class InvoiceCreateScreen extends JPanel {
         buttonSearch = new JButton();
         panel5 = new JPanel();
         panelDueDate = new JPanel();
+        label5 = new JLabel();
         panel8 = new JPanel();
         buttonToggleAll2 = new JButton();
         buttonConfirm = new JButton();
@@ -307,6 +308,10 @@ public class InvoiceCreateScreen extends JPanel {
                 //======== panelDueDate ========
                 {
                     panelDueDate.setLayout(new VerticalLayout(10));
+
+                    //---- label5 ----
+                    label5.setText("Data de Vencimento:");
+                    panelDueDate.add(label5);
                 }
                 panel5.add(panelDueDate);
 
@@ -355,6 +360,7 @@ public class InvoiceCreateScreen extends JPanel {
     private JButton buttonSearch;
     private JPanel panel5;
     private JPanel panelDueDate;
+    private JLabel label5;
     private JPanel panel8;
     private JButton buttonToggleAll2;
     private JButton buttonConfirm;

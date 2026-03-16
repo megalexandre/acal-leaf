@@ -101,6 +101,10 @@ new FormModel {
 						"gap": 10
 					} ) {
 						name: "panelDueDate"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label5"
+							"text": "Data de Vencimento:"
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
 						"gap": 10
