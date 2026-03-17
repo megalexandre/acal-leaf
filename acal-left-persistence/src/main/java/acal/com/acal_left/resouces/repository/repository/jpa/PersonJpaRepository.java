@@ -14,7 +14,7 @@ public interface PersonJpaRepository extends JpaRepository<PersonEntity, Integer
     @Query(
             """
             SELECT p FROM PersonEntity p
-            WHERE (:name IS NULL OR LOWER(name) LIKE LOWER(CONCAT(:name, '%')))
+            WHERE (:name IS NULL OR LOWER(name) LIKE LOWER(CONCAT('%', :name, '%')))
             ORDER BY name ASC
             """
     )

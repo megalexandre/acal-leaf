@@ -5,7 +5,9 @@ import acal.com.acal_left.shared.model.MemberGroup;
 import acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField;
 import acal.com.acal_left.ui.flatlaf.component.render.MemberGroupRenderer;
 import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryCreateForm;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
+import acal.com.acal_left.ui.flatlaf.utils.SwingValidator;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -25,6 +27,7 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -68,15 +71,33 @@ public class CategoryCreate extends JDialog {
     }
 
     private void onOkButtonClicked() {
-        Integer id = (model == null? null : model.getId());
+        CategoryCreateForm form = CategoryCreateForm.builder()
+            .name(textFieldName.getText())
+            .amountWater(textFieldNameWaterValue.getBigDecimal())
+            .amountPartner(textFieldNamePartnerValue.getBigDecimal())
+            .memberGroup((MemberGroup) comboBoxGroup.getSelectedItem())
+            .isHydrometer((Boolean) comboBoxHydrometer.getSelectedItem())
+            .build();
+
+        boolean valid = SwingValidator.validate(this, form, Map.of(
+            "name",        textFieldName,
+            "amountWater", textFieldNameWaterValue,
+            "amountPartner", textFieldNamePartnerValue,
+            "memberGroup", comboBoxGroup,
+            "isHydrometer", comboBoxHydrometer
+        ));
+
+        if (!valid) return;
+
+        Integer id = (model == null ? null : model.getId());
 
         Category category = Category.builder()
             .id(id)
-            .name(textFieldName.getText())
-            .isHydrometer((Boolean) comboBoxHydrometer.getSelectedItem())
-            .amountPartner(textFieldNamePartnerValue.getBigDecimal())
-            .amountWater(textFieldNameWaterValue.getBigDecimal())
-            .memberGroup((MemberGroup) comboBoxGroup.getSelectedItem())
+            .name(form.getName())
+            .isHydrometer(form.getIsHydrometer())
+            .amountPartner(form.getAmountPartner())
+            .amountWater(form.getAmountWater())
+            .memberGroup(form.getMemberGroup())
             .build();
 
         onSuccess.actionPerformed(new ActionEvent(category, ActionEvent.ACTION_PERFORMED, "OK"));
