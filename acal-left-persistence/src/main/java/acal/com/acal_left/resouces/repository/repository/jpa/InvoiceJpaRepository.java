@@ -18,8 +18,20 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
 
     @Modifying
     @Transactional
-    @Query("UPDATE InvoiceEntity i SET i.paidAt = :paidAt WHERE i.id = :id")
-    void updatePayedAt(@Param("id") Integer id, @Param("paidAt") LocalDateTime paidAt);
+    @Query("""
+            UPDATE InvoiceEntity i
+            SET i.paidAt = :paidAt,
+                i.paidByPix = :paidByPix,
+                i.paidWithAlternativeBill = :paidWithAlternativeBill
+            WHERE i.id = :id
+        """
+    )
+    void updatePayedAt(
+       @Param("id") Integer id,
+       @Param("paidAt") LocalDateTime paidAt,
+       @Param("paidByPix") Boolean paidByPix,
+       @Param("paidWithAlternativeBill") Boolean paidWithAlternativeBill
+    );
 
     @Query("""
             SELECT COUNT(i) FROM InvoiceEntity i

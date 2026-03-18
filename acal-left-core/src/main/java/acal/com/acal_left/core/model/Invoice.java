@@ -50,6 +50,9 @@ public class Invoice {
     public WaterAnalysis waterAnalysis;
     public Hydrometer hydrometer;
 
+    private Boolean paidByPix;
+    private Boolean paidWithAlternativeBill;
+
     public boolean isPaid(){
         return paidAt != null;
     }

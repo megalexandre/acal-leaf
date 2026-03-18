@@ -63,6 +63,12 @@ public class InvoiceEntity {
     @Column(name = "amount_water", nullable = false)
     private BigDecimal amountWater;
 
+    @Column(name = "paid_by_pix")
+    private Boolean paidByPix;
+
+    @Column(name = "paid_with_alternative_bill")
+    private Boolean paidWithAlternativeBill;
+
     public static Invoice toDomain(InvoiceEntity entity) {
         return Invoice.builder()
                 .number(entity.getPersonAddress().getNumber())
@@ -74,8 +80,10 @@ public class InvoiceEntity {
                 .category(CategoryEntity.toEntity(entity.getPersonAddress().getCategory()))
                 .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
                 .amountWater(getBigDecimalValue(entity.getAmountWater()))
-                .id(entity.getId())
+                .id(entity.id)
                 .linkId(entity.getPersonAddress().getId())
+                .paidByPix(entity.paidByPix)
+                .paidWithAlternativeBill(entity.paidWithAlternativeBill)
                 .hydrometer(
                     Hydrometer.builder()
                         .consumptionStart(entity.getHydrometer() != null ? entity.getHydrometer().getConsumptionStart() : 0D)
@@ -97,6 +105,8 @@ public class InvoiceEntity {
         LinkEntity linkEntity = new LinkEntity();
         linkEntity.setId(invoice.getLinkId());
         entity.setPersonAddress(linkEntity);
+        entity.setPaidByPix(invoice.getPaidByPix());
+        entity.setPaidWithAlternativeBill(invoice.getPaidWithAlternativeBill());
 
         if (invoice.getHydrometer() != null) {
             HydrometerEntity hydrometerEntity = new HydrometerEntity();

@@ -108,6 +108,8 @@ public class ReceiverInvoicePayment extends JDialog {
     }
     private void pay() {
         invoice.setPaidAt(getPayedAt());
+        invoice.setPaidWithAlternativeBill(isPaidWithAlternativeBill());
+        invoice.setPaidByPix(isPaidByPix());
         pay.execute(invoice);
         dispose();
     }
@@ -130,6 +132,14 @@ public class ReceiverInvoicePayment extends JDialog {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Boolean isPaidByPix() {
+        return checkBoxPaidByPix.isSelected();
+    }
+
+    private Boolean isPaidWithAlternativeBill() {
+        return checkBoxAlternativeBill.isSelected();
     }
 
     private void textFieldNumberKeyPressed(KeyEvent e) {
@@ -192,6 +202,10 @@ public class ReceiverInvoicePayment extends JDialog {
         panel7 = new JPanel();
         checkBoxToday = new JCheckBox();
         formattedTextFieldPayedAt = new JFormattedTextField();
+        panel8 = new JPanel();
+        checkBoxPaidByPix = new JCheckBox();
+        checkBoxAlternativeBill = new JCheckBox();
+        panel9 = new JPanel();
         buttonBar = new JPanel();
         okButton = new JButton();
         cancelButton = new JButton();
@@ -202,12 +216,12 @@ public class ReceiverInvoicePayment extends JDialog {
 
         //======== dialogPane ========
         {
-            dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setPreferredSize(new Dimension(420, 250));
+            dialogPane.setPreferredSize(new Dimension(540, 300));
             dialogPane.setLayout(new BorderLayout(5, 5));
 
             //======== contentPanel ========
             {
+                contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
                 contentPanel.setLayout(new MigLayout(
                     "fillx,insets 0,hidemode 3,align center center,gap 5 5",
                     // columns
@@ -216,7 +230,9 @@ public class ReceiverInvoicePayment extends JDialog {
                     "[grow,fill]" +
                     "[grow,fill]" +
                     "[grow,fill]" +
-                    "[grow,fill]"));
+                    "[grow,fill]" +
+                    "[]" +
+                    "[]"));
 
                 //======== panel2 ========
                 {
@@ -300,6 +316,26 @@ public class ReceiverInvoicePayment extends JDialog {
                     panel7.add(formattedTextFieldPayedAt);
                 }
                 contentPanel.add(panel7, "cell 1 2");
+
+                //======== panel8 ========
+                {
+                    panel8.setLayout(new VerticalLayout());
+
+                    //---- checkBoxPaidByPix ----
+                    checkBoxPaidByPix.setText("Pago via pix?");
+                    panel8.add(checkBoxPaidByPix);
+                }
+                contentPanel.add(panel8, "cell 0 3");
+
+                //---- checkBoxAlternativeBill ----
+                checkBoxAlternativeBill.setText("Pago com Segunda via?");
+                contentPanel.add(checkBoxAlternativeBill, "cell 1 3");
+
+                //======== panel9 ========
+                {
+                    panel9.setLayout(new VerticalLayout());
+                }
+                contentPanel.add(panel9, "cell 0 4");
             }
             dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -354,6 +390,10 @@ public class ReceiverInvoicePayment extends JDialog {
     private JPanel panel7;
     private JCheckBox checkBoxToday;
     private JFormattedTextField formattedTextFieldPayedAt;
+    private JPanel panel8;
+    private JCheckBox checkBoxPaidByPix;
+    private JCheckBox checkBoxAlternativeBill;
+    private JPanel panel9;
     private JPanel buttonBar;
     private JButton okButton;
     private JButton cancelButton;

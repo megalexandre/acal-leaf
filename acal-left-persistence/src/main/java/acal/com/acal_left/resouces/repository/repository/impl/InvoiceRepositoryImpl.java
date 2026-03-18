@@ -129,7 +129,12 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
     @Override
     public Invoice pay(Invoice invoice) {
-        invoiceJpaRepository.updatePayedAt(invoice.getId(), invoice.getPaidAt());
+        invoiceJpaRepository.updatePayedAt(invoice.getId(),
+            invoice.getPaidAt(),
+            invoice.getPaidByPix(),
+            invoice.getPaidWithAlternativeBill()
+        );
+
         return invoice;
     }
 

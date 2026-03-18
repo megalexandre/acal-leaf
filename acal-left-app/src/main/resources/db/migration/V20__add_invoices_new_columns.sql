@@ -1,0 +1,3 @@
+ALTER TABLE conta
+    ADD COLUMN paid_by_pix BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN paid_with_alternative_bill BOOLEAN NOT NULL DEFAULT FALSE;
