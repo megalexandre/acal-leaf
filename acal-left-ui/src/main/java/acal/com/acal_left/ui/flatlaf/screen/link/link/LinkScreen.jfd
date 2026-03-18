@@ -110,5 +110,16 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 1190, 145 )
 		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenu2"
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItemRenew"
+				"text": "Religar"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "enableLink", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 1205, 220 )
+			"size": new java.awt.Dimension( 155, 33 )
+		} )
 	}
 }

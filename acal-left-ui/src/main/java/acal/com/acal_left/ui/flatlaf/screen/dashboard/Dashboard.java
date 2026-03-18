@@ -16,6 +16,7 @@ import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +43,7 @@ import static acal.com.acal_left.ui.event.Screen.PARTNER;
 import static acal.com.acal_left.ui.event.Screen.REGISTER;
 
 
+@Lazy
 @Component
 public abstract class Dashboard extends JFrame {
 

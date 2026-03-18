@@ -15,12 +15,15 @@
 	<name>acal-left</name>
 	<description>Acal Left - Multi-module project</description>
 	<url/>
+
 	<licenses>
 		<license/>
 	</licenses>
+
 	<developers>
 		<developer/>
 	</developers>
+
 	<scm>
 		<connection/>
 		<developerConnection/>

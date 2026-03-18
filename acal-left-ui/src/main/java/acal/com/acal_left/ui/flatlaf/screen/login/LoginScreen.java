@@ -1,5 +1,7 @@
 package acal.com.acal_left.ui.flatlaf.screen.login;
 
+import javax.swing.*;
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.core.usecase.login.LoginUseCase;
@@ -40,8 +42,15 @@ public class LoginScreen extends JPanel {
         this.eventPublisher = eventPublisher;
 
         initComponents();
+        init();
         remembered();
         successLogin(new User());
+    }
+
+    private void init(){
+        textFieldUsername.setName("usernameField");
+        passwordFieldPassword.setName("passwordField");
+        buttonConfirm.setName("loginButton");
     }
 
     private void remembered(){
@@ -172,6 +181,7 @@ public class LoginScreen extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         panel1 = new JPanel();
+        panel6 = new JPanel();
         panel3 = new JPanel();
         label1 = new JLabel();
         textFieldUsername = new JTextField();
@@ -192,55 +202,63 @@ public class LoginScreen extends JPanel {
 
         //======== panel1 ========
         {
+            panel1.setBorder(new EtchedBorder());
             panel1.setLayout(new VerticalLayout(10));
 
-            //======== panel3 ========
+            //======== panel6 ========
             {
-                panel3.setLayout(new VerticalLayout());
+                panel6.setBorder(new EmptyBorder(5, 5, 5, 5));
+                panel6.setLayout(new VerticalLayout());
 
-                //---- label1 ----
-                label1.setText("Nome:");
-                panel3.add(label1);
+                //======== panel3 ========
+                {
+                    panel3.setLayout(new VerticalLayout());
 
-                //---- textFieldUsername ----
-                textFieldUsername.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        textFieldUsernameKeyPressed(e);
-                    }
-                });
-                panel3.add(textFieldUsername);
+                    //---- label1 ----
+                    label1.setText("Nome:");
+                    panel3.add(label1);
+
+                    //---- textFieldUsername ----
+                    textFieldUsername.addKeyListener(new KeyAdapter() {
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            textFieldUsernameKeyPressed(e);
+                        }
+                    });
+                    panel3.add(textFieldUsername);
+                }
+                panel6.add(panel3);
+
+                //======== panel4 ========
+                {
+                    panel4.setLayout(new VerticalLayout());
+
+                    //---- label2 ----
+                    label2.setText("Senha:");
+                    panel4.add(label2);
+
+                    //---- passwordFieldPassword ----
+                    passwordFieldPassword.addKeyListener(new KeyAdapter() {
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            passwordFieldPasswordKeyPressed(e);
+                        }
+                    });
+                    panel4.add(passwordFieldPassword);
+                }
+                panel6.add(panel4);
+
+                //======== panel5 ========
+                {
+                    panel5.setLayout(new FlowLayout());
+
+                    //---- checkBoxRememberMe ----
+                    checkBoxRememberMe.setText("Lembre-se de mim:");
+                    panel5.add(checkBoxRememberMe);
+                }
+                panel6.add(panel5);
             }
-            panel1.add(panel3);
-
-            //======== panel4 ========
-            {
-                panel4.setLayout(new VerticalLayout());
-
-                //---- label2 ----
-                label2.setText("Senha:");
-                panel4.add(label2);
-
-                //---- passwordFieldPassword ----
-                passwordFieldPassword.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        passwordFieldPasswordKeyPressed(e);
-                    }
-                });
-                panel4.add(passwordFieldPassword);
-            }
-            panel1.add(panel4);
-
-            //======== panel5 ========
-            {
-                panel5.setLayout(new FlowLayout());
-
-                //---- checkBoxRememberMe ----
-                checkBoxRememberMe.setText("Lembre-se de mim:");
-                panel5.add(checkBoxRememberMe);
-            }
-            panel1.add(panel5);
+            panel1.add(panel6);
         }
         add(panel1, BorderLayout.CENTER);
 
@@ -261,6 +279,7 @@ public class LoginScreen extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel panel1;
+    private JPanel panel6;
     private JPanel panel3;
     private JLabel label1;
     private JTextField textFieldUsername;

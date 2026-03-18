@@ -106,12 +106,19 @@ public abstract class LinkScreen extends JPanel {
                         table.setRowSelectionInterval(row, row);
                         LinkTableModel model = (LinkTableModel) table.getModel();
                         Link selected = model.get(row);
-                        popupMenu1.putClientProperty("selected", selected);
-                        popupMenu1.show(table, e.getX(), e.getY());
+
+                        if(selected.getActive()){
+                            popupMenu1.putClientProperty("selected", selected);
+                            popupMenu1.show(table, e.getX(), e.getY());
+                        } else {
+                            popupMenu2.putClientProperty("selected", selected);
+                            popupMenu2.show(table, e.getX(), e.getY());
+                        }
                     }
                 }
             }
         });
+
     }
 
     private void createActionListener(ActionEvent e) {
@@ -131,7 +138,13 @@ public abstract class LinkScreen extends JPanel {
         search();
     }
 
-
+    private void enableLink(ActionEvent e) {
+        Link i = (Link) popupMenu2.getClientProperty("selected");
+        i.setActive(true);
+        save.execute(i);
+        Toast.show(this, "Religado com Sucesso");
+        search();
+    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -157,6 +170,8 @@ public abstract class LinkScreen extends JPanel {
         buttonSearch = new JButton();
         popupMenu1 = new JPopupMenu();
         menuItemCancel = new JMenuItem();
+        popupMenu2 = new JPopupMenu();
+        menuItemRenew = new JMenuItem();
 
         //======== this ========
         setLayout(new BorderLayout());
@@ -268,6 +283,15 @@ public abstract class LinkScreen extends JPanel {
             menuItemCancel.addActionListener(e -> invalidateLinkActionEvent(e));
             popupMenu1.add(menuItemCancel);
         }
+
+        //======== popupMenu2 ========
+        {
+
+            //---- menuItemRenew ----
+            menuItemRenew.setText("Religar");
+            menuItemRenew.addActionListener(e -> enableLink(e));
+            popupMenu2.add(menuItemRenew);
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -294,5 +318,7 @@ public abstract class LinkScreen extends JPanel {
     private JButton buttonSearch;
     private JPopupMenu popupMenu1;
     private JMenuItem menuItemCancel;
+    private JPopupMenu popupMenu2;
+    private JMenuItem menuItemRenew;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

@@ -16,33 +16,38 @@ new FormModel {
 				"gap": 10
 			} ) {
 				name: "panel1"
+				"border": new javax.swing.border.EtchedBorder( 1, null, null )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-					name: "panel3"
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label1"
-						"text": "Nome:"
+					name: "panel6"
+					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel3"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "Nome:"
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "textFieldUsername"
+							addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "textFieldUsernameKeyPressed", true ) )
+						} )
 					} )
-					add( new FormComponent( "javax.swing.JTextField" ) {
-						name: "textFieldUsername"
-						addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "textFieldUsernameKeyPressed", true ) )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "panel4"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label2"
+							"text": "Senha:"
+						} )
+						add( new FormComponent( "javax.swing.JPasswordField" ) {
+							name: "passwordFieldPassword"
+							addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "passwordFieldPasswordKeyPressed", true ) )
+						} )
 					} )
-				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-					name: "panel4"
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label2"
-						"text": "Senha:"
-					} )
-					add( new FormComponent( "javax.swing.JPasswordField" ) {
-						name: "passwordFieldPassword"
-						addEvent( new FormEvent( "java.awt.event.KeyListener", "keyPressed", "passwordFieldPasswordKeyPressed", true ) )
-					} )
-				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-					name: "panel5"
-					add( new FormComponent( "javax.swing.JCheckBox" ) {
-						name: "checkBoxRememberMe"
-						"text": "Lembre-se de mim:"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "panel5"
+						add( new FormComponent( "javax.swing.JCheckBox" ) {
+							name: "checkBoxRememberMe"
+							"text": "Lembre-se de mim:"
+						} )
 					} )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
