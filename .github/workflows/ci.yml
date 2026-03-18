@@ -6,8 +6,8 @@ on:
       - 'v*.*.*'
 
 jobs:
-  build-and-pack-windows:
-    name: Build & Pack Windows
+  build-and-pack:
+    name: Build & Pack
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,33 +28,31 @@ jobs:
           $RAW_VERSION = "${{ github.ref_name }}"
           $CLEAN_VERSION = $RAW_VERSION -replace '^v', ''
           
-          echo "Versão original: $RAW_VERSION"
-          echo "Versão limpa para Windows: $CLEAN_VERSION"
-  
           jpackage --type exe `
             --dest dist/ `
-            --name "AcalLeft" `
+            --name "Acal" `
             --input acal-left-app/target/ `
             --main-jar acal-left-app-0.0.1-SNAPSHOT.jar `
             --main-class acal.com.acal_left.AcalLeftApplication `
             --win-shortcut `
             --win-menu `
             --vendor "Alexandre" `
-            --app-version $CLEAN_VERSION `
-            --verbose
+            --app-version $CLEAN_VERSION
 
-      - name: Upload Windows Artifact
+          New-Item -ItemType Directory -Path "release_assets"
+          Move-Item "dist/*.exe" "release_assets/Acal-$CLEAN_VERSION.exe"
+          Copy-Item "acal-left-app/target/acal-left-app-0.0.1-SNAPSHOT.jar" -Destination "release_assets/Acal-$CLEAN_VERSION.jar"
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: acal-left-windows-exe
-          path: dist/*.exe
-
-
+          name: acal-release-pack
+          path: release_assets/
 
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: build-and-pack-windows
+    needs: build-and-pack
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
       contents: write
@@ -62,10 +60,13 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts/
+          name: acal-release-pack
+          path: final_assets/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          name: Acal ${{ github.ref_name }}
           files: |
-            artifacts/acal-left-windows-exe/*.exe
+            final_assets/*.exe
+            final_assets/*.jar
