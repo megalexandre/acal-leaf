@@ -1,9 +1,8 @@
 package acal.com.acal_left.ui.flatlaf.component.filter;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
+import java.beans.PropertyChangeEvent;
 import java.text.ParseException;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -25,11 +24,8 @@ public class MonthYearField extends JFormattedTextField {
         setColumns(7);
         setFocusLostBehavior(JFormattedTextField.COMMIT);
 
-        getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e)  { notifyListeners(); }
-            public void removeUpdate(DocumentEvent e)  { notifyListeners(); }
-            public void changedUpdate(DocumentEvent e) { notifyListeners(); }
-        });
+        // Dispara após o MaskFormatter terminar de processar e commitar o valor
+        addPropertyChangeListener("value", (PropertyChangeEvent e) -> notifyListeners());
     }
 
     private static MaskFormatter createFormatter() {
@@ -47,9 +43,7 @@ public class MonthYearField extends JFormattedTextField {
 
     /** Retorna true somente quando MM/AAAA está completamente preenchido e é uma data válida. */
     public boolean isComplete() {
-        String raw = getText();
-        if (raw == null || raw.contains(String.valueOf(PLACEHOLDER))) return false;
-        return parseYearMonth() != null;
+        return getYearMonth() != null;
     }
 
     /**
@@ -61,14 +55,12 @@ public class MonthYearField extends JFormattedTextField {
 
     private YearMonth parseYearMonth() {
         String raw = getText();
-        if (raw == null) return null;
-        raw = raw.replace(String.valueOf(PLACEHOLDER), "").trim();
-        // esperado MM/YYYY
+        if (raw == null || raw.contains(String.valueOf(PLACEHOLDER))) return null;
         String[] parts = raw.split("/");
         if (parts.length != 2) return null;
         try {
-            int month = Integer.parseInt(parts[0]);
-            int year  = Integer.parseInt(parts[1]);
+            int month = Integer.parseInt(parts[0].trim());
+            int year  = Integer.parseInt(parts[1].trim());
             if (month < 1 || month > 12 || year < 1) return null;
             return YearMonth.of(year, month);
         } catch (NumberFormatException e) {

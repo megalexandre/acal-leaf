@@ -88,13 +88,6 @@ public class InvoiceCreateScreen extends JPanel {
         buttonSearch.setEnabled(false);
         comboBoxType.addActionListener(e -> updateSearchButton());
         monthYearField.addChangeListener(this::updateSearchButton);
-        monthYearField.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                try { monthYearField.commitEdit(); } catch (java.text.ParseException ignored) {}
-                updateSearchButton();
-            }
-        });
         buttonSearch.addActionListener(e -> search());
         buttonConfirm.addActionListener(e -> confirm());
         ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
