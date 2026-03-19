@@ -51,6 +51,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
                     OR (:paid = true AND i.paidAt IS NOT NULL)
                     OR (:paid = false AND i.paidAt IS NULL)
                 )
+                AND (:paidByPix IS NULL OR i.paidByPix = :paidByPix)
             """)
     long countInvoices(
         @Param("id") Integer id,
@@ -61,6 +62,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
         @Param("personId") Integer personId,
         @Param("periodStart") LocalDateTime periodStart,
         @Param("periodEnd") LocalDateTime periodEnd,
+        @Param("paidByPix") Boolean paidByPix,
         @Param("paid") Boolean paid
     );
 
@@ -82,6 +84,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
                     OR (:paid = true AND i.paidAt IS NOT NULL)
                     OR (:paid = false AND i.paidAt IS NULL)
                 )
+                AND (:paidByPix IS NULL OR i.paidByPix = :paidByPix)
             ORDER BY i.period DESC, a.type ASC, a.name ASC
             """)
     List<InvoiceEntity> findInvoicesWithPagination(
@@ -94,6 +97,7 @@ public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Integ
         @Param("periodStart") LocalDateTime periodStart,
         @Param("periodEnd") LocalDateTime periodEnd,
         @Param("paid") Boolean paid,
+        @Param("paidByPix") Boolean paidByPix,
         Pageable pageable
     );
 

@@ -83,5 +83,6 @@ public class InvoiceTableModel extends AbstractTableModel {
 
         return String.class;
     }
+
 }
 

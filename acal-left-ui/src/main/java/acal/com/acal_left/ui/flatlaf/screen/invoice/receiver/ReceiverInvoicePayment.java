@@ -65,11 +65,15 @@ public class ReceiverInvoicePayment extends JDialog {
 
     private void init() {
         setupEscapeKey();
+
         textFieldPeriod.setEnabled(false);
         textFieldPartner.setEnabled(false);
         textFieldValue.setEnabled(false);
         checkBoxToday.setEnabled(false);
+        checkBoxPaidByPix.setEnabled(false);
+        checkBoxAlternativeBill.setEnabled(false);
         formattedTextFieldPayedAt.setEnabled(false);
+
         createMask(formattedTextFieldPayedAt, "##/##/####");
         SwingUtils.applyNumericFilter(textFieldNumber);
         okButton.setEnabled(false);
@@ -97,11 +101,17 @@ public class ReceiverInvoicePayment extends JDialog {
             textFieldValue.setText(BigDecimalUtil.toBRL(item.totalAmount()));
             textFieldPeriod.setText(LocalDateUtil.formatPeriod(item.getPeriod()));
 
+            checkBoxPaidByPix.setSelected(invoice.getPaidByPix());
+            checkBoxAlternativeBill.setSelected(invoice.getPaidWithAlternativeBill());
+
             if(item.isPaid()){
                 formattedTextFieldPayedAt.setText(LocalDateTimeUtil.formatDateTime(item.getPaidAt()));
             }else {
                 checkBoxToday.setEnabled(true);
                 formattedTextFieldPayedAt.setEnabled(true);
+                checkBoxPaidByPix.setEnabled(true);
+                checkBoxAlternativeBill.setEnabled(true);
+
                 okButton.setEnabled(true);
             }
         }

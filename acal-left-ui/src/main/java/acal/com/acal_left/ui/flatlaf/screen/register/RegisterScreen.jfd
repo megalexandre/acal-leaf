@@ -57,6 +57,19 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 150, 25 )
 							} )
 						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+							name: "panel11"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "Inicio3"
+								"text": "Tipo Pagamento:"
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPaymentType"
+								auxiliary() {
+									"JavaCodeGenerator.typeParameters": "ComboBoxOption"
+								}
+							} )
+						} )
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "West"
 					} )
@@ -102,7 +115,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 555, 300 )
+			"size": new java.awt.Dimension( 740, 355 )
 		} )
 	}
 }

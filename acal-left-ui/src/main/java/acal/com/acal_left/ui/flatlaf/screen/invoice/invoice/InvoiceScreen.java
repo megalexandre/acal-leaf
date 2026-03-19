@@ -41,11 +41,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -206,8 +213,8 @@ public class InvoiceScreen extends JPanel {
         textFieldId.setText("");
         formattedPeriod.setText("");
         formattedDueDate.setText("");
-        comboBoxPartner.setSelectedIndex(0);
-        comboBoxAddress.setSelectedIndex(0);
+        comboBoxPartner.setSelectedIndex(-1);
+        comboBoxAddress.setSelectedIndex(-1);
 
         search(0);
     }
@@ -255,10 +262,10 @@ public class InvoiceScreen extends JPanel {
         }
     }
 
-    private void fetchPageData() {
+    private void load(){
         Page<InvoiceTableContent> page =
-            paginate.execute(buildQuery())
-            .map(InvoiceTableContent::new);
+                paginate.execute(buildQuery())
+                        .map(InvoiceTableContent::new);
 
         hasMorePages = page.hasNext();
         totalPages = page.getTotalPages();
@@ -268,9 +275,27 @@ public class InvoiceScreen extends JPanel {
         InvoiceTableModel model = new InvoiceTableModel();
         model.setList(items);
         table.setModel(model);
-
         table.setDefaultRenderer(Invoice.Status.class, new StatusBadgeRenderer());
         updatePaginationLabel();
+    }
+
+    private void fetchPageData() {
+        new SwingWorker<Page<InvoiceTableContent>, Void>() {
+            @Override
+            protected Page<InvoiceTableContent> doInBackground() {
+                return paginate.execute(buildQuery()).map(InvoiceTableContent::new);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    load();
+                } catch (Exception e) {
+                    Toast.show(InvoiceScreen.this, "Erro ao carregar dados: " + e.getMessage());
+                }
+            }
+
+        }.execute();
     }
 
     private InvoiceQuery buildQuery(){
@@ -344,8 +369,24 @@ public class InvoiceScreen extends JPanel {
         }
     }
 
+    private JTable createUITable() {
+        return new JTable(new InvoiceTableModel()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (getRowCount() == 0) {
+                    Graphics2D g2 = (Graphics2D) g.create();
+                    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    g2.setColor(UIManager.getColor("Label.disabledForeground"));
 
-
+                    String msg = "Nenhum registro carregado. Use os filtros acima.";
+                    FontMetrics fm = g2.getFontMetrics();
+                    g2.drawString(msg, (getWidth() - fm.stringWidth(msg)) / 2, getHeight() / 2);
+                    g2.dispose();
+                }
+            }
+        };
+    }
 
 
     @SuppressWarnings("Convert2MethodRef")
@@ -353,7 +394,7 @@ public class InvoiceScreen extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         scrollPane1 = new JScrollPane();
-        table = new JTable();
+        table = createUITable();
         panel1 = new JPanel();
         panel4 = new JPanel();
         buttonFirstPage = new JButton();
@@ -392,6 +433,7 @@ public class InvoiceScreen extends JPanel {
         //======== this ========
         setMinimumSize(new Dimension(1024, 768));
         setPreferredSize(new Dimension(1024, 768));
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== scrollPane1 ========

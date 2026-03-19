@@ -7,6 +7,7 @@ import acal.com.acal_left.shared.LocalDateUtil;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Getter
 public class RegisterReportOutput {
@@ -21,15 +22,21 @@ public class RegisterReportOutput {
     private final String total;
 
     public RegisterReportOutput(Invoice invoice) {
-        this.number          = invoice.getNumber() != null ? invoice.getNumber() : invoice.getId().toString();
-        this.partner         = invoice.getPerson().getName();
-        this.period          = LocalDateUtil.formatPeriod(invoice.getPeriod());
-        this.paymentDate     = LocalDateTimeUtil.formatDateTime(invoice.getPaidAt());
-        this.amountPartner   = BigDecimalUtil.toBRL(invoice.getAmountPartner());
-        this.amountWater     = BigDecimalUtil.toBRL(invoice.getAmountWater());
-        this.amountHydrometer = BigDecimalUtil.toBRL(
-                invoice.getHydrometer() != null ? invoice.getHydrometer().price() : BigDecimal.ZERO);
-        this.total           = BigDecimalUtil.toBRL(invoice.totalAmount());
+        this.number = invoice.getId().toString();
+        this.partner = invoice.getPerson().getName();
+        this.period = LocalDateUtil.formatPeriod(invoice.getPeriod());
+        this.paymentDate = LocalDateTimeUtil.formatDateTime(invoice.getPaidAt());
+        this.amountPartner = BigDecimalUtil.toBRL(invoice.getAmountPartner());
+        this.amountWater = BigDecimalUtil.toBRL(invoice.getAmountWater());
+        this.amountHydrometer = getAmountHydrometer(invoice);
+        this.total = BigDecimalUtil.toBRL(invoice.totalAmount());
     }
+
+    private String getAmountHydrometer(Invoice invoice) {
+        return Optional.of(invoice.getHydrometer())
+                .map(it -> BigDecimalUtil.toBRL(it.price()) )
+                .orElse(BigDecimalUtil.toBRL(BigDecimal.ZERO));
+    }
+
 }
 
