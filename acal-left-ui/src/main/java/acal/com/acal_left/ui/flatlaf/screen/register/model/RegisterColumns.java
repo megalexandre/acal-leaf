@@ -7,6 +7,7 @@ public enum RegisterColumns {
     PARTNER("Sócio:"),
     NUMBER("Número:"),
     PAYMENT_DATE("Data de Pagamento:"),
+    PAYMENT_METHOD("Forma de Pagamento:"),
     AMOUNT("Valor:")
     ;
 

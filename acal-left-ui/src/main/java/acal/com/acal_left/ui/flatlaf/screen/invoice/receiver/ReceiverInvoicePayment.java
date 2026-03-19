@@ -89,6 +89,33 @@ public class ReceiverInvoicePayment extends JDialog {
         });
     }
 
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+        textFieldNumber.setText(invoice.getId().toString());
+        textFieldNumber.setEnabled(false);
+
+        loadInvoiceData(invoice);
+    }
+
+    private void loadInvoiceData(Invoice item) {
+        textFieldPartner.setText(item.getPerson().getName());
+        textFieldValue.setText(BigDecimalUtil.toBRL(item.totalAmount()));
+        textFieldPeriod.setText(LocalDateUtil.formatPeriod(item.getPeriod()));
+
+        checkBoxPaidByPix.setSelected(item.isPaidByPix());
+        checkBoxAlternativeBill.setSelected(item.isPaidWithAlternativeBill());
+
+        if (item.isPaid()) {
+            formattedTextFieldPayedAt.setText(LocalDateTimeUtil.formatDateTime(item.getPaidAt()));
+        } else {
+            checkBoxToday.setEnabled(true);
+            formattedTextFieldPayedAt.setEnabled(true);
+            checkBoxPaidByPix.setEnabled(true);
+            checkBoxAlternativeBill.setEnabled(true);
+            okButton.setEnabled(true);
+        }
+    }
+
     private void search() {
         clearFields();
         var q = InvoiceQuery.builder().id(getNumber()).build();
@@ -101,8 +128,8 @@ public class ReceiverInvoicePayment extends JDialog {
             textFieldValue.setText(BigDecimalUtil.toBRL(item.totalAmount()));
             textFieldPeriod.setText(LocalDateUtil.formatPeriod(item.getPeriod()));
 
-            checkBoxPaidByPix.setSelected(invoice.getPaidByPix());
-            checkBoxAlternativeBill.setSelected(invoice.getPaidWithAlternativeBill());
+            checkBoxPaidByPix.setSelected(invoice.isPaidByPix());
+            checkBoxAlternativeBill.setSelected(invoice.isPaidWithAlternativeBill());
 
             if(item.isPaid()){
                 formattedTextFieldPayedAt.setText(LocalDateTimeUtil.formatDateTime(item.getPaidAt()));
@@ -121,6 +148,9 @@ public class ReceiverInvoicePayment extends JDialog {
         invoice.setPaidWithAlternativeBill(isPaidWithAlternativeBill());
         invoice.setPaidByPix(isPaidByPix());
         pay.execute(invoice);
+        if (onPay != null) {
+            onPay.actionPerformed(new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "paid"));
+        }
         dispose();
     }
 

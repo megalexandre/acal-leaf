@@ -1,5 +1,6 @@
 package acal.com.acal_left.core.model;
 
+import acal.com.acal_left.shared.model.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,11 +51,24 @@ public class Invoice {
     public WaterAnalysis waterAnalysis;
     public Hydrometer hydrometer;
 
-    private Boolean paidByPix;
-    private Boolean paidWithAlternativeBill;
+    private boolean paidByPix;
+    private boolean paidWithAlternativeBill;
+
 
     public boolean isPaid(){
         return paidAt != null;
+    }
+
+    public PaymentType getPaymentType() {
+        if (!isPaid()){
+            return null;
+        }
+
+        if(paidByPix){
+            return PaymentType.PIX;
+        }
+
+        return PaymentType.MONEY;
     }
 
     public BigDecimal totalAmount() {

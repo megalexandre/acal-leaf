@@ -203,6 +203,7 @@ public class RegisterScreen extends JPanel {
         panel9 = new JPanel();
 
         //======== this ========
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== scrollPane1 ========
@@ -230,8 +231,7 @@ public class RegisterScreen extends JPanel {
 
             //======== panel5 ========
             {
-                panel5.setBorder(new EmptyBorder(5, 5, 5, 5));
-                panel5.setLayout(new BorderLayout(10, 10));
+                panel5.setLayout(new BorderLayout(0, 10));
 
                 //======== panel6 ========
                 {

@@ -7,7 +7,6 @@ import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceDeleteUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoicePaginateUseCase;
-import acal.com.acal_left.core.usecase.invoice.InvoicePayUseCase;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxLoader;
@@ -18,12 +17,14 @@ import acal.com.acal_left.ui.flatlaf.component.utils.SwingUtils;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceScreenData;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.invoice.invoice.model.InvoiceTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.invoice.receiver.ReceiverInvoicePayment;
 import acal.com.acal_left.ui.flatlaf.utils.Toast;
 import acal.com.acal_left.ui.report.PdfViewerService;
 import acal.com.acal_left.ui.report.ReportService;
 import acal.com.acal_left.ui.report.out.InvoiceReportOutput;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +54,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -88,8 +90,9 @@ public class InvoiceScreen extends JPanel {
     @Autowired
     private InvoiceDeleteUseCase delete;
 
+
     @Autowired
-    private InvoicePayUseCase pay;
+    private ApplicationContext applicationContext;
 
     private final InvoiceScreenData screenData = new InvoiceScreenData();
 
@@ -159,15 +162,18 @@ public class InvoiceScreen extends JPanel {
 
     private void payActionListener(ActionEvent e) {
         Invoice i = (Invoice) popupMenu.getClientProperty("selected");
-        if(i.isPaid()){
+        if (i.isPaid()) {
             Toast.show(this, "Esse boleto já foi recebido, ignorando a solicitação.");
             return;
         }
 
-        i.setPaidAt(LocalDateTime.now());
-        pay.execute(i);
-        Toast.show(this, "Recebido");
-        search();
+        Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+        ReceiverInvoicePayment dialog = applicationContext.getBean(ReceiverInvoicePayment.class, window);
+        dialog.setInvoice(i);
+        dialog.setOnPay(ev -> search());
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     private void deleteActionListener(ActionEvent e) {

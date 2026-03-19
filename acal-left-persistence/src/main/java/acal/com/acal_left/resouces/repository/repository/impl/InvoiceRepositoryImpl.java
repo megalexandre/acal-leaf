@@ -132,8 +132,8 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     public Invoice pay(Invoice invoice) {
         invoiceJpaRepository.updatePayedAt(invoice.getId(),
             invoice.getPaidAt(),
-            invoice.getPaidByPix(),
-            invoice.getPaidWithAlternativeBill()
+            invoice.isPaidByPix(),
+            invoice.isPaidWithAlternativeBill()
         );
 
         return invoice;

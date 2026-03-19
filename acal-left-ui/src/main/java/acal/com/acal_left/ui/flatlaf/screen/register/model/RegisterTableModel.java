@@ -35,6 +35,7 @@ public class RegisterTableModel extends AbstractTableModel {
             case RegisterColumns.PARTNER -> c.getPartner();
             case RegisterColumns.NUMBER -> c.getNumber();
             case RegisterColumns.PAYMENT_DATE -> c.getPaymentDate();
+            case RegisterColumns.PAYMENT_METHOD -> c.getPaymentMethod();
             case RegisterColumns.AMOUNT -> c.getAmount();
         };
     }

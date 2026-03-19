@@ -5,6 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
+			"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
 				add( new FormComponent( "javax.swing.JTable" ) {
@@ -12,7 +13,7 @@ new FormModel {
 					"selectionMode": 0
 					"showHorizontalLines": true
 					"showVerticalLines": true
-					"border": &EmptyBorder0 new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
+					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
@@ -26,11 +27,9 @@ new FormModel {
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
-					"hgap": 10
 					"vgap": 10
 				} ) {
 					name: "panel5"
-					"border": #EmptyBorder0
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.HorizontalLayout ) {
 						"gap": 5
 					} ) {

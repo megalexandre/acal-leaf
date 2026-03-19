@@ -105,8 +105,8 @@ public class InvoiceEntity {
         LinkEntity linkEntity = new LinkEntity();
         linkEntity.setId(invoice.getLinkId());
         entity.setPersonAddress(linkEntity);
-        entity.setPaidByPix(invoice.getPaidByPix());
-        entity.setPaidWithAlternativeBill(invoice.getPaidWithAlternativeBill());
+        entity.setPaidByPix(invoice.isPaidByPix());
+        entity.setPaidWithAlternativeBill(invoice.isPaidWithAlternativeBill());
 
         if (invoice.getHydrometer() != null) {
             HydrometerEntity hydrometerEntity = new HydrometerEntity();

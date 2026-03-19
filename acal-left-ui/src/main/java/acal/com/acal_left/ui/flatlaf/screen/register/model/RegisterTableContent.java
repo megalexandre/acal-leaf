@@ -11,6 +11,7 @@ public class RegisterTableContent {
     private final String number;
     private final String partner;
     private final String paymentDate;
+    private final String paymentMethod;
     private final String amount;
 
     public RegisterTableContent(Invoice invoice) {
@@ -18,6 +19,7 @@ public class RegisterTableContent {
         this.partner = invoice.getPerson().getName();
         this.paymentDate = LocalDateTimeUtil.formatDateTime(invoice.getPaidAt());
         this.amount = BigDecimalUtil.toBRL(invoice.totalAmount());
+        this.paymentMethod = invoice.getPaymentType().getDescription();
     }
 
 }
