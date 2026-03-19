@@ -5,10 +5,12 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
+			"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "panel1"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 					"alignment": 2
+					"hgap": 0
 				} ) {
 					name: "panel4"
 					add( new FormComponent( "javax.swing.JButton" ) {
@@ -37,6 +39,7 @@ new FormModel {
 					name: "panel5"
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 						"alignment": 4
+						"hgap": 0
 					} ) {
 						name: "panel6"
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {

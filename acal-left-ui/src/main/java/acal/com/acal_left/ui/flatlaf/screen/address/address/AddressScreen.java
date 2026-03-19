@@ -4,6 +4,7 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.address.address;
 
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.Address;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.address.AddressSaveUseCase;
@@ -105,6 +106,7 @@ public class AddressScreen extends JPanel {
         table = new JTable();
 
         //======== this ========
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== panel2 ========
@@ -113,7 +115,7 @@ public class AddressScreen extends JPanel {
 
             //======== panel4 ========
             {
-                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
@@ -126,7 +128,7 @@ public class AddressScreen extends JPanel {
 
         //======== panel5 ========
         {
-            panel5.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            panel5.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
             //---- button2 ----
             button2.setText("Consultar");

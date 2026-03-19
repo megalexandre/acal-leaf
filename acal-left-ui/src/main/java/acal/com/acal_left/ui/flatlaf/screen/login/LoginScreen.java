@@ -1,6 +1,6 @@
 package acal.com.acal_left.ui.flatlaf.screen.login;
 
-import javax.swing.*;
+import java.awt.*;
 import javax.swing.border.*;
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
@@ -22,10 +22,14 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -198,17 +202,21 @@ public class LoginScreen extends JPanel {
         setPreferredSize(new Dimension(500, 300));
         setMinimumSize(new Dimension(500, 300));
         setMaximumSize(new Dimension(500, 300));
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout());
 
         //======== panel1 ========
         {
-            panel1.setBorder(new EtchedBorder());
-            panel1.setLayout(new VerticalLayout(10));
+            panel1.setBorder(null);
+            panel1.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0};
+            ((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0};
+            ((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+            ((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
             //======== panel6 ========
             {
                 panel6.setBorder(new EmptyBorder(5, 5, 5, 5));
-                panel6.setLayout(new VerticalLayout());
+                panel6.setLayout(new VerticalLayout(10));
 
                 //======== panel3 ========
                 {
@@ -258,7 +266,9 @@ public class LoginScreen extends JPanel {
                 }
                 panel6.add(panel5);
             }
-            panel1.add(panel6);
+            panel1.add(panel6, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
         add(panel1, BorderLayout.CENTER);
 

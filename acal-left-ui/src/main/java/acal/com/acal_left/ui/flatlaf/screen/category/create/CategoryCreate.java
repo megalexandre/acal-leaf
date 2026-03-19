@@ -139,8 +139,8 @@ public class CategoryCreate extends JDialog {
 
         //======== dialogPane ========
         {
-            dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-            dialogPane.setLayout(new BorderLayout());
+            dialogPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+            dialogPane.setLayout(new BorderLayout(10, 10));
 
             //======== contentPanel ========
             {

@@ -4,6 +4,7 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.link.link;
 
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.Link;
 import acal.com.acal_left.core.model.filter.LinkFilter;
 import acal.com.acal_left.core.usecase.link.LinkFindUseCase;
@@ -174,6 +175,7 @@ public abstract class LinkScreen extends JPanel {
         menuItemRenew = new JMenuItem();
 
         //======== this ========
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== panel1 ========
@@ -182,7 +184,7 @@ public abstract class LinkScreen extends JPanel {
 
             //======== panel4 ========
             {
-                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
@@ -214,7 +216,7 @@ public abstract class LinkScreen extends JPanel {
 
                 //======== panel6 ========
                 {
-                    panel6.setLayout(new FlowLayout(FlowLayout.TRAILING));
+                    panel6.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, 5));
 
                     //======== panel8 ========
                     {

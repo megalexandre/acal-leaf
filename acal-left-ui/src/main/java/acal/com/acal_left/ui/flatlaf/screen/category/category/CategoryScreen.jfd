@@ -7,10 +7,12 @@ new FormModel {
 			name: "this"
 			"minimumSize": new java.awt.Dimension( 500, 300 )
 			"preferredSize": new java.awt.Dimension( 500, 300 )
+			"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "panel3"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 					"alignment": 2
+					"hgap": 0
 				} ) {
 					name: "panel4"
 					add( new FormComponent( "javax.swing.JButton" ) {
@@ -36,6 +38,7 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 				"alignment": 2
+				"hgap": 0
 			} ) {
 				name: "panel1"
 				add( new FormComponent( "javax.swing.JButton" ) {

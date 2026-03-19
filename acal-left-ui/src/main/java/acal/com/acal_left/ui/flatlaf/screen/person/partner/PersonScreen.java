@@ -1,5 +1,6 @@
 package acal.com.acal_left.ui.flatlaf.screen.person.partner;
 
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.Person;
 import acal.com.acal_left.core.model.filter.PersonFilter;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
@@ -126,6 +127,7 @@ public class PersonScreen extends JPanel {
         buttonSearch2 = new JButton();
 
         //======== this ========
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== panel3 ========
@@ -134,7 +136,7 @@ public class PersonScreen extends JPanel {
 
             //======== panel2 ========
             {
-                panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel2.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //---- buttonCreate ----
                 buttonCreate.setText("Adicionar");
@@ -168,11 +170,11 @@ public class PersonScreen extends JPanel {
 
             //======== panel5 ========
             {
-                panel5.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel5.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //======== panel6 ========
                 {
-                    panel6.setLayout(new HorizontalLayout(10));
+                    panel6.setLayout(new VerticalLayout());
 
                     //---- label1 ----
                     label1.setText("Nome:");
@@ -194,7 +196,7 @@ public class PersonScreen extends JPanel {
 
             //======== panel7 ========
             {
-                panel7.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel7.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //---- buttonSearch2 ----
                 buttonSearch2.setText("Consultar");

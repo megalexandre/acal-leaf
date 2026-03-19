@@ -6,9 +6,12 @@ new FormModel {
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
 			"preferredSize": new java.awt.Dimension( 512, 380 )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+				"vgap": 10
+				"hgap": 10
+			} ) {
 				name: "dialogPane"
-				"border": new javax.swing.border.EmptyBorder( 12, 12, 12, 12 )
+				"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
 					"gap": 10
 				} ) {

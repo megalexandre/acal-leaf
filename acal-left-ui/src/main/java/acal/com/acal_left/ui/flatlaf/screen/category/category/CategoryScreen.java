@@ -1,6 +1,7 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.category.category;
 
+import javax.swing.border.*;
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.category.CategorySaveUseCase;
@@ -105,6 +106,7 @@ public class CategoryScreen extends JPanel {
         //======== this ========
         setMinimumSize(new Dimension(500, 300));
         setPreferredSize(new Dimension(500, 300));
+        setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BorderLayout());
 
         //======== panel3 ========
@@ -113,7 +115,7 @@ public class CategoryScreen extends JPanel {
 
             //======== panel4 ========
             {
-                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                panel4.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
                 //---- buttonCreate2 ----
                 buttonCreate2.setText("Adicionar");
@@ -143,7 +145,7 @@ public class CategoryScreen extends JPanel {
 
         //======== panel1 ========
         {
-            panel1.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            panel1.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
             //---- buttonSearch ----
             buttonSearch.setText("Consultar");

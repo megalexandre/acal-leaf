@@ -5,16 +5,14 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
-				"vgap": 5
-				"hgap": 5
-			} ) {
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "dialogPane"
 				"preferredSize": new java.awt.Dimension( 540, 300 )
+				"border": new javax.swing.border.EmptyBorder( 10, 10, 10, 10 )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
-					"$layoutConstraints": "fillx,insets 0,hidemode 3,align center center,gap 5 5"
-					"$columnConstraints": "[grow,fill]"
-					"$rowConstraints": "[grow,fill][grow,fill][grow,fill][grow,fill][][]"
+					"$layoutConstraints": "fillx,insets 0,novisualpadding,hidemode 3,align center center,gap 10 10"
+					"$columnConstraints": "[fill, 50%!]"
+					"$rowConstraints": "[grow,fill][grow,fill][grow,fill]"
 				} ) {
 					name: "contentPanel"
 					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
@@ -109,11 +107,6 @@ new FormModel {
 						"text": "Pago com Segunda via?"
 					}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 						"value": "cell 1 3"
-					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-						name: "panel9"
-					}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-						"value": "cell 0 4"
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"

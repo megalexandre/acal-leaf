@@ -3,21 +3,25 @@ JFDML JFormDesigner: "8.3" encoding: "UTF-8"
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
-		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
-			"hgap": 10
-			"vgap": 10
-		} ) {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
 			"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 			"preferredSize": new java.awt.Dimension( 500, 300 )
 			"minimumSize": new java.awt.Dimension( 500, 300 )
 			"maximumSize": new java.awt.Dimension( 500, 300 )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
-				"gap": 10
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0"
+				"$rowSpecs": "0:1.0"
+				"$alignTop": true
+				"$alignLeft": true
+				"$hGap": 10
+				"$vGap": 10
 			} ) {
 				name: "panel1"
-				"border": new javax.swing.border.EtchedBorder( 1, null, null )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) {
+					"gap": 10
+				} ) {
 					name: "panel6"
 					"border": new javax.swing.border.EmptyBorder( 5, 5, 5, 5 )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
@@ -49,6 +53,8 @@ new FormModel {
 							"text": "Lembre-se de mim:"
 						} )
 					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"vAlign": 0
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"

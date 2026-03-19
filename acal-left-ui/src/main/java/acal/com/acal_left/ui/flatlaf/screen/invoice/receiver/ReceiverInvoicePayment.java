@@ -205,7 +205,6 @@ public class ReceiverInvoicePayment extends JDialog {
         panel8 = new JPanel();
         checkBoxPaidByPix = new JCheckBox();
         checkBoxAlternativeBill = new JCheckBox();
-        panel9 = new JPanel();
         buttonBar = new JPanel();
         okButton = new JButton();
         cancelButton = new JButton();
@@ -217,22 +216,20 @@ public class ReceiverInvoicePayment extends JDialog {
         //======== dialogPane ========
         {
             dialogPane.setPreferredSize(new Dimension(540, 300));
-            dialogPane.setLayout(new BorderLayout(5, 5));
+            dialogPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+            dialogPane.setLayout(new BorderLayout());
 
             //======== contentPanel ========
             {
                 contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
                 contentPanel.setLayout(new MigLayout(
-                    "fillx,insets 0,hidemode 3,align center center,gap 5 5",
+                    "fillx,insets 0,novisualpadding,hidemode 3,align center center,gap 10 10",
                     // columns
-                    "[grow,fill]",
+                    "[fill, 50%!]",
                     // rows
                     "[grow,fill]" +
                     "[grow,fill]" +
-                    "[grow,fill]" +
-                    "[grow,fill]" +
-                    "[]" +
-                    "[]"));
+                    "[grow,fill]"));
 
                 //======== panel2 ========
                 {
@@ -330,12 +327,6 @@ public class ReceiverInvoicePayment extends JDialog {
                 //---- checkBoxAlternativeBill ----
                 checkBoxAlternativeBill.setText("Pago com Segunda via?");
                 contentPanel.add(checkBoxAlternativeBill, "cell 1 3");
-
-                //======== panel9 ========
-                {
-                    panel9.setLayout(new VerticalLayout());
-                }
-                contentPanel.add(panel9, "cell 0 4");
             }
             dialogPane.add(contentPanel, BorderLayout.CENTER);
 
@@ -393,7 +384,6 @@ public class ReceiverInvoicePayment extends JDialog {
     private JPanel panel8;
     private JCheckBox checkBoxPaidByPix;
     private JCheckBox checkBoxAlternativeBill;
-    private JPanel panel9;
     private JPanel buttonBar;
     private JButton okButton;
     private JButton cancelButton;
