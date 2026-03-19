@@ -86,8 +86,10 @@ public class InvoiceCreateScreen extends JPanel {
         panelDueDate.repaint();
 
         buttonSearch.setEnabled(false);
+        buttonConfirm.setEnabled(false);
         comboBoxType.addActionListener(e -> updateSearchButton());
         monthYearField.addChangeListener(this::updateSearchButton);
+        dueDateField.addChangeListener(this::updateConfirmButton);
         buttonSearch.addActionListener(e -> search());
         buttonConfirm.addActionListener(e -> confirm());
         ComboBoxLoader.setupLazyLoad(comboBoxAddress, this::getOrLoadAddresses);
@@ -117,6 +119,13 @@ public class InvoiceCreateScreen extends JPanel {
         search();
     }
 
+    private void updateConfirmButton() {
+        InvoiceGenerateTableModel model = (InvoiceGenerateTableModel) table.getModel();
+        boolean hasSelected = model != null &&
+                model.getItems().stream().anyMatch(InvoiceGenerateTableContent::isGenerate);
+        buttonConfirm.setEnabled(hasSelected && dueDateField.isComplete());
+    }
+
     private void updateSearchButton() {
         Integer id = ComboBoxOption.getSelectedId(comboBoxType);
         buttonSearch.setEnabled(id != null && monthYearField.isComplete());
@@ -130,6 +139,7 @@ public class InvoiceCreateScreen extends JPanel {
         boolean allSelected = model.getItems().stream().allMatch(InvoiceGenerateTableContent::isGenerate);
         model.getItems().forEach(item -> item.setGenerate(!allSelected));
         model.fireTableDataChanged();
+        updateConfirmButton();
     }
 
     private void search(){
@@ -154,6 +164,8 @@ public class InvoiceCreateScreen extends JPanel {
         InvoiceGenerateTableModel model = new InvoiceGenerateTableModel();
         model.setList(invoiceItems);
         table.setModel(model);
+        model.addTableModelListener(e -> updateConfirmButton());
+        updateConfirmButton();
 
         int startCol = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_STARTS.ordinal();
         int endCol = InvoiceGenerateTableModel.InvoiceColumns.HYDROMETER_ENDS.ordinal();
