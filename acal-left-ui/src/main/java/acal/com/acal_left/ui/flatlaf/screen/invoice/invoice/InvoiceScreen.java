@@ -62,7 +62,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
@@ -161,20 +160,20 @@ public class InvoiceScreen extends JPanel {
     private void payActionListener(ActionEvent e) {
         Invoice i = (Invoice) popupMenu.getClientProperty("selected");
         if(i.isPaid()){
-            Toast.show(this, "Esse isso já foi recebido, ignorando a solicitação.");
+            Toast.show(this, "Esse boleto já foi recebido, ignorando a solicitação.");
             return;
         }
 
         i.setPaidAt(LocalDateTime.now());
         pay.execute(i);
         Toast.show(this, "Recebido");
-        search(0);
+        search();
     }
 
     private void deleteActionListener(ActionEvent e) {
         Invoice i = (Invoice) popupMenu.getClientProperty("selected");
         delete.execute(i);
-        search(0);
+        search();
     }
 
     private void printActionListener(ActionEvent e) {
@@ -190,22 +189,22 @@ public class InvoiceScreen extends JPanel {
         if (screenData.getPersons().isEmpty()) {
             screenData.setPersons(personFind.execute(new PersonFilter()));
         }
-        return Arrays.asList(screenData.getPersonsOptions());
+        return List.of(screenData.getPersonsOptions());
     }
 
     private List<ComboBoxOption> getOrLoadAddresses() {
         if (screenData.getAddresses().isEmpty()) {
             screenData.setAddresses(addressFind.execute());
         }
-        return Arrays.asList(screenData.getAddressesOptions());
+        return List.of(screenData.getAddressesOptions());
     }
 
     private void searchActionListener(ActionEvent e) {
-        search(0);
+        search();
     }
 
-    private void search(int page){
-        currentPage = page;
+    private void search(){
+        currentPage = 0;
         fetchPageData();
     }
 
@@ -215,14 +214,14 @@ public class InvoiceScreen extends JPanel {
         formattedDueDate.setText("");
         comboBoxPartner.setSelectedIndex(-1);
         comboBoxAddress.setSelectedIndex(-1);
+        comboBoxStatus.setSelectedItem(null);
 
-        search(0);
+        search();
     }
 
 
     private void updatePaginationLabel() {
         InvoiceTableModel model = (InvoiceTableModel) table.getModel();
-        table.setDefaultRenderer(Invoice.Status.class, new StatusBadgeRenderer());
         int itemsInThisPage = model.getItems().size();
 
         labelPagination.setText(String.format("Página %d de %d (%d itens)",
@@ -262,18 +261,12 @@ public class InvoiceScreen extends JPanel {
         }
     }
 
-    private void load(){
-        Page<InvoiceTableContent> page =
-                paginate.execute(buildQuery())
-                        .map(InvoiceTableContent::new);
-
+    private void load(Page<InvoiceTableContent> page) {
         hasMorePages = page.hasNext();
         totalPages = page.getTotalPages();
 
-        var items = page.getContent();
-
         InvoiceTableModel model = new InvoiceTableModel();
-        model.setList(items);
+        model.setList(page.getContent());
         table.setModel(model);
         table.setDefaultRenderer(Invoice.Status.class, new StatusBadgeRenderer());
         updatePaginationLabel();
@@ -289,7 +282,7 @@ public class InvoiceScreen extends JPanel {
             @Override
             protected void done() {
                 try {
-                    load();
+                    load(get());
                 } catch (Exception e) {
                     Toast.show(InvoiceScreen.this, "Erro ao carregar dados: " + e.getMessage());
                 }
