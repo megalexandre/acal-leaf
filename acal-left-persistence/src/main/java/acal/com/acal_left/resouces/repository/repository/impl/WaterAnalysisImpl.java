@@ -36,6 +36,14 @@ public class WaterAnalysisImpl implements WaterAnalysisRepository {
 
     @Override
     public List<WaterAnalysis> saveAll(List<WaterAnalysis> analyses) {
+
+        repository.saveAll(
+            analyses.stream().map(WaterAnalysis::getAnalysis)
+                    .flatMap(List::stream)
+                    .map(WaterAnalysisItemEntity::toEntity)
+                    .toList()
+        );
+
         return analyses;
     }
 }

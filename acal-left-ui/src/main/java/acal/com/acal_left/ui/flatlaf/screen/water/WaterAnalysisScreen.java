@@ -3,9 +3,11 @@ package acal.com.acal_left.ui.flatlaf.screen.water;
 
 import acal.com.acal_left.core.model.WaterAnalysis;
 import acal.com.acal_left.core.usecase.water.WaterAnalysisListUseCase;
+import acal.com.acal_left.core.usecase.water.WaterAnalysisSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.screen.water.model.WaterAnalysisTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.water.model.WaterAnalysisTableModel;
+import acal.com.acal_left.ui.flatlaf.utils.Toast;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +33,11 @@ public class WaterAnalysisScreen extends JPanel {
     @Autowired
     public WaterAnalysisListUseCase list;
 
+    @Autowired
+    public WaterAnalysisSaveUseCase saveAll;
+
+    private final Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
     public WaterAnalysisScreen() {
         initComponents();
         init();
@@ -37,6 +45,7 @@ public class WaterAnalysisScreen extends JPanel {
 
     private void init(){
         buttonSearch.addActionListener(it -> search());
+        buttonAdd.addActionListener(it -> showDialog());
 
         table.setAutoCreateRowSorter(true);
         table.setModel(new WaterAnalysisTableModel());
@@ -49,17 +58,27 @@ public class WaterAnalysisScreen extends JPanel {
             .flatMap(Collection::stream)
             .map(WaterAnalysisTableContent::new)
             .toList();
-
         WaterAnalysisTableModel model = (WaterAnalysisTableModel) table.getModel();
         model.setList(modelItens);
         table.setModel(model);
+    }
+
+    private void showDialog(){
+        CreateWaterAnalysisDialog dialog = new CreateWaterAnalysisDialog(window, (it) -> {
+            saveAll.execute(List.of(it));
+            Toast.show(this, "Salvo com sucesso!");
+            search();
+        });
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner non-commercial license
         panel1 = new JPanel();
-        button1 = new JButton();
+        buttonAdd = new JButton();
         scrollPane1 = new JScrollPane();
         table = new JTable();
         panel2 = new JPanel();
@@ -73,9 +92,9 @@ public class WaterAnalysisScreen extends JPanel {
         {
             panel1.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 5));
 
-            //---- button1 ----
-            button1.setText("Adicionar");
-            panel1.add(button1);
+            //---- buttonAdd ----
+            buttonAdd.setText("Adicionar");
+            panel1.add(buttonAdd);
         }
         add(panel1, BorderLayout.NORTH);
 
@@ -105,7 +124,7 @@ public class WaterAnalysisScreen extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner non-commercial license
     private JPanel panel1;
-    private JButton button1;
+    private JButton buttonAdd;
     private JScrollPane scrollPane1;
     private JTable table;
     private JPanel panel2;

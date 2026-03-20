@@ -12,7 +12,7 @@ new FormModel {
 			} ) {
 				name: "panel1"
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button1"
+					name: "buttonAdd"
 					"text": "Adicionar"
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
