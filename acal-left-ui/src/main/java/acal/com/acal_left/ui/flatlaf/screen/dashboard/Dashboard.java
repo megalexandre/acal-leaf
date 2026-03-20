@@ -12,6 +12,7 @@ import acal.com.acal_left.ui.flatlaf.screen.invoice.receiver.ReceiverInvoicePaym
 import acal.com.acal_left.ui.flatlaf.screen.link.link.LinkScreen;
 import acal.com.acal_left.ui.flatlaf.screen.person.partner.PersonScreen;
 import acal.com.acal_left.ui.flatlaf.screen.register.RegisterScreen;
+import acal.com.acal_left.ui.flatlaf.screen.water.WaterAnalysisScreen;
 import acal.com.acal_left.ui.routes.ScreenManager;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.boot.SpringApplication;
@@ -41,6 +42,7 @@ import static acal.com.acal_left.ui.event.Screen.INVOICE_CREATE;
 import static acal.com.acal_left.ui.event.Screen.LINK;
 import static acal.com.acal_left.ui.event.Screen.PARTNER;
 import static acal.com.acal_left.ui.event.Screen.REGISTER;
+import static acal.com.acal_left.ui.event.Screen.WATER_ANALYSIS;
 
 
 @Lazy
@@ -70,6 +72,9 @@ public abstract class Dashboard extends JFrame {
 
     @Lookup
     public abstract RegisterScreen getRegisterScreen();
+
+    @Lookup
+    public abstract WaterAnalysisScreen getWaterAnalysisScreen();
 
     @Lookup
     public abstract ChargeScreen getChargeScreen();
@@ -144,6 +149,7 @@ public abstract class Dashboard extends JFrame {
             case INVOICE_CREATE -> getInvoiceCreateScreen();
             case REGISTER -> getRegisterScreen();
             case CHARGE ->  getChargeScreen();
+            case WATER_ANALYSIS -> getWaterAnalysisScreen();
         };
     }
 
@@ -179,12 +185,18 @@ public abstract class Dashboard extends JFrame {
         screenManager.changeScreen(CHARGE);
     }
 
+    private void menuWaterAnalysis(ActionEvent e) {
+        screenManager.changeScreen(WATER_ANALYSIS);
+    }
+
     private void receiverActionListener(ActionEvent e) {
         ReceiverInvoicePayment dialog = receiverInvoicePayment(this);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
+
+
 
 
     private void initComponents() {
@@ -247,6 +259,7 @@ public abstract class Dashboard extends JFrame {
 
                 //---- menuItem5 ----
                 menuItem5.setText("Par\u00e2metros");
+                menuItem5.addActionListener(e -> menuWaterAnalysis(e));
                 menu4.add(menuItem5);
             }
             menuBar1.add(menu4);

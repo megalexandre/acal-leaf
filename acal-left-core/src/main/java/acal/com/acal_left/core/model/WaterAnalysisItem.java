@@ -19,6 +19,6 @@ public class WaterAnalysisItem {
     private String required;
     private String analyzed;
     private String conformity;
-    private LocalDate createTime;
+    private LocalDate period;
 
 }

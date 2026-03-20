@@ -1,5 +1,7 @@
 package acal.com.acal_left.resouces.repository.model;
 
+import acal.com.acal_left.core.model.WaterAnalysisItem;
+import acal.com.acal_left.shared.model.WaterParameterType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +49,27 @@ public class WaterAnalysisItemEntity {
     @Column(name = "data")
     private LocalDate period;
 
+    public static WaterAnalysisItemEntity toEntity(WaterAnalysisItem item) {
+        return WaterAnalysisItemEntity.builder()
+                .id(item.getId())
+                .parameterTypeId(item.getType().getId())
+                .required(item.getRequired())
+                .analyzed(item.getAnalyzed())
+                .conformity(item.getConformity())
+                .period(item.getPeriod())
+                .build();
+    }
+
+    public static WaterAnalysisItem toDomain(WaterAnalysisItemEntity entity) {
+        return WaterAnalysisItem.builder()
+                .id(entity.getId())
+                .type(WaterParameterType.fromId(entity.parameterTypeId))
+                .required(entity.getRequired())
+                .analyzed(entity.getAnalyzed())
+                .conformity(entity.getConformity())
+                .period(entity.getPeriod())
+                .build();
+    }
 
 
     @Override

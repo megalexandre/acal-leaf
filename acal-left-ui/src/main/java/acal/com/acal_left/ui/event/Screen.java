@@ -6,6 +6,7 @@ public enum Screen {
     CATEGORY("Categorias"),
     PARTNER("Sócios"),
     REGISTER("Lançamentos"),
+    WATER_ANALYSIS("Análise de Água"),
     ADDRESS("Endereços"),
     LINK("Ligações"),
     INVOICE("Faturas"),

@@ -202,7 +202,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
                 .required(entity.getRequired())
                 .analyzed(entity.getAnalyzed())
                 .conformity(entity.getConformity())
-                .createTime(entity.getPeriod())
+                .period(entity.getPeriod())
                 .build();
     }
 }
