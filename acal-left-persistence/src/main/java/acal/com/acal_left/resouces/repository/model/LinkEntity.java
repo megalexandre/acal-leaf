@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "enderecopessoa")
+@Table(name = "link")
 @Data
 public class LinkEntity {
 
