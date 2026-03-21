@@ -1,7 +1,7 @@
 package acal.com.acal_left.ui.flatlaf.screen.invoice.invoice;
 
 import acal.com.acal_left.core.model.Invoice;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.model.filter.PersonFilter;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoiceDeleteUseCase;
@@ -297,9 +297,9 @@ public class InvoiceScreen extends JPanel {
         }.execute();
     }
 
-    private InvoiceQuery buildQuery(){
+    private InvoiceFilter buildQuery(){
         var pageable = PageRequest.of(currentPage, pageSize);
-        return InvoiceQuery.builder()
+        return InvoiceFilter.builder()
                 .id(getId())
                 .personId(getPersonId())
                 .paid(getPaid())

@@ -3,7 +3,7 @@ package acal.com.acal_left.core.usecase.charge;
 import acal.com.acal_left.core.model.Charge;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.ChargeKey;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class ChargeListUseCase {
         this.list = list;
     }
 
-    public List<Charge> execute(InvoiceQuery query ) {
+    public List<Charge> execute(InvoiceFilter query ) {
         List<Invoice> invoices = list.execute(query);
         return getChargesFromInvoices(invoices);
     }

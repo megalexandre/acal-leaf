@@ -1,8 +1,6 @@
 package acal.com.acal_left.ui.report;
 
-import acal.com.acal_left.core.model.Invoice;
-import acal.com.acal_left.shared.BigDecimalUtil;
-import acal.com.acal_left.ui.report.out.RegisterReportOutput;
+import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterReportInfo;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -12,9 +10,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,24 +19,19 @@ public class RegisterReportService {
     private static final JasperReport REPORT = ReportLoader.load("/reports/register.jrxml");
     private static final BufferedImage LOGO   = loadLogo();
 
-    public byte[] createReport(List<Invoice> invoices, String periodStart, String periodEnd) {
-        List<RegisterReportOutput> items = invoices.stream()
-                .map(RegisterReportOutput::new)
-                .toList();
-
-        BigDecimal grandTotal = invoices.stream()
-                .map(Invoice::totalAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
+    public byte[] createReport(RegisterReportInfo info) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("logo",        LOGO);
-        parameters.put("periodStart", periodStart);
-        parameters.put("periodEnd",   periodEnd);
-        parameters.put("totalCount",  String.valueOf(invoices.size()));
-        parameters.put("grandTotal",  BigDecimalUtil.toBRL(grandTotal));
+        parameters.put("periodStart", info.getPeriodStart());
+        parameters.put("periodEnd",   info.getPeriodEnd());
+        parameters.put("label",       info.getLabel());
+        parameters.put("totalCount",  info.count());
+
+        parameters.put("grandTotal",  info.getTotal());
+        parameters.put("paymentType", info.getPaymentMethod());
 
         try {
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(items);
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(info.asReport());
             var jasperPrint = JasperFillManager.fillReport(REPORT, parameters, dataSource);
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {

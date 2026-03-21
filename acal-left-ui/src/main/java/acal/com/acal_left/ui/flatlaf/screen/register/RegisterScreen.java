@@ -5,7 +5,7 @@
 package acal.com.acal_left.ui.flatlaf.screen.register;
 
 import acal.com.acal_left.core.model.Invoice;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
 import acal.com.acal_left.shared.BigDecimalUtil;
 import acal.com.acal_left.shared.LocalDateTimeUtil;
@@ -13,6 +13,7 @@ import acal.com.acal_left.shared.LocalDateUtil;
 import acal.com.acal_left.shared.model.PaymentType;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.model.ComboBoxOption;
+import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterReportInfo;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.register.model.RegisterTableModel;
 import acal.com.acal_left.ui.report.PdfViewerService;
@@ -44,6 +45,8 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 @Component
 @Scope("prototype")
@@ -92,7 +95,7 @@ public class RegisterScreen extends JPanel {
     }
 
     private List<Invoice> fetchData(){
-        var filter = InvoiceQuery.builder()
+        var filter = InvoiceFilter.builder()
                 .paid(true)
                 .periodStart(getStart())
                 .periodEnd(getEnd())
@@ -147,17 +150,25 @@ public class RegisterScreen extends JPanel {
     }
 
     private void printActionListener(ActionEvent e) {
+
         if (lastInvoices.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Nenhum dado para imprimir. Realize uma consulta primeiro.",
                     "Relatório de Caixa",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    INFORMATION_MESSAGE);
             return;
         }
+
         byte[] pdf = reportService.createReport(
-                lastInvoices,
-                formattedTextFieldStart.getText(),
-                formattedTextFieldEnd.getText());
+            RegisterReportInfo.builder()
+                .invoices(lastInvoices)
+                .label(label.getText())
+                .paymentType(getPaymentType())
+                .periodStart(formattedTextFieldStart.getText())
+                .periodEnd(formattedTextFieldEnd.getText())
+                .build()
+            );
+
         pdfViewerService.openPdf(pdf);
     }
 

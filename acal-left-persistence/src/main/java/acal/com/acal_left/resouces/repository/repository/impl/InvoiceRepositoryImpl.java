@@ -4,7 +4,7 @@ import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.WaterAnalysis;
 import acal.com.acal_left.core.model.WaterAnalysisItem;
 import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.repository.InvoiceRepository;
 import acal.com.acal_left.resouces.repository.model.CategoryEntity;
 import acal.com.acal_left.resouces.repository.model.InvoiceEntity;
@@ -64,18 +64,18 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public List<Invoice> listInvoices(InvoiceQuery invoiceQuery) {
+    public List<Invoice> listInvoices(InvoiceFilter invoiceFilter) {
         var invoices = invoiceJpaRepository.findInvoicesWithPagination(
-                        invoiceQuery.getId(),
-                        invoiceQuery.getPeriod(),
-                        invoiceQuery.getDueDate(),
-                        invoiceQuery.getCategoryId(),
-                        invoiceQuery.getAddressId(),
-                        invoiceQuery.getPersonId(),
-                        invoiceQuery.getPeriodStart(),
-                        invoiceQuery.getPeriodEnd(),
-                        invoiceQuery.getPaid(),
-                        invoiceQuery.isPaidByPix(),
+                        invoiceFilter.getId(),
+                        invoiceFilter.getPeriod(),
+                        invoiceFilter.getDueDate(),
+                        invoiceFilter.getCategoryId(),
+                        invoiceFilter.getAddressId(),
+                        invoiceFilter.getPersonId(),
+                        invoiceFilter.getPeriodStart(),
+                        invoiceFilter.getPeriodEnd(),
+                        invoiceFilter.getPaid(),
+                        invoiceFilter.isPaidByPix(),
                         Pageable.unpaged()
                 ).stream()
                 .map(InvoiceEntity::toDomain)
@@ -140,32 +140,32 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
     }
 
     @Override
-    public Page<Invoice> paginateInvoices(InvoiceQuery invoiceQuery) {
+    public Page<Invoice> paginateInvoices(InvoiceFilter invoiceFilter) {
         long total = invoiceJpaRepository.countInvoices(
-                invoiceQuery.getId(),
-                invoiceQuery.getPeriod(),
-                invoiceQuery.getDueDate(),
-                invoiceQuery.getCategoryId(),
-                invoiceQuery.getAddressId(),
-                invoiceQuery.getPersonId(),
-                invoiceQuery.getPeriodStart(),
-                invoiceQuery.getPeriodEnd(),
-                invoiceQuery.getPaid(),
-                invoiceQuery.isPaidByPix()
+                invoiceFilter.getId(),
+                invoiceFilter.getPeriod(),
+                invoiceFilter.getDueDate(),
+                invoiceFilter.getCategoryId(),
+                invoiceFilter.getAddressId(),
+                invoiceFilter.getPersonId(),
+                invoiceFilter.getPeriodStart(),
+                invoiceFilter.getPeriodEnd(),
+                invoiceFilter.getPaid(),
+                invoiceFilter.isPaidByPix()
         );
 
         var invoices = invoiceJpaRepository.findInvoicesWithPagination(
-                invoiceQuery.getId(),
-                invoiceQuery.getPeriod(),
-                invoiceQuery.getDueDate(),
-                invoiceQuery.getCategoryId(),
-                invoiceQuery.getAddressId(),
-                invoiceQuery.getPersonId(),
-                invoiceQuery.getPeriodStart(),
-                invoiceQuery.getPeriodEnd(),
-                invoiceQuery.getPaid(),
-                invoiceQuery.isPaidByPix(),
-                invoiceQuery.getPageable()
+                invoiceFilter.getId(),
+                invoiceFilter.getPeriod(),
+                invoiceFilter.getDueDate(),
+                invoiceFilter.getCategoryId(),
+                invoiceFilter.getAddressId(),
+                invoiceFilter.getPersonId(),
+                invoiceFilter.getPeriodStart(),
+                invoiceFilter.getPeriodEnd(),
+                invoiceFilter.getPaid(),
+                invoiceFilter.isPaidByPix(),
+                invoiceFilter.getPageable()
         ).stream()
          .map(InvoiceEntity::toDomain)
          .toList();
@@ -190,7 +190,7 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
 
         return new PageImpl<>(
             invoices,
-            invoiceQuery.getPageable(),
+            invoiceFilter.getPageable(),
             total
         );
     }

@@ -3,7 +3,7 @@ package acal.com.acal_left.core.usecase.invoice;
 import acal.com.acal_left.core.model.Hydrometer;
 import acal.com.acal_left.core.model.Invoice;
 import acal.com.acal_left.core.model.filter.InvoiceGenerateFilter;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.repository.InvoiceRepository;
 import lombok.val;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,7 @@ public class InvoiceGenerateUseCase {
             .toList();
 
         if (!hydrometerInvoices.isEmpty()) {
-            val lastPeriodFilter = InvoiceQuery.builder()
+            val lastPeriodFilter = InvoiceFilter.builder()
                     .period(filter.getPeriod().minusMonths(1))
                     .build();
 

@@ -6,7 +6,7 @@ package acal.com.acal_left.ui.flatlaf.screen.charge;
 
 import javax.swing.border.*;
 import acal.com.acal_left.core.model.Charge;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.charge.ChargeListUseCase;
 import acal.com.acal_left.ui.event.Screen;
@@ -101,8 +101,8 @@ public class ChargeScreen extends JPanel {
         );
     }
 
-    private InvoiceQuery buildQuery() {
-        return InvoiceQuery.builder()
+    private InvoiceFilter buildQuery() {
+        return InvoiceFilter.builder()
                 .paid(false)
                 .dueDateStart(LocalDateTime.MIN)
                 .dueDateEnd(LocalDateTime.now().minusDays(59))

@@ -1,163 +1,214 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="register" pageWidth="842" pageHeight="595" orientation="Landscape"
-              columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-
-    <parameter name="logo"        class="java.awt.image.BufferedImage"/>
-    <parameter name="periodStart" class="java.lang.String"/>
-    <parameter name="periodEnd"   class="java.lang.String"/>
-    <parameter name="totalCount"  class="java.lang.String"/>
-    <parameter name="grandTotal"  class="java.lang.String"/>
-
-    <queryString><![CDATA[]]></queryString>
-
-    <field name="number"           class="java.lang.String"/>
-    <field name="partner"          class="java.lang.String"/>
-    <field name="period"           class="java.lang.String"/>
-    <field name="paymentDate"      class="java.lang.String"/>
-    <field name="amountPartner"    class="java.lang.String"/>
-    <field name="amountWater"      class="java.lang.String"/>
-    <field name="amountHydrometer" class="java.lang.String"/>
-    <field name="total"            class="java.lang.String"/>
-
-    <!-- ===== PAGE HEADER ===== -->
-    <pageHeader>
-        <band height="80">
-            <!-- Logo -->
-            <image>
-                <reportElement x="0" y="0" width="80" height="60"/>
-                <imageExpression><![CDATA[$P{logo}]]></imageExpression>
-            </image>
-            <!-- Título -->
-            <staticText>
-                <reportElement x="0" y="0" width="802" height="30"/>
-                <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font size="14" isBold="true"/>
-                </textElement>
-                <text><![CDATA[RELATÓRIO DE CAIXA]]></text>
-            </staticText>
-            <!-- Período -->
-            <textField>
-                <reportElement x="0" y="30" width="802" height="20"/>
-                <textElement textAlignment="Center">
-                    <font size="9"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Período: " + $P{periodStart} + " a " + $P{periodEnd} + "   |   Total de registros: " + $P{totalCount}]]></textFieldExpression>
-            </textField>
-            <!-- Linha separadora -->
-            <line>
-                <reportElement x="0" y="55" width="802" height="1"/>
-            </line>
-            <!-- Cabeçalho das colunas -->
-            <staticText>
-                <reportElement x="0"   y="60" width="50"  height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Número]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="50"  y="60" width="180" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Sócio]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="230" y="60" width="60"  height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Período]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="290" y="60" width="110" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Dt. Pagamento]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="400" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Vl. Sócio]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="500" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Vl. Água]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="600" y="60" width="100" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Hidrômetro]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="700" y="60" width="102" height="18" backcolor="#CCCCCC" mode="Opaque"/>
-                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
-                <text><![CDATA[Total]]></text>
-            </staticText>
-        </band>
-    </pageHeader>
-
-    <!-- ===== DETAIL ===== -->
-    <detail>
-        <band height="18" splitType="Stretch">
-            <textField isStretchWithOverflow="true">
-                <reportElement x="0"   y="0" width="50"  height="18"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
-            </textField>
-            <textField isStretchWithOverflow="true">
-                <reportElement x="50"  y="0" width="180" height="18"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="230" y="0" width="60"  height="18"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{period}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="290" y="0" width="110" height="18"/>
-                <textElement><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{paymentDate}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="400" y="0" width="100" height="18"/>
-                <textElement textAlignment="Right"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{amountPartner}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="500" y="0" width="100" height="18"/>
-                <textElement textAlignment="Right"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{amountWater}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="600" y="0" width="100" height="18"/>
-                <textElement textAlignment="Right"><font size="8"/></textElement>
-                <textFieldExpression><![CDATA[$F{amountHydrometer}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="700" y="0" width="102" height="18"/>
-                <textElement textAlignment="Right"><font size="8" isBold="true"/></textElement>
-                <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
-            </textField>
-        </band>
-    </detail>
-
-    <!-- ===== SUMMARY (totais) ===== -->
-    <summary>
-        <band height="30">
-            <line>
-                <reportElement x="0" y="0" width="802" height="1"/>
-            </line>
-            <staticText>
-                <reportElement x="0" y="5" width="400" height="20"/>
-                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
-                <text><![CDATA[TOTAL GERAL:]]></text>
-            </staticText>
-            <textField evaluationTime="Report">
-                <reportElement x="700" y="5" width="102" height="20"/>
-                <textElement textAlignment="Right"><font size="9" isBold="true"/></textElement>
-                <textFieldExpression><![CDATA[$P{grandTotal}]]></textFieldExpression>
-            </textField>
-        </band>
-    </summary>
-
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="register" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="40622bb8-b4ea-4283-9846-6203a5084937">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="logo" class="java.awt.image.BufferedImage"/>
+	<parameter name="periodStart" class="java.lang.String"/>
+	<parameter name="periodEnd" class="java.lang.String"/>
+	<parameter name="totalCount" class="java.lang.String"/>
+	<parameter name="grandTotal" class="java.lang.String"/>
+	<parameter name="paymentType" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="number" class="java.lang.String"/>
+	<field name="partner" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="paymentDate" class="java.lang.String"/>
+	<field name="amountPartner" class="java.lang.String"/>
+	<field name="amountWater" class="java.lang.String"/>
+	<field name="amountHydrometer" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="paymentType" class="java.lang.String"/>
+	<pageHeader>
+		<band height="88">
+			<image>
+				<reportElement x="0" y="0" width="80" height="60" uuid="48b6ce48-06e8-4087-91eb-50191576e704"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="80" y="0" width="722" height="30" uuid="84534d99-457e-4a05-8ce2-1f9e1e60ca25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE CAIXA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="30" width="722" height="15" uuid="2edc1e95-8e4a-43ae-afff-0120f43cba9e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Período: " + $P{periodStart} + " a " + $P{periodEnd} + "   |   Total de registros: " + $P{totalCount}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="60" width="802" height="1" uuid="eacc999d-abbe-45cd-96bb-6b12a39039e5"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="70" width="50" height="18" backcolor="#CCCCCC" uuid="09000c66-30c9-490a-9dc6-394e621020ef"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="50" y="70" width="180" height="18" backcolor="#CCCCCC" uuid="679f3124-2763-4485-a826-90705b814cb7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sócio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="230" y="70" width="60" height="18" backcolor="#CCCCCC" uuid="2f8d0ae4-15e3-490b-9b2c-a99692f30751"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="290" y="70" width="70" height="18" backcolor="#CCCCCC" uuid="335afd35-acb3-4d4b-80af-9703de92e243">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt. Pagamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="70" width="100" height="18" backcolor="#CCCCCC" uuid="be8212ec-c39d-4bf6-968b-7729fde6817d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vl. Sócio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="500" y="70" width="100" height="18" backcolor="#CCCCCC" uuid="72f17ddb-fb3d-4590-8f05-9466bc995c68"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vl. Água]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="600" y="70" width="100" height="18" backcolor="#CCCCCC" uuid="33f6d6ec-9202-4b0b-b0d1-88eedf99a959"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hidrômetro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="700" y="70" width="102" height="18" backcolor="#CCCCCC" uuid="2dd8d517-e205-4e40-9f00-8135c32645be"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="45" width="722" height="15" uuid="dc2b7aac-ff68-4eed-a97b-c352bc247386"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{paymentType}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="360" y="70" width="40" height="18" backcolor="#CCCCCC" uuid="4580623f-5204-422a-ad89-d4c31066aad1">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tpo Pgto:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="0" width="50" height="18" uuid="9618bd5b-b613-4195-93a4-f236bf3d6c43"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="50" y="0" width="180" height="18" uuid="c05b20cf-26f0-473d-99ed-cf335d26ae32"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="60" height="18" uuid="4116918f-f301-43ef-9b1d-70fc4e809b58"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{period}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="70" height="18" uuid="4c6feac9-8260-4929-8830-e1641d71f9de"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="100" height="18" uuid="23722e7e-5df7-4a58-b9f6-60008ab761ed"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountPartner}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="100" height="18" uuid="780d4374-19af-4984-91c0-0ea030af5725"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountWater}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="600" y="0" width="100" height="18" uuid="44f24d64-1512-4e81-a421-d2791efea4fe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountHydrometer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="0" width="102" height="18" uuid="9cefebd4-dc3c-40be-8415-f1300932a4a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="40" height="18" uuid="91598fb0-2fcd-45f9-a7cd-31c72f6fe3b0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30">
+			<line>
+				<reportElement x="0" y="0" width="802" height="1" uuid="2d359e79-57f3-4270-9465-43f0764d1a0a"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="5" width="400" height="20" uuid="3f1a837c-0cfa-4892-9795-f1909086bb79"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GERAL:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="700" y="5" width="102" height="20" uuid="3c79024c-ba3d-47d1-abee-b2dad9f955d6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{grandTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
 </jasperReport>
-

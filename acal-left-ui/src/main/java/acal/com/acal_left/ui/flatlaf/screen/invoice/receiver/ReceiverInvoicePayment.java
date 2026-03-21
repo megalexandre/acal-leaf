@@ -1,7 +1,7 @@
 package acal.com.acal_left.ui.flatlaf.screen.invoice.receiver;
 
 import acal.com.acal_left.core.model.Invoice;
-import acal.com.acal_left.core.model.filter.InvoiceQuery;
+import acal.com.acal_left.core.model.filter.InvoiceFilter;
 import acal.com.acal_left.core.usecase.invoice.InvoiceListUseCase;
 import acal.com.acal_left.core.usecase.invoice.InvoicePayUseCase;
 import acal.com.acal_left.shared.BigDecimalUtil;
@@ -118,7 +118,7 @@ public class ReceiverInvoicePayment extends JDialog {
 
     private void search() {
         clearFields();
-        var q = InvoiceQuery.builder().id(getNumber()).build();
+        var q = InvoiceFilter.builder().id(getNumber()).build();
         List<Invoice> list = listUseCase.execute(q);
 
         if(!list.isEmpty()) {

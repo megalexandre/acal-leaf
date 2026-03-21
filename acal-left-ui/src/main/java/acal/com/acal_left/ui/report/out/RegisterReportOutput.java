@@ -20,6 +20,7 @@ public class RegisterReportOutput {
     private final String amountWater;
     private final String amountHydrometer;
     private final String total;
+    private final String paymentType;
 
     public RegisterReportOutput(Invoice invoice) {
         this.number = invoice.getId().toString();
@@ -30,6 +31,7 @@ public class RegisterReportOutput {
         this.amountWater = BigDecimalUtil.toBRL(invoice.getAmountWater());
         this.amountHydrometer = getAmountHydrometer(invoice);
         this.total = BigDecimalUtil.toBRL(invoice.totalAmount());
+        this.paymentType = invoice.getPaymentType().getDescription();
     }
 
     private String getAmountHydrometer(Invoice invoice) {

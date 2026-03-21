@@ -15,7 +15,7 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvoiceQuery {
+public class InvoiceFilter {
     private Integer id;
     private Boolean paid;
     private Integer categoryId;
