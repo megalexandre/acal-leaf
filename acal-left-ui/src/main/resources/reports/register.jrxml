@@ -34,7 +34,7 @@
 				<text><![CDATA[RELATÓRIO DE CAIXA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="30" width="722" height="15" uuid="2edc1e95-8e4a-43ae-afff-0120f43cba9e"/>
+				<reportElement x="80" y="30" width="600" height="15" uuid="2edc1e95-8e4a-43ae-afff-0120f43cba9e"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
@@ -104,7 +104,7 @@
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="45" width="722" height="15" uuid="dc2b7aac-ff68-4eed-a97b-c352bc247386"/>
+				<reportElement x="80" y="45" width="600" height="15" uuid="dc2b7aac-ff68-4eed-a97b-c352bc247386"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
@@ -121,6 +121,13 @@
 				</textElement>
 				<text><![CDATA[Tpo Pgto:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="680" y="30" width="120" height="30" uuid="aed21ab0-23c0-435e-9535-285344491869"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{grandTotal}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
