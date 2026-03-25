@@ -71,6 +71,7 @@ public class InvoiceEntity {
 
     public static Invoice toDomain(InvoiceEntity entity) {
         return Invoice.builder()
+                .id(entity.id)
                 .number(entity.getPersonAddress().getNumber())
                 .person(PersonEntity.toEntity(entity.getPersonAddress().getPerson()))
                 .address(AddressRepositoryImpl.toEntity(entity.getPersonAddress().getAddress()))
@@ -80,10 +81,9 @@ public class InvoiceEntity {
                 .category(CategoryEntity.toEntity(entity.getPersonAddress().getCategory()))
                 .amountPartner(getBigDecimalValue(entity.getAmountPartner()))
                 .amountWater(getBigDecimalValue(entity.getAmountWater()))
-                .id(entity.id)
                 .linkId(entity.getPersonAddress().getId())
-                .paidByPix(entity.paidByPix)
-                .paidWithAlternativeBill(entity.paidWithAlternativeBill)
+                .paidByPix(entity.paidByPix != null && entity.paidByPix)
+                .paidWithAlternativeBill(entity.paidWithAlternativeBill != null && entity.paidWithAlternativeBill)
                 .hydrometer(
                     Hydrometer.builder()
                         .consumptionStart(entity.getHydrometer() != null ? entity.getHydrometer().getConsumptionStart() : 0D)
