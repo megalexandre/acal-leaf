@@ -151,16 +151,34 @@ public class ReceiverInvoicePayment extends JDialog {
         if (onPay != null) {
             onPay.actionPerformed(new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "paid"));
         }
-        dispose();
+        resetToInitialState();
+    }
+
+    private void resetToInitialState() {
+        invoice = null;
+        textFieldNumber.setEnabled(true);
+        textFieldNumber.setText("");
+        clearFields();
+        textFieldNumber.requestFocusInWindow();
     }
 
     private void clearFields() {
         textFieldPartner.setText("");
         textFieldValue.setText("");
         textFieldPeriod.setText("");
+
+        checkBoxToday.setSelected(false);
         checkBoxToday.setEnabled(false);
+
         formattedTextFieldPayedAt.setEnabled(false);
         formattedTextFieldPayedAt.setText("");
+
+        checkBoxPaidByPix.setSelected(false);
+        checkBoxPaidByPix.setEnabled(false);
+
+        checkBoxAlternativeBill.setSelected(false);
+        checkBoxAlternativeBill.setEnabled(false);
+
         okButton.setEnabled(false);
     }
 
