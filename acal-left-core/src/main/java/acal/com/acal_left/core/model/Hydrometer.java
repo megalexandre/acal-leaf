@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 @Builder
 public class Hydrometer {
 
-    private static final double PRICE_PER_UNIT = 0.004;
+    // @TODO this can be dangerous if the price changes,
+    //  well should save the price in the database, but for now we can hardcode it
+    private static final double PRICE_PER_UNIT = 0.0035;
     public static final double FREE_TIER = 10000;
 
     private Integer id;
@@ -27,6 +29,7 @@ public class Hydrometer {
 
         return new BigDecimal(consumptionEnd - consumptionStart);
     }
+
 
     public BigDecimal price() {
         BigDecimal consumption = getConsumption();
