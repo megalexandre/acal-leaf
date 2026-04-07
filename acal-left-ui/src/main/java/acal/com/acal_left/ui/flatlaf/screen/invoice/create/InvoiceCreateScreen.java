@@ -164,6 +164,7 @@ public class InvoiceCreateScreen extends JPanel {
         InvoiceGenerateTableModel model = new InvoiceGenerateTableModel();
         model.setList(invoiceItems);
         table.setModel(model);
+        table.setAutoCreateRowSorter(true);
         model.addTableModelListener(e -> updateConfirmButton());
         updateConfirmButton();
 
