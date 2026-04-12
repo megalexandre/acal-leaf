@@ -21,18 +21,24 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import static acal.com.acal_left.ui.event.Screen.ADDRESS;
 import static acal.com.acal_left.ui.event.Screen.CATEGORY;
@@ -48,6 +54,8 @@ import static acal.com.acal_left.ui.event.Screen.WATER_ANALYSIS;
 @Lazy
 @Component
 public abstract class Dashboard extends JFrame {
+
+    private static final int MENU_ICON_SIZE = 16;
 
     private final ScreenManager screenManager;
     private final ApplicationContext applicationContext;
@@ -92,6 +100,7 @@ public abstract class Dashboard extends JFrame {
         this.applicationContext = applicationContext;
 
         initComponents();
+        configureMenuIcons();
         addScreens();
 
         addWindowListener(new WindowAdapter() {
@@ -100,6 +109,79 @@ public abstract class Dashboard extends JFrame {
                 shutdownApplication();
             }
         });
+    }
+
+    private void configureMenuIcons() {
+        setMenuIcon(menu1, "FileChooser.homeFolderIcon");
+        setMenuIcon(menu4, "FileView.computerIcon");
+        setMenuIcon(menu2, "FileView.floppyDriveIcon");
+        setMenuIcon(menu3, "Tree.openIcon");
+
+        setMenuItemIcon(menuItemCategory, "FileView.directoryIcon");
+        setMenuItemIcon(menuItemPartener, "FileChooser.detailsViewIcon");
+        setMenuItemIcon(menuItemAddress, "FileView.hardDriveIcon");
+        setMenuItemIcon(menuItem4, "FileView.computerIcon");
+        setMenuItemIcon(menuItem5, "OptionPane.questionIcon");
+        setMenuItemIcon(menuItemInvoice, "FileView.fileIcon");
+        setMenuItemIcon(menuItemCharge, "OptionPane.warningIcon");
+        setMenuItemIcon(menuItemCreateInvoice, "FileChooser.newFolderIcon");
+        setMenuItemIcon(menuItemReceiver, "OptionPane.informationIcon");
+        setMenuItemIcon(menuItem3, "Tree.closedIcon");
+    }
+
+    private void setMenuIcon(JMenu menu, String iconKey) {
+        Icon icon = UIManager.getIcon(iconKey);
+        if (icon == null) {
+            icon = UIManager.getIcon("Tree.leafIcon");
+        }
+        if (icon != null) {
+            menu.setIcon(resizeIcon(icon, MENU_ICON_SIZE, MENU_ICON_SIZE));
+        }
+    }
+
+    private void setMenuItemIcon(JMenuItem menuItem, String iconKey) {
+        Icon icon = UIManager.getIcon(iconKey);
+        if (icon == null) {
+            icon = UIManager.getIcon("Tree.leafIcon");
+        }
+        if (icon != null) {
+            menuItem.setIcon(resizeIcon(icon, MENU_ICON_SIZE, MENU_ICON_SIZE));
+        }
+    }
+
+    private Icon resizeIcon(Icon icon, int targetWidth, int targetHeight) {
+        int sourceWidth = Math.max(1, icon.getIconWidth());
+        int sourceHeight = Math.max(1, icon.getIconHeight());
+
+        double scale = Math.min((double) targetWidth / sourceWidth, (double) targetHeight / sourceHeight);
+        int drawWidth = Math.max(1, (int) Math.round(sourceWidth * scale));
+        int drawHeight = Math.max(1, (int) Math.round(sourceHeight * scale));
+        int x = (targetWidth - drawWidth) / 2;
+        int y = (targetHeight - drawHeight) / 2;
+
+        BufferedImage canvas = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = canvas.createGraphics();
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            if (icon instanceof ImageIcon imageIcon) {
+                g2.drawImage(imageIcon.getImage(), x, y, drawWidth, drawHeight, null);
+            } else {
+                BufferedImage source = new BufferedImage(sourceWidth, sourceHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D sourceGraphics = source.createGraphics();
+                try {
+                    icon.paintIcon(null, sourceGraphics, 0, 0);
+                } finally {
+                    sourceGraphics.dispose();
+                }
+                g2.drawImage(source, x, y, drawWidth, drawHeight, null);
+            }
+        } finally {
+            g2.dispose();
+        }
+        return new ImageIcon(canvas);
     }
 
     private void addScreens() {

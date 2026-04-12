@@ -1,7 +1,5 @@
 package acal.com.acal_left.ui.flatlaf.screen.login;
 
-import java.awt.*;
-import javax.swing.border.*;
 import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.core.usecase.login.LoginUseCase;
@@ -13,6 +11,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -22,21 +23,26 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.prefs.Preferences;
 
 @Component
 public class LoginScreen extends JPanel {
+
+    private static final int LOGIN_ICON_SIZE = 16;
 
     private final LoginUseCase loginUseCase;
     private final ApplicationEventPublisher eventPublisher;
@@ -55,6 +61,74 @@ public class LoginScreen extends JPanel {
         textFieldUsername.setName("usernameField");
         passwordFieldPassword.setName("passwordField");
         buttonConfirm.setName("loginButton");
+        configureLoginIcons();
+    }
+
+    private void configureLoginIcons() {
+        setIcon(label1, "FileView.fileIcon");
+        setIcon(label2, "FileView.hardDriveIcon");
+        setIcon(checkBoxRememberMe, "OptionPane.questionIcon");
+        setIcon(buttonConfirm, "OptionPane.informationIcon");
+    }
+
+    private void setIcon(JLabel component, String iconKey) {
+        Icon icon = resolveIcon(iconKey);
+        if (icon != null) {
+            component.setIcon(icon);
+        }
+    }
+
+    private void setIcon(AbstractButton component, String iconKey) {
+        Icon icon = resolveIcon(iconKey);
+        if (icon != null) {
+            component.setIcon(icon);
+        }
+    }
+
+    private Icon resolveIcon(String iconKey) {
+        Icon icon = UIManager.getIcon(iconKey);
+        if (icon == null) {
+            icon = UIManager.getIcon("Tree.leafIcon");
+        }
+        if (icon == null) {
+            return null;
+        }
+        return resizeIcon(icon, LOGIN_ICON_SIZE, LOGIN_ICON_SIZE);
+    }
+
+    private Icon resizeIcon(Icon icon, int targetWidth, int targetHeight) {
+        int sourceWidth = Math.max(1, icon.getIconWidth());
+        int sourceHeight = Math.max(1, icon.getIconHeight());
+
+        double scale = Math.min((double) targetWidth / sourceWidth, (double) targetHeight / sourceHeight);
+        int drawWidth = Math.max(1, (int) Math.round(sourceWidth * scale));
+        int drawHeight = Math.max(1, (int) Math.round(sourceHeight * scale));
+        int x = (targetWidth - drawWidth) / 2;
+        int y = (targetHeight - drawHeight) / 2;
+
+        BufferedImage canvas = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = canvas.createGraphics();
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            if (icon instanceof ImageIcon imageIcon) {
+                g2.drawImage(imageIcon.getImage(), x, y, drawWidth, drawHeight, null);
+            } else {
+                BufferedImage source = new BufferedImage(sourceWidth, sourceHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D sourceGraphics = source.createGraphics();
+                try {
+                    icon.paintIcon(null, sourceGraphics, 0, 0);
+                } finally {
+                    sourceGraphics.dispose();
+                }
+                g2.drawImage(source, x, y, drawWidth, drawHeight, null);
+            }
+        } finally {
+            g2.dispose();
+        }
+        return new ImageIcon(canvas);
     }
 
     private void remembered(){
