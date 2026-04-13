@@ -1,14 +1,15 @@
-
 package acal.com.acal_left.ui.flatlaf.screen.category.category;
 
-import javax.swing.border.*;
 import acal.com.acal_left.core.model.Category;
 import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.category.CategorySaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import acal.com.acal_left.ui.flatlaf.screen.category.create.CategoryCreate;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.category.render.CategoryTableRenderer;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -19,13 +20,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 @Component
 @Scope("prototype")
@@ -44,6 +50,7 @@ public class CategoryScreen extends JPanel {
         this.save = save;
 
         initComponents();
+        applyModernTheme();
 
     }
 
@@ -53,6 +60,7 @@ public class CategoryScreen extends JPanel {
         CategoryTableModel model = (CategoryTableModel) table.getModel();
         var itens = findAll.execute().stream().map(CategoryTableContent::new).toList();
         model.setList(itens);
+        applyModernTheme();
     }
 
     private void addActionListener(ActionEvent e) {
@@ -89,6 +97,40 @@ public class CategoryScreen extends JPanel {
 
     private boolean isDoubleClick(MouseEvent e) {
         return e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e);
+    }
+
+    private void applyModernTheme() {
+        Font bodyFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font headerFont = AppFontUtils.font(Font.BOLD, 13f);
+
+        table.setFont(bodyFont);
+        table.setRowHeight(40);
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+        table.setGridColor(resolveNeutralRowLineColor());
+        table.setIntercellSpacing(new Dimension(0, 1));
+        table.setFillsViewportHeight(true);
+
+        CategoryTableRenderer renderer = new CategoryTableRenderer(2, Set.of(3, 4, 5));
+        table.setDefaultRenderer(Object.class, renderer);
+        table.setDefaultRenderer(String.class, renderer);
+
+        var header = table.getTableHeader();
+        header.setFont(headerFont);
+        header.setReorderingAllowed(false);
+        header.setResizingAllowed(true);
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 38));
+
+        ButtonStyleUtils.applyPrimary(buttonCreate2);
+        ButtonStyleUtils.applySecondary(buttonSearch);
+    }
+
+    private Color resolveNeutralRowLineColor() {
+        Color separator = UIManager.getColor("Separator.foreground");
+        if (separator != null) {
+            return separator;
+        }
+        return new Color(210, 214, 220);
     }
 
     @SuppressWarnings("Convert2MethodRef")
