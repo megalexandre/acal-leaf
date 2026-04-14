@@ -2,6 +2,12 @@ package acal.com.acal_left.ui.flatlaf.screen.person.create;
 
 import acal.com.acal_left.core.model.Document;
 import acal.com.acal_left.core.model.Person;
+import acal.com.acal_left.ui.flatlaf.component.filter.CpfCnpjTextField;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
+import acal.com.acal_left.ui.flatlaf.screen.person.model.PersonCreateForm;
+import acal.com.acal_left.ui.flatlaf.utils.SwingValidator;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -13,12 +19,15 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class PersonCreate extends JDialog {
 
@@ -26,6 +35,7 @@ public class PersonCreate extends JDialog {
     private ActionListener onSuccess;
 
     private final Person person;
+
 
     public PersonCreate(Window owner, Person person) {
         super(owner);
@@ -35,6 +45,7 @@ public class PersonCreate extends JDialog {
     }
 
     private void init() {
+        applyModernTheme();
         if(person != null) {
             textFieldName.setText(person.getName());
             textPartnerNumber.setText(person.getPartnerNumber());
@@ -42,16 +53,72 @@ public class PersonCreate extends JDialog {
             Document document = person.getDocument();
             textFieldDocument.setText(document == null ? "" : document.getNumber());
         }
+        pack();
+        setLocationRelativeTo(getOwner());
+    }
+
+    private void applyModernTheme() {
+        Font labelFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font fieldFont = AppFontUtils.font(Font.PLAIN, 13f);
+
+        label1.setFont(labelFont);
+        label2.setFont(labelFont);
+        label3.setFont(labelFont);
+
+        textFieldName.setFont(fieldFont);
+        textFieldName.setPreferredSize(new Dimension(280, 32));
+        textFieldDocument.setFont(fieldFont);
+        textFieldDocument.setPreferredSize(new Dimension(280, 32));
+        textPartnerNumber.setFont(fieldFont);
+        textPartnerNumber.setPreferredSize(new Dimension(280, 32));
+
+        panel1.setBorder(new EmptyBorder(0, 0, 8, 0));
+        panel2.setBorder(new EmptyBorder(0, 0, 8, 0));
+        panel3.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        // Botões modernizados
+        ButtonStyleUtils.applyPrimary(okButton);
+        okButton.setIcon(ButtonIconUtils.createCheckIcon(okButton.getForeground(), 14));
+        okButton.setIconTextGap(6);
+        okButton.setText("Salvar");
+
+        ButtonStyleUtils.applySecondary(cancelButton);
+        cancelButton.setIcon(ButtonIconUtils.createSearchIcon(cancelButton.getForeground(), 14));
+        cancelButton.setIconTextGap(6);
+        cancelButton.setText("Cancelar");
+
+        // Rodapé com layout melhorado
+        buttonBar.setLayout(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        buttonBar.setBorder(new EmptyBorder(16, 0, 0, 0));
     }
 
     private void okButtonActionListener(ActionEvent e) {
+        // Obter o documento sem formatação (apenas dígitos)
+        String documentValue = (textFieldDocument instanceof CpfCnpjTextField)
+            ? ((CpfCnpjTextField) textFieldDocument).getUnformattedValue()
+            : textFieldDocument.getText();
+
+        PersonCreateForm form = PersonCreateForm.builder()
+            .name(textFieldName.getText())
+            .document(documentValue)
+            .partnerNumber(textPartnerNumber.getText())
+            .build();
+
+        boolean valid = SwingValidator.validate(this, form, Map.of(
+            "name",          textFieldName,
+            "document",      textFieldDocument,
+            "partnerNumber", textPartnerNumber
+        ));
+
+        if (!valid) return;
+
         Integer id = (person == null ? null : person.getId());
 
         Person person = Person.builder()
             .id(id)
-            .name(getNamePersonName())
-            .partnerNumber(getPartnerNumber())
-            .document(Document.builder().value(getDocumentNumber()).build())
+            .name(form.getName())
+            .partnerNumber(form.getPartnerNumber())
+            .document(Document.builder().value(form.getDocument()).build())
             .build();
 
         if (onSuccess != null) {
@@ -86,7 +153,7 @@ public class PersonCreate extends JDialog {
         textFieldName = new JTextField();
         panel2 = new JPanel();
         label2 = new JLabel();
-        textFieldDocument = new JTextField();
+        textFieldDocument = new CpfCnpjTextField();
         panel3 = new JPanel();
         label3 = new JLabel();
         textPartnerNumber = new JTextField();
@@ -95,6 +162,7 @@ public class PersonCreate extends JDialog {
         cancelButton = new JButton();
 
         //======== this ========
+        setPreferredSize(new Dimension(420, 300));
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -181,7 +249,7 @@ public class PersonCreate extends JDialog {
     private JTextField textFieldName;
     private JPanel panel2;
     private JLabel label2;
-    private JTextField textFieldDocument;
+    private CpfCnpjTextField textFieldDocument;
     private JPanel panel3;
     private JLabel label3;
     private JTextField textPartnerNumber;

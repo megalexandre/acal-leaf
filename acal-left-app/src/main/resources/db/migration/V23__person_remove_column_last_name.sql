@@ -1,0 +1,2 @@
+ALTER TABLE pessoa
+    MODIFY COLUMN sobrenome VARCHAR(255) NULL;

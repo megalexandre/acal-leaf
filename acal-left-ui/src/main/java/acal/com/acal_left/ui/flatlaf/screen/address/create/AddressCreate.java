@@ -1,7 +1,9 @@
-
 package acal.com.acal_left.ui.flatlaf.screen.address.create;
 
 import acal.com.acal_left.core.model.Address;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import lombok.Setter;
 import lombok.val;
 import org.jdesktop.swingx.VerticalLayout;
@@ -9,6 +11,7 @@ import org.jdesktop.swingx.VerticalLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,12 +20,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 public class AddressCreate extends JDialog {
+
+    private static final int BUTTON_ICON_SIZE = 16;
 
     @Setter
     private ActionListener onSuccess;
@@ -37,6 +43,9 @@ public class AddressCreate extends JDialog {
 
         setModal(true);
         init();
+        applyModernTheme();
+        pack();
+        setLocationRelativeTo(getOwner());
     }
 
 
@@ -52,6 +61,40 @@ public class AddressCreate extends JDialog {
         }
     }
 
+    private void applyModernTheme() {
+        Font labelFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font fieldFont = AppFontUtils.font(Font.PLAIN, 14f);
+        Dimension fieldSize = new Dimension(260, 36);
+
+        setPreferredSize(new Dimension(480, 300));
+        setMinimumSize(new Dimension(480, 300));
+        setTitle(address == null ? "Novo endereço" : "Editar endereço");
+
+        panel3.setBorder(new EmptyBorder(16, 16, 8, 16));
+        dialogPane.setBorder(new EmptyBorder(8, 16, 16, 16));
+        buttonBar.setBorder(new EmptyBorder(16, 0, 0, 0));
+
+        label2.setFont(labelFont);
+        label3.setFont(labelFont);
+        applyFieldStyle(comboBoxType, fieldFont, fieldSize);
+        applyFieldStyle(textFieldName, fieldFont, fieldSize);
+
+        ButtonStyleUtils.applyPrimary(okButton);
+        ButtonStyleUtils.applySecondary(cancelButton);
+        okButton.setText("Salvar");
+        cancelButton.setText("Cancelar");
+        ButtonIconUtils.applyIcon(okButton, ButtonIconUtils.fromUIManager("FileView.floppyDriveIcon", BUTTON_ICON_SIZE), 8);
+        ButtonIconUtils.applyIcon(cancelButton, ButtonIconUtils.fromUIManager("OptionPane.warningIcon", BUTTON_ICON_SIZE), 8);
+        getRootPane().setDefaultButton(okButton);
+    }
+
+    private void applyFieldStyle(JComponent component, Font font, Dimension fallbackSize) {
+        component.setFont(font);
+        Dimension current = component.getPreferredSize();
+        int width = current != null && current.width > 0 ? current.width : fallbackSize.width;
+        component.setPreferredSize(new Dimension(width, fallbackSize.height));
+        component.setMinimumSize(new Dimension(120, fallbackSize.height));
+    }
 
     private void okActionListener(ActionEvent e) {
         val address = Address.builder()

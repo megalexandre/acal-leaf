@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pessoa")
+@Table(name = "person")
 @Data
 @Builder
 @NoArgsConstructor
@@ -31,13 +31,10 @@ public class PersonEntity {
     private String partnerNumber;
 
     @Basic(optional = false)
-    @Column(name = "nome")
     private String name;
 
-    @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "cnpj")
     private String cnpj;
 
     public String getDocument() {

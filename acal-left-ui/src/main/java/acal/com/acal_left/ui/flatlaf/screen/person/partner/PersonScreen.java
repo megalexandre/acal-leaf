@@ -1,15 +1,16 @@
 package acal.com.acal_left.ui.flatlaf.screen.person.partner;
 
-import javax.swing.border.*;
 import acal.com.acal_left.core.model.Person;
 import acal.com.acal_left.core.model.filter.PersonFilter;
 import acal.com.acal_left.core.usecase.person.PersonFindUseCase;
 import acal.com.acal_left.core.usecase.person.PersonSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import acal.com.acal_left.ui.flatlaf.screen.person.create.PersonCreate;
 import acal.com.acal_left.ui.flatlaf.screen.person.model.PersonTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.person.model.PersonTableModel;
-import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -46,6 +50,7 @@ public class PersonScreen extends JPanel {
         this.findAll = findAll;
         this.save = save;
         initComponents();
+        applyModernTheme();
     }
 
     private void searchActionListener(ActionEvent e) {
@@ -154,6 +159,7 @@ public class PersonScreen extends JPanel {
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setShowHorizontalLines(true);
             table.setShowVerticalLines(true);
+            table.setBorder(new BevelBorder(BevelBorder.LOWERED));
             table.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -207,6 +213,42 @@ public class PersonScreen extends JPanel {
         }
         add(panel4, BorderLayout.SOUTH);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    private void applyModernTheme() {
+        Font labelFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font fieldFont = AppFontUtils.font(Font.PLAIN, 13f);
+
+        setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Botao de adicionar no topo
+        ButtonStyleUtils.applyPrimary(buttonCreate);
+        buttonCreate.setIcon(ButtonIconUtils.createPlusIcon(buttonCreate.getForeground(), 14));
+        buttonCreate.setIconTextGap(6);
+
+        panel2.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        panel2.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        // Painel de busca
+        label1.setFont(labelFont);
+        textPartnerName.setFont(fieldFont);
+        textPartnerName.setPreferredSize(new Dimension(250, 28));
+
+        panel6.setBorder(new EmptyBorder(0, 0, 0, 6));
+
+        // Botao de busca
+        ButtonStyleUtils.applySecondary(buttonSearch2);
+        buttonSearch2.setIcon(ButtonIconUtils.createSearchIcon(buttonSearch2.getForeground(), 14));
+        buttonSearch2.setIconTextGap(6);
+
+        panel5.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        panel5.setBorder(new EmptyBorder(8, 0, 0, 0));
+
+        panel4.setBorder(new EmptyBorder(8, 10, 8, 10));
+
+        // Tabela
+        table.setRowHeight(28);
+        scrollPane1.setBorder(new EmptyBorder(0, 0, 0, 0));
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off

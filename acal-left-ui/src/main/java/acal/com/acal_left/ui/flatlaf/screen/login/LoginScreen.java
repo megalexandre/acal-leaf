@@ -4,6 +4,9 @@ import acal.com.acal_left.core.model.LoginAttempt;
 import acal.com.acal_left.core.model.User;
 import acal.com.acal_left.core.usecase.login.LoginUseCase;
 import acal.com.acal_left.ui.event.LoginSuccessEvent;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import lombok.val;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -11,9 +14,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import javax.swing.AbstractButton;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -23,20 +23,17 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.prefs.Preferences;
 
 @Component
@@ -61,75 +58,59 @@ public class LoginScreen extends JPanel {
         textFieldUsername.setName("usernameField");
         passwordFieldPassword.setName("passwordField");
         buttonConfirm.setName("loginButton");
+        applyModernTheme();
         configureLoginIcons();
     }
 
+    private void applyModernTheme() {
+        Font labelFont = AppFontUtils.font(Font.PLAIN, 12f);
+        Font fieldFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font checkFont = AppFontUtils.font(Font.PLAIN, 12f);
+
+        label1.setFont(labelFont);
+        label2.setFont(labelFont);
+        checkBoxRememberMe.setFont(checkFont);
+        checkBoxRememberMe.setText("Lembrar de mim");
+
+        textFieldUsername.setFont(fieldFont);
+        textFieldUsername.setPreferredSize(new Dimension(280, 32));
+        passwordFieldPassword.setFont(fieldFont);
+        passwordFieldPassword.setPreferredSize(new Dimension(280, 32));
+
+        setBorder(new EmptyBorder(12, 16, 12, 16));
+        panel1.setBorder(new EmptyBorder(0, 0, 0, 0));
+        panel6.setBorder(new EmptyBorder(8, 16, 0, 16));
+        panel3.setBorder(new EmptyBorder(0, 0, 4, 0));
+        panel4.setBorder(new EmptyBorder(0, 0, 4, 0));
+
+        panel5.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel5.setBorder(new EmptyBorder(1, 0, 0, 0));
+
+        // Mantem o botao com o tamanho padrao compartilhado.
+        ButtonStyleUtils.applyPrimary(buttonConfirm);
+        buttonConfirm.setText("Entrar");
+
+        // Alinha o rodape com os campos para evitar botao "solto" no canto.
+        panel2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        panel2.setBorder(new EmptyBorder(6, 16, 0, 16));
+        panel2.removeAll();
+        panel2.add(buttonConfirm);
+        panel2.revalidate();
+        panel2.repaint();
+    }
+
     private void configureLoginIcons() {
-        setIcon(label1, "FileView.fileIcon");
-        setIcon(label2, "FileView.hardDriveIcon");
-        setIcon(checkBoxRememberMe, "OptionPane.questionIcon");
-        setIcon(buttonConfirm, "OptionPane.informationIcon");
+        label1.setIcon(ButtonIconUtils.createUserIcon(label1.getForeground(), LOGIN_ICON_SIZE));
+        label1.setIconTextGap(6);
+        label2.setIcon(ButtonIconUtils.createLockIcon(label2.getForeground(), LOGIN_ICON_SIZE));
+        label2.setIconTextGap(6);
+        checkBoxRememberMe.setIcon(null);
+        checkBoxRememberMe.setSelectedIcon(null);
+        checkBoxRememberMe.setIconTextGap(6);
+        ButtonIconUtils.applyIcon(buttonConfirm,
+                ButtonIconUtils.createLoginArrowIcon(buttonConfirm.getForeground(), LOGIN_ICON_SIZE), 8);
     }
 
-    private void setIcon(JLabel component, String iconKey) {
-        Icon icon = resolveIcon(iconKey);
-        if (icon != null) {
-            component.setIcon(icon);
-        }
-    }
-
-    private void setIcon(AbstractButton component, String iconKey) {
-        Icon icon = resolveIcon(iconKey);
-        if (icon != null) {
-            component.setIcon(icon);
-        }
-    }
-
-    private Icon resolveIcon(String iconKey) {
-        Icon icon = UIManager.getIcon(iconKey);
-        if (icon == null) {
-            icon = UIManager.getIcon("Tree.leafIcon");
-        }
-        if (icon == null) {
-            return null;
-        }
-        return resizeIcon(icon, LOGIN_ICON_SIZE, LOGIN_ICON_SIZE);
-    }
-
-    private Icon resizeIcon(Icon icon, int targetWidth, int targetHeight) {
-        int sourceWidth = Math.max(1, icon.getIconWidth());
-        int sourceHeight = Math.max(1, icon.getIconHeight());
-
-        double scale = Math.min((double) targetWidth / sourceWidth, (double) targetHeight / sourceHeight);
-        int drawWidth = Math.max(1, (int) Math.round(sourceWidth * scale));
-        int drawHeight = Math.max(1, (int) Math.round(sourceHeight * scale));
-        int x = (targetWidth - drawWidth) / 2;
-        int y = (targetHeight - drawHeight) / 2;
-
-        BufferedImage canvas = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = canvas.createGraphics();
-        try {
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            if (icon instanceof ImageIcon imageIcon) {
-                g2.drawImage(imageIcon.getImage(), x, y, drawWidth, drawHeight, null);
-            } else {
-                BufferedImage source = new BufferedImage(sourceWidth, sourceHeight, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D sourceGraphics = source.createGraphics();
-                try {
-                    icon.paintIcon(null, sourceGraphics, 0, 0);
-                } finally {
-                    sourceGraphics.dispose();
-                }
-                g2.drawImage(source, x, y, drawWidth, drawHeight, null);
-            }
-        } finally {
-            g2.dispose();
-        }
-        return new ImageIcon(canvas);
-    }
 
     private void remembered(){
         if(hasRememberMe()){
@@ -248,7 +229,7 @@ public class LoginScreen extends JPanel {
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainFrame.setContentPane(LoginScreen.this);
             mainFrame.pack();
-            mainFrame.setSize(400, 300);
+            mainFrame.setMinimumSize(mainFrame.getSize());
             mainFrame.setLocationRelativeTo(null);
             mainFrame.setVisible(true);
         });
@@ -273,9 +254,9 @@ public class LoginScreen extends JPanel {
 
         //======== this ========
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        setPreferredSize(new Dimension(500, 300));
-        setMinimumSize(new Dimension(500, 300));
-        setMaximumSize(new Dimension(500, 300));
+        setPreferredSize(new Dimension(420, 240));
+        setMinimumSize(new Dimension(420, 240));
+        setMaximumSize(new Dimension(420, 240));
         setLayout(new BorderLayout());
 
         //======== panel1 ========

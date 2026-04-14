@@ -4,14 +4,17 @@
 
 package acal.com.acal_left.ui.flatlaf.screen.address.address;
 
-import javax.swing.border.*;
 import acal.com.acal_left.core.model.Address;
 import acal.com.acal_left.core.usecase.address.AddressFindAllUseCase;
 import acal.com.acal_left.core.usecase.address.AddressSaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import acal.com.acal_left.ui.flatlaf.screen.address.create.AddressCreate;
 import acal.com.acal_left.ui.flatlaf.screen.address.model.AddressTableContent;
 import acal.com.acal_left.ui.flatlaf.screen.address.model.AddressTableModel;
+import acal.com.acal_left.ui.flatlaf.screen.address.render.AddressTableRenderer;
 import org.jdesktop.swingx.VerticalLayout;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,8 +25,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -34,6 +42,8 @@ import java.awt.event.MouseEvent;
 public class AddressScreen extends JPanel {
     public final String name = Screen.ADDRESS.name();
 
+    private static final int BUTTON_ICON_SIZE = 16;
+
     private final AddressFindAllUseCase findAll;
     private final AddressSaveUseCase save;
 
@@ -41,6 +51,7 @@ public class AddressScreen extends JPanel {
         this.findAll = findAll;
         this.save = save;
         initComponents();
+        applyModernTheme();
     }
 
     private void searchActionListener(ActionEvent e) {
@@ -54,6 +65,7 @@ public class AddressScreen extends JPanel {
 
         var itens = findAll.execute().stream().map(AddressTableContent::new).toList();
         model.setList(itens);
+        applyModernTheme();
     }
 
     private void createActionListener(ActionEvent e) {
@@ -92,6 +104,39 @@ public class AddressScreen extends JPanel {
 
     private boolean isDoubleClick(MouseEvent e) {
         return e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e);
+    }
+
+    private void applyModernTheme() {
+        Font bodyFont   = AppFontUtils.font(Font.PLAIN, 13f);
+        Font headerFont = AppFontUtils.font(Font.BOLD,  13f);
+
+        table.setFont(bodyFont);
+        table.setRowHeight(40);
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+        table.setGridColor(resolveNeutralRowLineColor());
+        table.setIntercellSpacing(new Dimension(0, 1));
+        table.setFillsViewportHeight(true);
+
+        var header = table.getTableHeader();
+        header.setFont(headerFont);
+        header.setReorderingAllowed(false);
+        header.setResizingAllowed(true);
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 38));
+
+        AddressTableRenderer renderer = new AddressTableRenderer();
+        table.setDefaultRenderer(Object.class, renderer);
+        table.setDefaultRenderer(String.class, renderer);
+
+        ButtonStyleUtils.applyPrimary(buttonCreate);
+        ButtonStyleUtils.applySecondary(button2);
+        ButtonIconUtils.applyIcon(buttonCreate, ButtonIconUtils.createPlusIcon(buttonCreate.getForeground(), BUTTON_ICON_SIZE), 8);
+        ButtonIconUtils.applyIcon(button2, ButtonIconUtils.createSearchIcon(button2.getForeground(), BUTTON_ICON_SIZE), 8);
+    }
+
+    private Color resolveNeutralRowLineColor() {
+        Color separator = UIManager.getColor("Separator.foreground");
+        return separator != null ? separator : new Color(210, 214, 220);
     }
 
     private void initComponents() {

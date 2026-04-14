@@ -5,6 +5,7 @@ import acal.com.acal_left.core.usecase.category.CategoryFindAllUseCase;
 import acal.com.acal_left.core.usecase.category.CategorySaveUseCase;
 import acal.com.acal_left.ui.event.Screen;
 import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonIconUtils;
 import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import acal.com.acal_left.ui.flatlaf.screen.category.create.CategoryCreate;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryTableContent;
@@ -38,6 +39,8 @@ import java.util.Set;
 @SuppressWarnings("FieldCanBeLocal")
 public class CategoryScreen extends JPanel {
     public final String name = Screen.CATEGORY.name();
+
+    private static final int BUTTON_ICON_SIZE = 16;
 
     private final CategoryFindAllUseCase findAll;
     private final CategorySaveUseCase save;
@@ -123,6 +126,8 @@ public class CategoryScreen extends JPanel {
 
         ButtonStyleUtils.applyPrimary(buttonCreate2);
         ButtonStyleUtils.applySecondary(buttonSearch);
+        ButtonIconUtils.applyIcon(buttonCreate2, ButtonIconUtils.createPlusIcon(buttonCreate2.getForeground(), BUTTON_ICON_SIZE), 8);
+        ButtonIconUtils.applyIcon(buttonSearch, ButtonIconUtils.createSearchIcon(buttonSearch.getForeground(), BUTTON_ICON_SIZE), 8);
     }
 
     private Color resolveNeutralRowLineColor() {

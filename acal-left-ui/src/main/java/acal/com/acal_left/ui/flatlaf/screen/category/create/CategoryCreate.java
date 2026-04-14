@@ -5,34 +5,47 @@ import acal.com.acal_left.shared.model.MemberGroup;
 import acal.com.acal_left.ui.flatlaf.component.filter.MoneyTextField;
 import acal.com.acal_left.ui.flatlaf.component.render.MemberGroupRenderer;
 import acal.com.acal_left.ui.flatlaf.component.render.YesNoComboBoxRenderer;
+import acal.com.acal_left.ui.flatlaf.component.utils.AppFontUtils;
+import acal.com.acal_left.ui.flatlaf.component.utils.ButtonStyleUtils;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryCreateForm;
 import acal.com.acal_left.ui.flatlaf.screen.category.model.CategoryViewModel;
 import acal.com.acal_left.ui.flatlaf.utils.SwingValidator;
 import lombok.Setter;
 import org.jdesktop.swingx.VerticalLayout;
 
+import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 public class CategoryCreate extends JDialog {
+
+    private static final int BUTTON_ICON_SIZE = 16;
 
     @Setter
     private ActionListener onSuccess;
@@ -50,6 +63,10 @@ public class CategoryCreate extends JDialog {
         }
 
         this.init();
+        applyModernTheme();
+        // Recalcula o tamanho depois da customização de fontes/dimensões.
+        pack();
+        setLocationRelativeTo(getOwner());
         okButton.addActionListener(e -> onOkButtonClicked());
     }
 
@@ -68,6 +85,70 @@ public class CategoryCreate extends JDialog {
             textFieldNameWaterValue.setBigDecimal(model.getAmountWater());
         }
 
+    }
+
+    private void applyModernTheme() {
+        Font labelFont = AppFontUtils.font(Font.PLAIN, 13f);
+        Font fieldFont = AppFontUtils.font(Font.PLAIN, 14f);
+        Dimension fieldSize = new Dimension(260, 36);
+
+        setPreferredSize(new Dimension(560, 450));
+        setMinimumSize(new Dimension(560, 450));
+        setTitle(model == null ? "Nova categoria" : "Editar categoria");
+
+        dialogPane.setBorder(new EmptyBorder(16, 16, 16, 16));
+        contentPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
+
+        label1.setFont(labelFont);
+        label2.setFont(labelFont);
+        label3.setFont(labelFont);
+        label4.setFont(labelFont);
+        label5.setFont(labelFont);
+
+        applyFieldStyle(textFieldName, fieldFont, fieldSize);
+        applyFieldStyle(textFieldNameWaterValue, fieldFont, fieldSize);
+        applyFieldStyle(textFieldNamePartnerValue, fieldFont, fieldSize);
+        applyFieldStyle(comboBoxGroup, fieldFont, fieldSize);
+        applyFieldStyle(comboBoxHydrometer, fieldFont, fieldSize);
+
+        buttonBar.setBorder(new EmptyBorder(16, 0, 0, 0));
+        ButtonStyleUtils.applyPrimary(okButton);
+        ButtonStyleUtils.applySecondary(cancelButton);
+        okButton.setText("Salvar");
+        cancelButton.setText("Cancelar");
+        setButtonIcon(okButton, "FileView.floppyDriveIcon");
+        setButtonIcon(cancelButton, "OptionPane.warningIcon");
+        getRootPane().setDefaultButton(okButton);
+    }
+
+    private void setButtonIcon(AbstractButton button, String iconKey) {
+        Icon icon = UIManager.getIcon(iconKey);
+        if (icon != null) {
+            button.setIcon(toFixedSizeIcon(icon, BUTTON_ICON_SIZE, BUTTON_ICON_SIZE));
+            button.setIconTextGap(8);
+        }
+    }
+
+    private Icon toFixedSizeIcon(Icon icon, int width, int height) {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = image.createGraphics();
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            icon.paintIcon(null, g2, 0, 0);
+        } finally {
+            g2.dispose();
+        }
+        return new ImageIcon(image);
+    }
+
+    private void applyFieldStyle(JComponent component, Font font, Dimension fallbackSize) {
+        component.setFont(font);
+        Dimension current = component.getPreferredSize();
+        int width = current != null && current.width > 0 ? current.width : fallbackSize.width;
+        component.setPreferredSize(new Dimension(width, fallbackSize.height));
+        component.setMinimumSize(new Dimension(120, fallbackSize.height));
     }
 
     private void onOkButtonClicked() {
